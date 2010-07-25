@@ -124,7 +124,7 @@ abstract class Mephex_Model_Accessor_Group
 	 * @param string $accessor_name
 	 * @return Mephex_Model_Accessor_Reader
 	 */
-	protected function getReader($accessor_name)
+	public function getReader($accessor_name)
 	{
 		if(!isset($this->_readers[$accessor_name]))
 		{
@@ -142,7 +142,7 @@ abstract class Mephex_Model_Accessor_Group
 	 * @param string $accessor_name
 	 * @return Mephex_Model_Accessor_Writer
 	 */
-	protected function getWriter($accessor_name)
+	public function getWriter($accessor_name)
 	{
 		if(!isset($this->_writers[$accessor_name]))
 		{
@@ -160,7 +160,7 @@ abstract class Mephex_Model_Accessor_Group
 	 * @param string $accessor_name
 	 * @return Mephex_Model_Accessor_Eraser
 	 */
-	protected function getEraser($accessor_name)
+	public function getEraser($accessor_name)
 	{
 		if(!isset($this->_erasers[$accessor_name]))
 		{
@@ -173,13 +173,56 @@ abstract class Mephex_Model_Accessor_Group
 	
 	
 	/**
+	 * Reads an object that meets the given criteria using the named
+	 * reader. 
+	 * 
+	 * @param string $accessor_name
+	 * @param Mephex_Model_Criteria $criteria
+	 * @return Mephex_Model_Entity
+	 */
+	public function read($accessor_name, Mephex_Model_Criteria $criteria)
+	{
+		return $this->getReader($accessor_name)->read($criteria);
+	}
+	
+	
+	
+	/**
+	 * Writes the given object using the named writer.
+	 * 
+	 * @param string $accessor_name
+	 * @param Mephex_Model_Entity $entity
+	 * @return Mephex_Model_Entity
+	 */
+	public function write($accessor_name, Mephex_Model_Entity $entity)
+	{
+		return $this->getWriter($accessor_name)->write($entity);
+	}
+	
+	
+	
+	/**
+	 * Erases the given object using the named eraser.
+	 * 
+	 * @param string $accessor_name
+	 * @param Mephex_Model_Entity $entity
+	 * @return void
+	 */
+	public function erase($accessor_name, Mephex_Model_Entity $entity)
+	{
+		return $this->getEraser($accessor_name)->erase($entity);
+	}
+	
+	
+	
+	/**
 	 * Generates a reference using the given reader accessor name
 	 * and the criteria.
 	 * 
 	 * @param string $accessor_name
 	 * @return Mephex_Model_Accessor_Reader
 	 */
-	protected function getReference($accessor_name, Mephex_Model_Criteria $criteria)
+	public function getReference($accessor_name, Mephex_Model_Criteria $criteria)
 	{
 		return new Mephex_Model_Entity_Reference(
 			$this->getReader($accessor_name), $criteria
