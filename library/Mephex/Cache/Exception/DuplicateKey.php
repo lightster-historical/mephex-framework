@@ -32,7 +32,7 @@ extends Mephex_Exception
 	 */
 	public function __construct($cache, $key)
 	{
-		parent::__construct("Duplicate cache key: {$key}");
+		parent::__construct("Duplicate cache key: '{$key}'");
 		
 		$this->_cache	= $cache;
 		$this->_key		= $key;
