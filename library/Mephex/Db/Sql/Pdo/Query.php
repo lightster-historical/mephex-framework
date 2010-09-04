@@ -43,6 +43,26 @@ extends Mephex_Db_Sql_Base_Query
 	
 	
 	/**
+	 * Executes the query using the given parameters.
+	 * 
+	 * @param array $params - parameters to place in the query placeholders.
+	 * @return Mephex_Db_Sql_Pdo_ResultSet
+	 */
+	public function execute(array & $params = array())
+	{
+		try
+		{
+			return parent::execute($params);
+		}
+		catch(PDOException $ex)
+		{
+			throw new Mephex_Db_Exception("Database query error (SQLSTATE {$ex->getCode()}): {$ex->getMessage()}");
+		}
+	}
+	
+	
+	
+	/**
 	 * Executes a query using native prepared statements.
 	 * 
 	 * @param array $params - the parameters to put into the prepared statement

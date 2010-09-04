@@ -110,7 +110,7 @@ extends Mephex_Test_TestCase
 	
 	
 	/**
-	 * @expectedException Mephex_Exception
+	 * @expectedException Mephex_Db_Exception
 	 */
 	public function testRewindingAUsedResultSetThrowsAnException()
 	{
@@ -124,5 +124,22 @@ extends Mephex_Test_TestCase
 		{
 		}
 		$iterator->rewind();
+	}
+	
+	
+	
+	/**
+	 * @expectedException Mephex_Db_Exception
+	 */
+	public function testFailingToFetchAResultFromAStatementThrowsAnException()
+	{
+		$db		= $this->getSqliteDatabase('Mephex_Db_Sql_Pdo', 'basic');
+		$conn	= $this->getSqliteConnection($db);
+		
+		$query		= $conn->write('INSERT INTO does_not_exist VALUES (1)');
+		$results	= $query->execute();
+		foreach($results as $result)
+		{
+		} 
 	}
 }  

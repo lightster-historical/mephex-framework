@@ -99,8 +99,15 @@ extends Mephex_Db_Sql_Base_ResultSet
 	 */
 	public function next()
 	{
-		$this->_current	= $this->_statement->fetch($this->_fetch_mode);
-		$this->_count++;
+		try
+		{
+			$this->_current	= $this->_statement->fetch($this->_fetch_mode);
+			$this->_count++;
+		}
+		catch(PDOException $ex)
+		{
+			throw new Mephex_Db_Exception("Database query result could not be retrieved (SQLSTATE {$ex->getCode()}): {$ex->getMessage()}");
+		}
 	}
 	
 	
@@ -112,12 +119,19 @@ extends Mephex_Db_Sql_Base_ResultSet
 	{
 		if($this->_count === null)
 		{
-			$this->_count	= 0;
-			$this->_current	= $this->_statement->fetch($this->_fetch_mode);
+			try
+			{
+				$this->_count	= 0;
+				$this->_current	= $this->_statement->fetch($this->_fetch_mode);
+			}
+			catch(PDOException $ex)
+			{
+				throw new Mephex_Db_Exception("Database query result could not be retrieved (SQLSTATE {$ex->getCode()}): {$ex->getMessage()}");
+			}
 		}
 		else
 		{
-			throw new Mephex_Exception("Cannot re-use database ResultSet.");
+			throw new Mephex_Db_Exception("Cannot re-use database ResultSet.");
 		}	
 	}
 	

@@ -188,7 +188,7 @@ extends Mephex_Test_TestCase
 	
 	
 	
-	public function testQueryWithEmulatedPreparedsExecutesWithoutPreparing()
+	public function testQueryWithEmulatedPreparedsExecutesWithEmulatedPrepareds()
 	{
 		$query	= $this->getQuery('', Mephex_Db_Sql_Base_Query::PREPARE_EMULATED);
 		$this->assertTrue(Mephex_Db_Sql_Base_Query::PREPARE_EMULATED === $query->execute());
@@ -196,7 +196,7 @@ extends Mephex_Test_TestCase
 	
 	
 	
-	public function testQueryWithNativePreparedsExecutesWithoutPreparing()
+	public function testQueryWithNativePreparedsExecutesWithNativePrepareds()
 	{
 		$query	= $this->getQuery('', Mephex_Db_Sql_Base_Query::PREPARE_NATIVE);
 		$this->assertTrue(Mephex_Db_Sql_Base_Query::PREPARE_NATIVE === $query->execute());

@@ -163,4 +163,16 @@ extends Mephex_Test_TestCase
 		}
 		$this->assertEquals(2, $count);
 	}
+	
+	
+	
+	/**
+	 * @expectedException Mephex_Db_Exception
+	 */
+	public function testFailedReadQueryThrowsException()
+	{
+		$db		= $this->getSqliteDatabase('Mephex_Db_Sql_Pdo', 'basic');
+		$conn	= $this->getSqliteConnection($db);
+		$conn->read('SELECT * FROM does_not_exist')->execute();
+	}
 }  

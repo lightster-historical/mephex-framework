@@ -5,7 +5,7 @@
 class Mephex_Db_Sql_Pdo_Query_WriteTest
 extends Mephex_Test_TestCase
 {
-	public function testReadQueryUsesWritePdoConnection()
+	public function testWriteQueryUsesWritePdoConnection()
 	{
 		$db_w	= $this->getSqliteDatabase('Mephex_Db_Sql_Pdo', 'basic');
 		$db_r	= $this->getSqliteDatabase('Mephex_Db_Sql_Pdo', 'basic');
@@ -169,5 +169,17 @@ extends Mephex_Test_TestCase
 		}
 		$this->assertTrue($conn->getReadConnection() === $conn->getWriteConnection());
 		$this->assertEquals(1, $count);
+	}
+	
+	
+	
+	/**
+	 * @expectedException Mephex_Db_Exception
+	 */
+	public function testFailedWriteQueryThrowsException()
+	{
+		$db		= $this->getSqliteDatabase('Mephex_Db_Sql_Pdo', 'basic');
+		$conn	= $this->getSqliteConnection($db);
+		$conn->write('INSERT INTO does_not_exist VALUES (1)')->execute();
 	}
 }  

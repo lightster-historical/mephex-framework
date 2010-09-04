@@ -66,12 +66,22 @@ extends Mephex_Db_Sql_Base_Connection
 	 */
 	protected function getConnectionUsingCredential(Mephex_Db_Sql_Pdo_Credential $credential)
 	{
-		return new PDO(
-			$credential->getDataSourceName(),
-			$credential->getUsername(),
-			$credential->getPassword(),
-			$credential->getDriverOptions()
-		);
+		try
+		{
+			$pdo	= new PDO(
+				$credential->getDataSourceName(),
+				$credential->getUsername(),
+				$credential->getPassword(),
+				$credential->getDriverOptions()
+			);
+			$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+			return $pdo;
+		}
+		catch(PDOException $ex)
+		{
+			throw new Mephex_Db_Exception("Database connection error (SQLSTATE {$ex->getCode()}): {$ex->getMessage()}");
+		}
 	}
 	
 	

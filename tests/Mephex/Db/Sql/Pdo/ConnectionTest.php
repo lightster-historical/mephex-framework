@@ -38,6 +38,20 @@ extends Mephex_Test_TestCase
 	}
 	
 	
+
+	/**
+	 * @expectedException Mephex_Db_Exception
+	 */
+	public function testFailingToMakeAConnectionThrowsAnException()
+	{
+		$credential	= $this->getSqliteCredential(PATH_TEST_ROOT . DIRECTORY_SEPARATOR . 'readonly' . DIRECTORY_SEPARATOR . 'does_not_exist.sqlite3');
+		$conn		= new Mephex_Db_Sql_Pdo_Connection($credential);
+		$conn->getReadConnection();
+		
+		$this->assertTrue(true);
+	}
+	
+	
 	
 	public function testWriteConnectionIsUsedIfReadCredentialIsNotProvided()
 	{
