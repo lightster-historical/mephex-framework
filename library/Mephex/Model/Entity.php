@@ -113,6 +113,8 @@ abstract class Mephex_Model_Entity
 		}
 		
 		$this->{$name}	= $value;
+		
+		return $this;
 	}
 	
 	
@@ -132,6 +134,8 @@ abstract class Mephex_Model_Entity
 		}
 		
 		$this->{$name}	= $reference;
+		
+		return $this;
 	}
 	
 	

@@ -11,6 +11,10 @@ extends Mephex_Model_Entity
 	
 	
 	
+	public function setProperty($name, $value)	{return parent::setProperty($name, $value);}
+	
+	
+	
 	public function getUniqueIdentifier()
 	{
 		return $this->getId();
@@ -40,9 +44,7 @@ extends Mephex_Model_Entity
 	
 	public function setId($id)
 	{
-		$this->setProperty('id', $id);
-		
-		return $this;
+		return $this->setProperty('id', $id);
 	}
 	
 	
@@ -56,9 +58,7 @@ extends Mephex_Model_Entity
 	
 	public function setParent($parent)
 	{
-		$this->setProperty('parent', $parent);
-		
-		return $this;
+		return $this->setProperty('parent', $parent);
 	}
 	
 	
@@ -79,8 +79,6 @@ extends Mephex_Model_Entity
 	
 	public function setUndefinedProperty($value)
 	{
-		$this->setProperty('undefined', $value);
-		
-		return $this;
+		return $this->setProperty('undefined', $value);
 	}
 }

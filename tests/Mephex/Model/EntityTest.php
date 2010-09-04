@@ -202,4 +202,21 @@ extends Mephex_Test_TestCase
     {
     	$this->_entity->setReferencedProperty('id', $this->_reference);
     }
+    
+    
+    
+    public function testSettingAPropertyReturnsOwnerObject()
+    {
+    	$this->assertTrue($this->_entity->setProperty('id', 24) === $this->_entity);
+    }
+    
+    
+    
+    public function testSettingAReferencedPropertyReturnsOwnerObject()
+    {
+    	$this->assertTrue(
+    		$this->_entity->setReferencedProperty('parent', $this->_reference)
+    			=== $this->_entity
+    	);
+    }
 }
