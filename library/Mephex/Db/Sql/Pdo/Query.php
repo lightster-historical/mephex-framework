@@ -18,6 +18,8 @@ extends Mephex_Db_Sql_Base_Query
 	 */
 	protected $_statement;
 	
+	protected $_last_insert_id;
+	
 
 	
 	/**
@@ -97,9 +99,10 @@ extends Mephex_Db_Sql_Base_Query
 	 */
 	protected function executePrepared(array & $params, $emulated)
 	{
+		$conn	= $this->getPdoConnection(); 
+			
 		if(null === $this->_statement)
 		{
-			$conn	= $this->getPdoConnection(); 
 			$conn->setAttribute(PDO::ATTR_EMULATE_PREPARES, $emulated);
 			$this->_statement	= $conn->prepare($this->getSql());
 		}
@@ -110,7 +113,7 @@ extends Mephex_Db_Sql_Base_Query
 
 		$this->_statement->execute($params);
 		
-		return new Mephex_Db_Sql_Pdo_ResultSet($this->_statement, $this->getFetchMode());
+		return new Mephex_Db_Sql_Pdo_ResultSet($conn, $this->_statement, $this->getFetchMode());
 	}
 	
 	
@@ -123,7 +126,8 @@ extends Mephex_Db_Sql_Base_Query
 	 */
 	protected function executeNonPrepare(array & $params)
 	{
-		$this->_statement	= $this->getPdoConnection()->query($this->getSql());
-		return new Mephex_Db_Sql_Pdo_ResultSet($this->_statement, $this->getFetchMode());
+		$conn	= $this->getPdoConnection();
+		$this->_statement	= $conn->query($this->getSql());
+		return new Mephex_Db_Sql_Pdo_ResultSet($conn, $this->_statement, $this->getFetchMode());
 	}
 }

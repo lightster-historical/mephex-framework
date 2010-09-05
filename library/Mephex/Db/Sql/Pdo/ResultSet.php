@@ -56,9 +56,10 @@ extends Mephex_Db_Sql_Base_ResultSet
 	 * @param int $fetch_mode - the fetch mode (Mephex constant) used when
 	 * 		returning results
 	 */
-	public function __construct(PDOStatement $statement, $fetch_mode)
+	public function __construct(PDO $conn, PDOStatement $statement, $fetch_mode)
 	{
-		$this->_statement	= $statement;
+		$this->_last_insert_id	= $conn->lastInsertId();
+		$this->_statement		= $statement;
 		
 		$this->_fetch_mode	= (
 			isset(self::$_mapped_fetch_mode[$fetch_mode])
@@ -143,6 +144,18 @@ extends Mephex_Db_Sql_Base_ResultSet
 	public function valid()
 	{
 		return $this->_current !== null && $this->_current !== false;
+	}
+	
+	
+	
+	/**
+	 * Retrieves the autoincrement id of the first row from the most recent insert.
+	 * 
+	 * @return int
+	 */
+	public function getLastInsertId()
+	{
+		return $this->_last_insert_id;
 	}
 	
 	

@@ -5,6 +5,20 @@
 class Mephex_Db_Sql_Pdo_ResultSetTest
 extends Mephex_Test_TestCase
 {	
+	public function testResultSetIsIterator()
+	{
+		$db_rw	= $this->getSqliteDatabase('Mephex_Db_Sql_Pdo', 'basic');
+		$conn	= $this->getSqliteConnection($db_rw);
+		$pdo	= $conn->getReadConnection();
+
+		$numbers	= $pdo->query('SELECT * FROM number');
+		$iterator	= new Mephex_Db_Sql_Pdo_ResultSet($pdo, $numbers, Mephex_Db_Sql_Base_Query::FETCH_NAMED);
+		
+		$this->assertTrue($iterator instanceof Iterator);
+	}
+	
+	
+	
 	public function testResultSetCanBeIterated()
 	{
 		$db_rw	= $this->getSqliteDatabase('Mephex_Db_Sql_Pdo', 'basic');
@@ -17,7 +31,7 @@ extends Mephex_Test_TestCase
 		
 		$mismatch	= 0;
 		$numbers	= $pdo->query('SELECT * FROM number');
-		$iterator	= new Mephex_Db_Sql_Pdo_ResultSet($numbers, Mephex_Db_Sql_Base_Query::FETCH_NAMED);
+		$iterator	= new Mephex_Db_Sql_Pdo_ResultSet($pdo, $numbers, Mephex_Db_Sql_Base_Query::FETCH_NAMED);
 		foreach($iterator as $key => $number)
 		{
 			if(isset($known[$key]) && $known[$key] == $number['number'])
@@ -45,7 +59,7 @@ extends Mephex_Test_TestCase
 		
 		$mismatch	= 0;
 		$numbers	= $pdo->query('SELECT * FROM number LIMIT 1');
-		$iterator	= new Mephex_Db_Sql_Pdo_ResultSet($numbers, Mephex_Db_Sql_Base_Query::FETCH_NUMERIC);
+		$iterator	= new Mephex_Db_Sql_Pdo_ResultSet($pdo, $numbers, Mephex_Db_Sql_Base_Query::FETCH_NUMERIC);
 		foreach($iterator as $key => $number)
 		{
 			$this->assertFalse(isset($number['number']));
@@ -62,7 +76,7 @@ extends Mephex_Test_TestCase
 		$pdo	= $conn->getReadConnection();
 		
 		$numbers	= $pdo->query('SELECT * FROM number LIMIT 1');
-		$iterator	= new Mephex_Db_Sql_Pdo_ResultSet($numbers, Mephex_Db_Sql_Base_Query::FETCH_NAMED);
+		$iterator	= new Mephex_Db_Sql_Pdo_ResultSet($pdo, $numbers, Mephex_Db_Sql_Base_Query::FETCH_NAMED);
 		foreach($iterator as $key => $number)
 		{
 			$this->assertTrue(isset($number['number']));
@@ -80,7 +94,7 @@ extends Mephex_Test_TestCase
 		
 		$mismatch	= 0;
 		$numbers	= $pdo->query('SELECT * FROM number LIMIT 1');
-		$iterator	= new Mephex_Db_Sql_Pdo_ResultSet($numbers,
+		$iterator	= new Mephex_Db_Sql_Pdo_ResultSet($pdo, $numbers,
 			Mephex_Db_Sql_Base_Query::FETCH_NAMED | Mephex_Db_Sql_Base_Query::FETCH_NUMERIC
 		);
 		foreach($iterator as $key => $number)
@@ -99,7 +113,7 @@ extends Mephex_Test_TestCase
 		$pdo	= $conn->getReadConnection();
 		
 		$numbers	= $pdo->query('SELECT * FROM number LIMIT 1');
-		$iterator	= new Mephex_Db_Sql_Pdo_ResultSet($numbers, -1);
+		$iterator	= new Mephex_Db_Sql_Pdo_ResultSet($pdo, $numbers, -1);
 		foreach($iterator as $key => $number)
 		{
 			$this->assertTrue(isset($number['number']));
@@ -119,7 +133,7 @@ extends Mephex_Test_TestCase
 		$pdo	= $conn->getReadConnection();
 		
 		$numbers	= $pdo->query('SELECT * FROM number LIMIT 1');
-		$iterator	= new Mephex_Db_Sql_Pdo_ResultSet($numbers, Mephex_Db_Sql_Base_Query::FETCH_NAMED);
+		$iterator	= new Mephex_Db_Sql_Pdo_ResultSet($pdo, $numbers, Mephex_Db_Sql_Base_Query::FETCH_NAMED);
 		foreach($iterator as $key => $number)
 		{
 		}
@@ -141,5 +155,21 @@ extends Mephex_Test_TestCase
 		foreach($results as $result)
 		{
 		} 
+	}
+	
+	
+	
+	public function testLastInsertIdReturnsAutoIncrementValue()
+	{
+		$db		= $this->getSqliteDatabase('Mephex_Db_Sql_Pdo', 'basic');
+		$conn	= $this->getSqliteConnection($db);
+		
+		$query		= $conn->write('INSERT INTO number VALUES (null)');
+		
+		$results	= $query->execute();
+		$this->assertEquals(6, $results->getLastInsertId());
+		
+		$results	= $query->execute();
+		$this->assertEquals(7, $results->getLastInsertId());
 	}
 }  
