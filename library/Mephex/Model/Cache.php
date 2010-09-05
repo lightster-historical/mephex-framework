@@ -64,7 +64,7 @@ abstract class Mephex_Model_Cache
 	public function has(Mephex_Model_Criteria $criteria)
 	{
 		return $this->getCache()
-			->has($this->generateKeyFromCriteria($criteria));
+			->has($this->_generateKeyFromCriteria($criteria));
 	}
 	
 	
@@ -77,8 +77,7 @@ abstract class Mephex_Model_Cache
 	 */
 	public function find(Mephex_Model_Criteria $criteria)
 	{
-		return $this->getCache()
-			->find($this->generateKeyFromCriteria($criteria));
+		return $this->getCache()->find($this->_generateKeyFromCriteria($criteria));
 	}
 	
 	
@@ -89,4 +88,35 @@ abstract class Mephex_Model_Cache
 	 * @param Mephex_Model_Criteria $criteria
 	 */
 	protected abstract function generateKeyFromCriteria(Mephex_Model_Criteria $criteria);
+	
+	
+	
+	/**
+	 * Wrapper of #generateKeyFromCriteria() that converts an invalid (empty)
+	 * key to a Mephex_Model_Criteria_Exception_UnknownKey exception. 
+	 * 
+	 * @param Mephex_Model_Criteria $criteria - the criteria to generate the
+	 * 		key from
+	 */
+	private function _generateKeyFromCriteria(Mephex_Model_Criteria $criteria)
+	{
+		$key	= $this->generateKeyFromCriteria($criteria);
+		
+		if(empty($key))
+			$this->throwUnknownKeyException($criteria);	
+		
+		return $key;
+	}
+	
+	
+	
+	/**
+	 * Throws an invalid criteria exception.
+	 * 
+	 * @param Mephex_Model_Criteria $criteria - the invalid criteria used
+	 */
+	protected function throwUnknownKeyException(Mephex_Model_Criteria $criteria)
+	{
+		throw new Mephex_Model_Criteria_Exception_UnknownKey("The provided criteria do not represent a valid cache key.");	
+	}
 }

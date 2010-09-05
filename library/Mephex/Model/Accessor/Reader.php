@@ -86,6 +86,11 @@ extends Mephex_Model_Accessor
 		{
 			$entity	= $this->getCachedEntity($cache, $criteria);
 		}
+		// re-throw this type of exception
+		catch(Mephex_Model_Criteria_Exception_UnknownKey $ex)
+		{
+			throw $ex;
+		}
 		catch(Mephex_Cache_Exception_UnknownKey $ex)
 		{
 			$stream	= $this->getStream();

@@ -40,6 +40,17 @@ extends Mephex_Test_TestCase
 	
 	
 	
+	/**
+	 * @expectedException Mephex_Model_Criteria_Exception_UnknownKey
+	 */
+	public function testCheckingCacheForACriteriaWithAnUnknownKeyThrowsAnException()
+	{
+		$criteria	= new Mephex_Model_Criteria_Array(array('Unknown' => 5));
+		$this->_cache->has($criteria);
+	}
+	
+	
+	
 	public function testFindCriteria()
 	{
 		$internalCache	= $this->_cache->getCache();
@@ -47,5 +58,16 @@ extends Mephex_Test_TestCase
 		
 		$criteria	= new Mephex_Model_Criteria_Array(array('Id' => 5));
 		$this->assertEquals('some_object', $this->_cache->find($criteria));
+	}
+	
+	
+	
+	/**
+	 * @expectedException Mephex_Model_Criteria_Exception_UnknownKey
+	 */
+	public function testFindCriteriaWithAnUnknownKeyThrowsAnException()
+	{
+		$criteria	= new Mephex_Model_Criteria_Array(array('Unknown' => 5));
+		$this->_cache->find($criteria);
 	}
 }  

@@ -22,7 +22,12 @@ extends Mephex_Model_Cache
 	
 	protected function generateKeyFromCriteria(Mephex_Model_Criteria $criteria)
 	{
-		return "Id:{$criteria->getCriteriaValue('Id')}";
+		if($criteria->hasCriteriaFields(array('Id')))
+		{
+			return "Id:{$criteria->getCriteriaValue('Id')}";
+		}
+		
+		return null;
 	}
 	
 	

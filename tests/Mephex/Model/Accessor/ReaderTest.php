@@ -77,4 +77,14 @@ extends Mephex_Test_TestCase
 		$this->assertEquals(8, $entity2->getId());
 		$this->assertFalse($entity1 === $entity2);
 	}
+	
+	
+	
+	/**
+	 * @expectedException Mephex_Model_Criteria_Exception_UnknownKey
+	 */
+	public function testReadingWithAnInvalidCriteriaThrowsAnException()
+	{
+		$this->_reader->read(new Mephex_Model_Criteria_Array($criteria = array('Unknown' => 7)));
+	}
 }  
