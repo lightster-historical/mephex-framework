@@ -33,7 +33,7 @@ extends PHPUnit_Framework_TestCase
 	/**
 	 * Deallocates any resources created by a test case.
 	 */
-	public function tearDown()
+	protected function tearDown()
 	{
 		$this->_copier	= null;
 	} 
