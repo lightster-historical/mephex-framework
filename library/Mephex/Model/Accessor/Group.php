@@ -44,6 +44,13 @@ abstract class Mephex_Model_Accessor_Group
 	
 	
 	
+	public function __construct()
+	{
+		$this->init();
+	}
+	
+	
+	
 	/**
 	 * Initializes the accessor group, including all accessors
 	 * and caches.
