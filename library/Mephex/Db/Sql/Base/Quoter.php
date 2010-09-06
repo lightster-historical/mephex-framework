@@ -44,6 +44,11 @@ class Mephex_Db_Sql_Base_Quoter
 	 */
 	public function quoteValue($value)
 	{
-		return "'" . addslashes($value) . "'";
+		if(null === $value)
+			return 'null';
+		else if(is_numeric($value))
+			return $value;
+		else
+			return "'" . addslashes($value) . "'";
 	}
 }

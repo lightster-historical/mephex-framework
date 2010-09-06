@@ -36,6 +36,27 @@ extends Mephex_Test_TestCase
 	
 	
 	
+	public function testNullValuesAreProperlyQuoted()
+	{
+		$this->assertEquals(
+			'null',
+			$this->_quoter->quoteValue(null)
+		);
+	}
+	
+	
+	
+	public function testNumericValuesAreProperlyQuoted()
+	{
+		$this->assertEquals(123, $this->_quoter->quoteValue(123));
+		$this->assertEquals(123, $this->_quoter->quoteValue('123'));
+		$this->assertEquals(123.45, $this->_quoter->quoteValue(123.45));
+		$this->assertEquals(123.45, $this->_quoter->quoteValue('123.45'));
+		$this->assertEquals('\'123.45y\'', $this->_quoter->quoteValue('123.45y'));
+	}
+	
+	
+	
 	public function testValuesAreProperlyQuoted()
 	{
 		$this->assertEquals(
