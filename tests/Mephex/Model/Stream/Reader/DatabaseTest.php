@@ -18,6 +18,13 @@ extends Mephex_Test_TestCase
 	
 	
 	
+	public function testDatabaseReaderIsStreamReader()
+	{
+		$this->assertTrue($this->_reader instanceof Mephex_Model_Stream_Reader);
+	}
+	
+	
+	
 	public function testConnectionGetterReturnsTheSameConnectionPassedToTheConstructor()
 	{
 		$this->assertTrue($this->_connection === $this->_reader->getConnection());
