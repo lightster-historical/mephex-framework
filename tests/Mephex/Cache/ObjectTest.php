@@ -77,7 +77,7 @@ extends Mephex_Test_TestCase
     	$this->_cache->remember($key, $value);
     	$this->assertEquals($this->_cache->find($key), $value);
     	
-    	$this->_cache->forget($key);
+    	$this->assertTrue($this->_cache->forget($key));
     	$this->assertFalse($this->_cache->has($key));
     }
     
@@ -89,5 +89,12 @@ extends Mephex_Test_TestCase
     public function testForgettingANonRememberedKeyThrowsAnException()
     {
     	$this->_cache->forget('unknown_key');
+    }
+    
+    
+    
+    public function testTheExceptionThrownByForgettingANonRememberedKeyCanBeSuppressed()
+    {
+    	$this->assertFalse($this->_cache->forget('unknown_key', true));
     }
 }

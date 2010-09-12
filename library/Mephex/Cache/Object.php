@@ -48,16 +48,25 @@ class Mephex_Cache_Object
 	 * Forgets the object stored by the specified key
 	 * 
 	 * @param string $key - the key to forget
+	 * @param bool $ignore - whether or not to ignore a missing key;
+	 * 		if false (default), an exception is thrown
 	 * @throws Mephex_Cache_Exception_UnknownKey
 	 */
-	public function forget($key)
+	public function forget($key, $ignore = false)
 	{
 		if(!array_key_exists($key, $this->_objects))
 		{
+			if($ignore)
+			{
+				return false;
+			}
+			
 			throw new Mephex_Cache_Exception_UnknownKey($this, $key);
 		}
 		
 		unset($this->_objects[$key]);
+		
+		return true;
 	}
 	
 	
