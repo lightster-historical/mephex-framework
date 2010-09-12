@@ -97,4 +97,64 @@ extends Mephex_Test_TestCase
     {
     	$this->assertFalse($this->_cache->forget('unknown_key', true));
     }
+    
+    
+    
+    public function testAllKeysAndObjectsCanBeForgotten()
+    {
+    	$values	= array
+    	(
+    		'key1' => 'value1',
+    		'key2' => 'value2',
+    		'key3' => 'value3',
+    		'key4' => 'value4'
+    	);
+    	
+    	foreach($values as $key => $value)
+    	{
+    		$this->_cache->remember($key, $value);
+    	}
+    	
+    	foreach($values as $key => $value)
+    	{
+    		$this->assertTrue($this->_cache->has($key));
+    	}
+    	
+    	$this->_cache->forgetAll();
+    	
+    	foreach($values as $key => $value)
+    	{
+    		$this->assertFalse($this->_cache->has($key));
+    	}
+    }
+    
+    
+    
+    public function testObjectCanBeCompletelyRemovedFromCache()
+    {
+    	$values	= array
+    	(
+    		'key1' => 'value1',
+    		'key2' => 'value2',
+    		'key3' => 'value1',
+    		'key4' => 'value4'
+    	);
+    	
+    	foreach($values as $key => $value)
+    	{
+    		$this->_cache->remember($key, $value);
+    	}
+    	
+    	foreach($values as $key => $value)
+    	{
+    		$this->assertTrue($this->_cache->has($key));
+    	}
+    	
+    	$this->_cache->removeObject('value1');
+    	
+    	foreach($values as $key => $value)
+    	{
+    		$this->assertEquals(($value !== 'value1'), $this->_cache->has($key));
+    	}
+    }
 }

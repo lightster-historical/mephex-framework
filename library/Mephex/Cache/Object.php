@@ -70,6 +70,39 @@ class Mephex_Cache_Object
 	}
 	
 	
+	
+	/**
+	 * Forgets all objects.
+	 * 
+	 * @return void
+	 */
+	public function forgetAll()
+	{
+		$this->_objects	= array();
+	}
+	
+	
+	
+	/**
+	 * Removes the given object from the cache, regardless of how many 
+	 * keys it is associated with.
+	 * 
+	 * @param $object
+	 * @return array
+	 */
+	public function & removeObject($object)
+	{
+		$keys	= array();
+		while(false !== ($key = array_search($object, $this->_objects, true)))
+		{
+			$keys[]	= $key;
+			unset($this->_objects[$key]);
+		}
+		
+		return $keys;
+	}
+	
+	
 
 	/**
 	 * Checks to see if a key has been remembered
