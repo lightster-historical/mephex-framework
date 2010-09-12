@@ -86,9 +86,14 @@ extends Mephex_Test_TestCase
 	
 	public function testAWriterCanBeRegisteredAndRetrieved()
 	{
+		$cache	= new Stub_Mephex_Model_Cache();
+		$stream	= new Stub_Mephex_Model_Stream_Writer();
+		
 		$accessor	= new Stub_Mephex_Model_Accessor_Writer(
 			$this->_group,
-			$this->_mapper
+			$this->_mapper,
+			$cache,
+			$stream
 		);
 		
 		$this->_group->registerAccessor('Accessor', $accessor);
