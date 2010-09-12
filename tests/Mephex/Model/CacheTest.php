@@ -70,4 +70,28 @@ extends Mephex_Test_TestCase
 		$criteria	= new Mephex_Model_Criteria_Array(array('Unknown' => 5));
 		$this->_cache->find($criteria);
 	}
+	
+	
+	
+	public function testForgetEntity()
+	{
+		$entity	= new Stub_Mephex_Model_Entity();
+		
+		$internalCache	= $this->_cache->getCache();
+		$internalCache->remember("Id:5", $entity);
+		$internalCache->remember("Id:3", $entity);
+		
+		$this->assertTrue($this->_cache->has(new Mephex_Model_Criteria_Array(array('Id' => 5))));
+		$this->assertTrue($this->_cache->has(new Mephex_Model_Criteria_Array(array('Id' => 3))));
+		
+		$this->_cache->forget(new Stub_Mephex_Model_Entity());
+		
+		$this->assertTrue($this->_cache->has(new Mephex_Model_Criteria_Array(array('Id' => 5))));
+		$this->assertTrue($this->_cache->has(new Mephex_Model_Criteria_Array(array('Id' => 3))));
+		
+		$this->_cache->forget($entity);
+		
+		$this->assertFalse($this->_cache->has(new Mephex_Model_Criteria_Array(array('Id' => 5))));
+		$this->assertFalse($this->_cache->has(new Mephex_Model_Criteria_Array(array('Id' => 3))));
+	}
 }  

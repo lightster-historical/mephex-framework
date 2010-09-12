@@ -13,13 +13,6 @@ extends Mephex_Model_Cache
 	
 	
 	
-	public function forget(Mephex_Model_Entity $entity)
-	{
-		$this->getCache()->forget("Id:{$entity->getId()}");
-	}
-	
-	
-	
 	protected function generateKeyFromCriteria(Mephex_Model_Criteria $criteria)
 	{
 		if($criteria->hasCriteriaFields(array('Id')))

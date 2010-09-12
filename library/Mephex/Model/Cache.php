@@ -33,12 +33,17 @@ abstract class Mephex_Model_Cache
 	 */
 	public abstract function remember(Mephex_Model_Entity $entity);
 	
+	
+	
 	/**
 	 * Forgets the given entity.
 	 * 
 	 * @param Mephex_Model_Entity $entity
 	 */
-	public abstract function forget(Mephex_Model_Entity $entity);
+	public function forget(Mephex_Model_Entity $entity)
+	{
+		return $this->_cache->removeObject($entity);
+	}
 	
 	
 	
