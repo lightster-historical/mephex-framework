@@ -78,4 +78,16 @@ extends Mephex_Test_TestCase
 		$this->assertFalse($this->_cache->has(new Mephex_Model_Criteria_Array($criteria = array('Id' => 1))));
 		$this->assertTrue($this->_cache->has(new Mephex_Model_Criteria_Array($criteria = array('Id' => 2))));
 	}
+	
+	
+	
+	public function testTheEntityIsMarkedAsCleanImmediatelyAfterWriting()
+	{
+		$this->_entity->markDirty();
+		$this->assertFalse($this->_entity->isMarkedClean());
+		
+		$this->_accessor->write($this->_entity);
+		
+		$this->assertTrue($this->_entity->isMarkedClean());
+	}
 }  

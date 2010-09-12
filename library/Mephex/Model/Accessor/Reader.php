@@ -97,6 +97,7 @@ extends Mephex_Model_Accessor
 			$iterator	= $stream->read($criteria);
 			
 			$entity		= $this->generateEntity($criteria, $iterator);
+			$entity->markClean();
 			
 			$cache->remember($entity);
 		}

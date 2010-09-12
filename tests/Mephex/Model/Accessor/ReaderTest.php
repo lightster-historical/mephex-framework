@@ -88,4 +88,12 @@ extends Mephex_Test_TestCase
 	{
 		$this->_accessor->read(new Mephex_Model_Criteria_Array($criteria = array('Unknown' => 7)));
 	}
+	
+	
+	
+	public function testAnUncachedEntityIsMarkedAsCleanImmediatelyAfterReading()
+	{
+		$entity	= $this->_accessor->read(new Mephex_Model_Criteria_Array($criteria = array('Id' => 5)));
+		$this->assertTrue($entity->isMarkedClean());
+	}
 }  
