@@ -38,7 +38,7 @@ extends Mephex_Config_Loader
 	 * @param string $option
 	 * @return bool - whether or not the option was loaded
 	 */
-	public function loadOption(Mephex_Config_OptionSet $option_set, $group, $option)
+	public function loadOption(Mephex_Config_OptionSet $option_set, $req_group, $req_option)
 	{
 		// check to see if the path exists
 		if(!file_exists($this->_file_name))

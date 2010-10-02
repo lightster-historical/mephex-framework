@@ -267,4 +267,25 @@ extends Mephex_Test_TestCase
 		$this->assertEquals('group', $option_set->get('collision', 'source'));
 		$this->assertNotEquals('main', $option_set->get('collision', 'source'));
 	}
+	
+	
+	
+	public function testLoadOptionsReturnsTrueIfTheOptionExists()
+	{
+		$option_set	= $this->getOptionSet(false);
+		$option_set->addLoader(new Stub_Mephex_Config_Loader());
+		$option_set->set('manually_set', 'set_option', 'value');
+		
+		$this->assertTrue($option_set->hasOption('manually_set', 'set_option'));
+	}
+	
+	
+	
+	public function testLoadOptionsReturnsFalseIfTheOptionDoesNotExist()
+	{
+		$option_set	= $this->getOptionSet(false);
+		$option_set->addLoader(new Stub_Mephex_Config_Loader());
+		
+		$this->assertFalse($option_set->hasOption('manually_set', 'not_set_option'));
+	}
 }  

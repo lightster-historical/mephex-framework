@@ -240,7 +240,9 @@ class Mephex_Config_OptionSet
 	{
 		foreach($loaders as $loader)
 		{
-			if($loader->loadOption($this, $group, $option))
+			$loader->loadOption($this, $group, $option);
+			
+			if($this->hasOption($group, $option))
 			{
 				return true;
 			}
