@@ -105,4 +105,42 @@ extends PHPUnit_Framework_TestCase
 	{
 		return str_replace('_', DIRECTORY_SEPARATOR, $class . '_dbs_') . $database . '.sqlite3';
 	}
+	
+	
+	
+	/**
+	 * Lazy-loads the config option set.
+	 * 
+	 * @return Mephex_Config_OptionSet
+	 */
+	protected function getConfig()
+	{
+		if(null === $this->_config)
+		{
+			$this->_config	= new Mephex_Config_OptionSet();
+			foreach($this->getConfigLoaders() as $loader)
+			{
+				$this->_config->addLoader($loader);
+			}
+		}
+		
+		return $this->_config;
+	}
+	
+	
+	
+	/**
+	 * Returns an array of config loaders for the config
+	 * option set to use.
+	 * 
+	 * @return array
+	 */
+	protected function getConfigLoaders()
+	{
+		return array(
+			new Mephex_Config_Loader_Ini(
+				PATH_TEST_ROOT . DIRECTORY_SEPARATOR . 'config.ini'
+			)
+		);
+	}
 }  
