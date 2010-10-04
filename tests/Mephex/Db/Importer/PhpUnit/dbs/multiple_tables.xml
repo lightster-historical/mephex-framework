@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<dataset>
+	<table name="test">
+		<column>id</column>
+		<column>key</column>
+		<row>
+			<value>1</value>
+			<value>abc</value>
+		</row>
+		<row>
+			<value>3</value>
+			<value>ghi</value>
+		</row>
+	</table>
+	<table name="names">
+		<column>id</column>
+		<column>first_name</column>
+		<column>last_name</column>
+		<row>
+			<value>1</value>
+			<value>John</value>
+			<value>Smith</value>
+		</row>
+		<row>
+			<value>2</value>
+			<value>Jane</value>
+			<value>Smith</value>
+		</row>
+		<row>
+			<value>3</value>
+			<value>Baby</value>
+			<value>Smith-Smith</value>
+		</row>
+	</table>
+</dataset>

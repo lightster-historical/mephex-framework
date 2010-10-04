@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<dataset>
+	<table>
+		<column>id</column>
+		<column>key</column>
+		<column>old_key</column>
+		<row>
+			<value>1</value>
+			<value>y</value>
+			<value>n</value>
+		</row>
+	</table>
+</dataset>

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<dataset>
+	<table name="test">
+		<column>id</column>
+		<column>key</column>
+		<column>old_key</column>
+		<row>
+			<value>1</value>
+			<value>abc</value>
+			<null />
+		</row>
+		<row>
+			<value>2</value>
+			<value>def</value>
+			<value></value>
+		</row>
+		<row>
+			<value>3</value>
+			<value>ghi</value>
+			<value>abc</value>
+		</row>
+	</table>
+</dataset>
