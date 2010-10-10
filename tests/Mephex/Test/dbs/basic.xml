@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<dataset>
+	<table name="sum_test">
+		<column>id</column>
+		
+		<row>
+			<value>10000</value>
+		</row>
+		
+		<row>
+			<value>2000</value>
+		</row>
+		
+		<row>
+			<value>300</value>
+		</row>
+		
+		<row>
+			<value>40</value>
+		</row>
+		
+		<row>
+			<value>5</value>
+		</row>
+	</table>
+</dataset>

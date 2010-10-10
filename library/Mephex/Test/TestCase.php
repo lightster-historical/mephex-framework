@@ -22,6 +22,22 @@ abstract class Mephex_Test_TestCase
 extends PHPUnit_Framework_TestCase
 {
 	/**
+	 * Lazy-loaded database connection factory.
+	 * 
+	 * @var Mephex_Db_ConnectionFactory
+	 */
+	protected $_connection_factory	= null;
+	
+	/**
+	 * Lazy-loaded database connections, indexed by config group key and
+	 * database connection name.
+	 * 
+	 * @var array
+	 */
+	protected $_connections			= array();
+	
+	
+	/**
 	 * Lazy-loaded temporary file copier.
 	 * 
 	 * @var Mephex_Test_TmpFileCopier
@@ -35,7 +51,10 @@ extends PHPUnit_Framework_TestCase
 	 */
 	protected function tearDown()
 	{
-		$this->_copier	= null;
+		$this->_connection_factory	= null;
+		$this->_connections			= array();
+		
+		$this->_copier		= null;
 	} 
 	
 	
@@ -104,6 +123,69 @@ extends PHPUnit_Framework_TestCase
 	protected function getSqliteDatabase($class, $database)
 	{
 		return str_replace('_', DIRECTORY_SEPARATOR, $class . '_dbs_') . $database . '.sqlite3';
+	}
+	
+	
+	
+	/**
+	 * Lazy-loads a connection factory.
+	 * 
+	 * @return Mephex_Db_ConnectionFactory
+	 */
+	protected function getDbConnectionFactory()
+	{
+		if(null === $this->_connection_factory)
+		{
+			$this->_connection_factory	= new Mephex_Db_ConnectionFactory();
+		}
+		
+		return $this->_connection_factory;
+	}
+	
+	
+	
+	/**
+	 * Lazy-loads a database connection that is specified by the configuration
+	 * settings in the given group with the given connection name.
+	 * 
+	 * @param string $group - the config group name
+	 * @param string $conn_name - the connection name
+	 * @return Mephex_Db_Sql_Base_Connection
+	 */
+	protected function getDbConnection($group, $conn_name)
+	{
+		if(!isset($this->_connections[$group][$conn_name]))
+		{
+			$this->_connections[$group][$conn_name] =
+				$this->getDbConnectionFactory()->connectUsingConfig
+				(
+					$this->getConfig(),
+					$group,
+					$conn_name
+				);
+		}
+		
+		return $this->_connections[$group][$conn_name];
+	} 
+	
+	
+	
+	/**
+	 * Loads a PHPUnit XML data set into a database.
+	 * 
+	 * @param Mephex_Db_Sql_Pdo_Connection $conn - the connection to use
+	 * 		when inserting the data
+	 * @param string $class - the name of the class that is being tested
+	 * @param string $set_name - the test set name
+	 * @return bool
+	 */
+	protected function loadXmlDataSetIntoDb(
+		Mephex_Db_Sql_Pdo_Connection $conn, $class, $set_name
+	)
+	{
+		$importer	= new Mephex_Db_Importer_PhpUnit_XmlDataSet($conn);
+		$file		= str_replace('_', DIRECTORY_SEPARATOR, $class . '_dbs_') . $set_name . '.xml';
+		return $importer->import($file);
 	}
 	
 	
