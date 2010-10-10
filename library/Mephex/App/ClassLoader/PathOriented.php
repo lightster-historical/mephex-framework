@@ -54,9 +54,8 @@ extends Mephex_App_ClassLoader
 		
 		$path	= str_replace('_', DIRECTORY_SEPARATOR, $class_name) . '.php';
 		
-		require_once $path;
-		
-		return true;
+		// suppress any errors that may occur when attempting to load the file
+		return (bool)@include_once $path;
 	}
 	
 	

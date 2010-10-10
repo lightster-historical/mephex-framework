@@ -35,4 +35,13 @@ extends Mephex_Test_TestCase
 		$this->assertFalse($class_loader->loadClass('Stub_Mephex_App_ClassLoader_PathOriented_DisallowedPrefixed'));
 		$this->assertFalse(class_exists('Stub_Mephex_App_ClassLoader_PathOriented_DisallowedPrefixed', false));
 	}
+	
+	
+	
+	public function testAttemptingToLoadANonExistantClassDoesNotCauseAFatalError()
+	{
+		$class_loader	= new Mephex_App_ClassLoader_PathOriented();
+		
+		$this->assertFalse($class_loader->loadClass('Stub_Mephex_App_ClassLoader_PathOriented_NonExistant'));
+	}
 }
