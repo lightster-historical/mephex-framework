@@ -10,8 +10,10 @@ extends Mephex_Test_TestCase
 	
 	
 	
-	public function __construct()
+	public function setUp()
 	{	
+		parent::setUp();
+		
 		$this->_connection_factory	= new Stub_Mephex_Db_Sql_Pdo_ConnectionFactory();
 		$this->_config	= new Mephex_Config_OptionSet();
 	}

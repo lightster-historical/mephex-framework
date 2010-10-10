@@ -10,8 +10,10 @@ extends Mephex_Test_TestCase
 	
 	
 	
-	public function __construct()
+	public function setUp()
 	{	
+		parent::setUp();
+		
 		$this->_credential_factory	= new Mephex_Db_Sql_Pdo_CredentialFactory();
 		$this->_config	= new Mephex_Config_OptionSet();
 	}
@@ -21,7 +23,7 @@ extends Mephex_Test_TestCase
 	/**
 	 * @expectedException Mephex_Exception
 	 */
-	public function testExceptionIsThrownIfDriverConfigOptionIsNotFound()
+	public function testExceptionIsThrownIfDbmsConfigOptionIsNotFound()
 	{
 		$this->_credential_factory->loadFromConfig($this->_config, 'group0', 'conn0');
 	}

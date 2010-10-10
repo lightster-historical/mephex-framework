@@ -14,8 +14,10 @@ extends Mephex_Test_TestCase
 	
 	
 	
-	public function __construct()
+	public function setUp()
 	{	
+		parent::setUp();
+		
 		$this->_dsn				= 'sqlite:some_db';
 		$this->_username		= 'some_username';
 		$this->_password		= 'some_password';
