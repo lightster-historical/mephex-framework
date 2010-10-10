@@ -148,11 +148,11 @@ extends PHPUnit_Framework_TestCase
 	 * Lazy-loads a database connection that is specified by the configuration
 	 * settings in the given group with the given connection name.
 	 * 
-	 * @param string $group - the config group name
 	 * @param string $conn_name - the connection name
+	 * @param string $group - the config group name
 	 * @return Mephex_Db_Sql_Base_Connection
 	 */
-	protected function getDbConnection($group, $conn_name)
+	protected function getDbConnection($conn_name, $group = 'database')
 	{
 		if(!isset($this->_connections[$group][$conn_name]))
 		{
