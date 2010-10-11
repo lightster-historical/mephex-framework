@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<dataset>
+	<table name="test_1">
+		<column>id</column>
+		<column>value</column>
+
+		<row>
+			<value><![CDATA[1]]></value>
+			<value><![CDATA[a]]></value>
+		</row>
+
+		<row>
+			<value><![CDATA[2]]></value>
+			<value><![CDATA[b]]></value>
+		</row>
+
+		<row>
+			<value><![CDATA[3]]></value>
+			<value><![CDATA[c]]></value>
+		</row>
+
+		<row>
+			<value><![CDATA[4]]></value>
+			<value><![CDATA[a]]></value>
+		</row>
+
+		<row>
+			<value><![CDATA[5]]></value>
+			<value><![CDATA[b]]></value>
+		</row>
+
+		<row>
+			<value><![CDATA[6]]></value>
+			<null />
+		</row>
+
+		<row>
+			<value><![CDATA[7]]></value>
+			<value><![CDATA[a]]></value>
+		</row>
+
+		<row>
+			<value><![CDATA[8]]></value>
+			<null />
+		</row>
+
+		<row>
+			<value><![CDATA[9]]></value>
+			<null />
+		</row>
+	</table>
+	<table name="test_2">
+		<column>id</column>
+		<column>value</column>
+
+		<row>
+			<value><![CDATA[1]]></value>
+			<value><![CDATA[a]]></value>
+		</row>
+
+		<row>
+			<value><![CDATA[2]]></value>
+			<value><![CDATA[a]]></value>
+		</row>
+
+		<row>
+			<value><![CDATA[3]]></value>
+			<value><![CDATA[a]]></value>
+		</row>
+
+		<row>
+			<value><![CDATA[4]]></value>
+			<value><![CDATA[b]]></value>
+		</row>
+
+		<row>
+			<value><![CDATA[5]]></value>
+			<value><![CDATA[b]]></value>
+		</row>
+
+		<row>
+			<value><![CDATA[6]]></value>
+			<value><![CDATA[b]]></value>
+		</row>
+
+		<row>
+			<value><![CDATA[7]]></value>
+			<value><![CDATA[b]]></value>
+		</row>
+	</table>
+</dataset>
