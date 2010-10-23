@@ -11,7 +11,10 @@ extends Mephex_Model_Entity
 	
 	
 	
-	public function setProperty($name, $value)	{return parent::setProperty($name, $value);}
+	public function setProperty($name, $value)	
+		{return parent::setProperty($name, $value);}
+	public function getProperties(array $properties)
+		{return parent::getProperties($properties);}
 	
 	
 	

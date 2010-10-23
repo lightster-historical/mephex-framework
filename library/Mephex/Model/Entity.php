@@ -68,7 +68,7 @@ abstract class Mephex_Model_Entity
 	protected function getProperty($name)
 	{
 		// using isset before property_exists is an optimization that
-		// assumes that properties will exist more often than they
+		// assumes that properties will be non-null more often than they
 		// will not [ O(isset) < O(property_exists) ]
 		if(!isset($this->{$name}) && !property_exists($this, $name))
 		{
@@ -97,6 +97,26 @@ abstract class Mephex_Model_Entity
 	
 	
 	/**
+	 * Retrieves an array containing the values of each of the requested
+	 * properties.
+	 * 
+	 * @param array $properties - the names of the properties to retrieve
+	 * @return array
+	 */
+	protected function getProperties(array $properties)
+	{
+		$values	= array();
+		foreach($properties as $property)
+		{
+			$values[$property]	= $this->getProperty($property);
+		}
+		
+		return $values;
+	}
+	
+	
+	
+	/**
 	 * Sets the property of the given name to the given value.
 	 * 
 	 * @param string $name
@@ -105,7 +125,7 @@ abstract class Mephex_Model_Entity
 	protected function setProperty($name, $value)
 	{
 		// using isset before property_exists is an optimization that
-		// assumes that properties will exist more often than they
+		// assumes that properties will be non-null more often than they
 		// will not [ O(isset) < O(property_exists) ]
 		if(!isset($this->{$name}) && !property_exists($this, $name))
 		{
@@ -120,6 +140,57 @@ abstract class Mephex_Model_Entity
 	
 	
 	/**
+	 * Retrieves an array of property values from the entity (referenced or 
+	 * otherwise) found in the given property.
+	 * 
+	 * @param string $name - the name of the property that contains the entity
+	 * 		or reference
+	 * @param array $criteria_props - the names of the properties within the
+	 * 		entity that are to be retrieved
+	 * @return array
+	 */
+	public function getReferencedPropertyCriteriaValues($name, array $criteria_props)
+	{		
+		// using isset before property_exists is an optimization that
+		// assumes that properties will be non-null more often than they
+		// will not [ O(isset) < O(property_exists) ]
+		if(!isset($this->{$name}) && !property_exists($this, $name))
+		{
+			throw new Mephex_Model_Entity_Exception_UnknownProperty($this, $name);
+		}
+		
+		// make sure the property can be set to a reference
+		if(!$this->isReferencedPropertyAllowed($name))
+		{
+			throw new Mephex_Model_Exception_UnallowedReference($this, $name);
+		}
+		
+		// attempt to load the property values from the reference's criteria
+		$prop_value	= $this->{$name};
+		if($prop_value instanceof Mephex_Model_Entity_Reference)
+		{
+			try
+			{
+				return $prop_value->getCriteria()->getCriteriaValues($criteria_props);					
+			}
+			catch(Mephex_Exception $ex)
+			{
+			}
+		}
+		
+		// attempt to load the properties from the dereferenced entity property
+		$prop_value	= $this->getProperty($name);
+		if($prop_value instanceof Mephex_Model_Entity)
+		{
+			return $prop_value->getProperties($criteria_props);
+		}
+		
+		throw new Mephex_Exception("Property '{$name}' is not an entity.");
+	}
+	
+	
+	
+	/**
 	 * Sets the property of the given name to the given referenced
 	 * value.
 	 * 
@@ -128,6 +199,14 @@ abstract class Mephex_Model_Entity
 	 */
 	public function setReferencedProperty($name, Mephex_Model_Entity_Reference $reference)
 	{
+		// using isset before property_exists is an optimization that
+		// assumes that properties will be non-null more often than they
+		// will not [ O(isset) < O(property_exists) ]
+		if(!isset($this->{$name}) && !property_exists($this, $name))
+		{
+			throw new Mephex_Model_Entity_Exception_UnknownProperty($this, $name);
+		}
+		
 		if(!$this->isReferencedPropertyAllowed($name))
 		{
 			throw new Mephex_Model_Exception_UnallowedReference($this, $name, $reference);

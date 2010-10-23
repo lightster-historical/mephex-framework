@@ -77,6 +77,19 @@ extends Mephex_Test_TestCase
 	{
 		$this->_entity->setUndefinedProperty('test');
 	}
+    
+    
+    
+    public function testMultipleEntityPropertiesCanBeRetrieved()
+    {
+    	$this->_entity->setId(48);
+    	$this->_entity->setParent(24);
+    	
+    	$this->assertTrue(
+    		array('id' => 48, 'parent' => 24) ===
+    		$this->_entity->getProperties(array('id', 'parent'))
+    	);
+    }
 	
 	
 	
@@ -202,6 +215,16 @@ extends Mephex_Test_TestCase
     {
     	$this->_entity->setReferencedProperty('id', $this->_reference);
     }
+	
+	
+	
+	/**
+	 * @expectedException Mephex_Model_Entity_Exception_UnknownProperty
+	 */
+	public function testSettingAnUndefinedPropertyToAReferenceThrowsAnException()
+	{
+		$this->_entity->setReferencedProperty('test', $this->_reference);
+	}
     
     
     
@@ -218,5 +241,57 @@ extends Mephex_Test_TestCase
     		$this->_entity->setReferencedProperty('parent', $this->_reference)
     			=== $this->_entity
     	);
+    }
+    
+    
+    
+    public function testRetrievingTheCriteriaValuesOfAReferencePropertyIsPossible()
+    {
+    	$this->_entity->setReferencedProperty('parent', $this->_reference);
+    	$this->assertTrue(
+    		array('Id' => 6) ===
+    		$this->_entity->getReferencedPropertyCriteriaValues('parent', array('Id'))
+    	);
+    }
+    
+    
+    
+    public function testRetrievingUnknownCriteriaValuesOfAReferenceLooksForPropertyInDereferencedEntity()
+    {
+    	$this->_entity->setReferencedProperty('parent', $this->_reference);
+    	$this->assertEquals(
+    		array('parent' => 'parent_of_6'),
+    		$this->_entity->getReferencedPropertyCriteriaValues('parent', array('parent'))
+    	);
+    }
+    
+    
+    
+    /**
+     * @expectedException Mephex_Exception
+     */
+    public function testRetrievingCriteriaValuesOfANonEntityPropertyThrowsAnException()
+    {
+    	$this->_entity->getReferencedPropertyCriteriaValues('parent', array('parent'));
+    }
+    
+    
+    
+    /**
+     * @expectedException Mephex_Exception
+     */
+    public function testRetrievingCriteriaValuesOfAnUnknownPropertyThrowsAnException()
+    {
+    	$this->_entity->getReferencedPropertyCriteriaValues('unknown', array('parent'));
+    }
+    
+    
+    
+    /**
+     * @expectedException Mephex_Exception
+     */
+    public function testRetrievingCriteriaValuesOfAPropertyThatCannotBeReferencedThrowsAnException()
+    {
+    	$this->_entity->getReferencedPropertyCriteriaValues('id', array('parent'));
     }
 }

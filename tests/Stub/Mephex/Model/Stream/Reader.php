@@ -15,7 +15,8 @@ extends Mephex_Model_Stream_Reader
 				(
 					array
 					(
-						'id'		=> $criteria->getCriteriaValue('Id')
+						'id'		=> $criteria->getCriteriaValue('Id'),
+						'parent'	=> 'parent_of_' . $criteria->getCriteriaValue('Id')
 					)
 				)
 			);
