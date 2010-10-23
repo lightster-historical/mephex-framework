@@ -28,4 +28,29 @@ abstract class Mephex_Model_Criteria
 	 * @return mixed
 	 */
 	public abstract function getCriteriaValue($field_name);
+	
+	
+	
+	/**
+	 * Retrieves an array of values.
+	 * 
+	 * @param array $field_names - the array of criteria field names that
+	 * 		values are being retrieved for
+	 * @return array
+	 */
+	public function getCriteriaValues(array $field_names)
+	{
+		if(!$this->hasCriteriaFields($field_names))
+		{
+			throw new Mephex_Exception("Unknown criteria fields: '" . implode("', '", $field_names) . "'");
+		}
+		
+		$values	= array();
+		foreach($field_names as $field_name)
+		{
+			$values[$field_name]	= $this->getCriteriaValue($field_name);
+		}
+		
+		return $values;
+	}
 }
