@@ -37,7 +37,7 @@ extends Mephex_Exception
 	 * @param Mephex_Model_Entity_Reference $reference - the reference
 	 * 		the entity's property was being set to
 	 */
-	public function __construct(Mephex_Model_Entity $entity, $property_name, Mephex_Model_Entity_Reference $reference)
+	public function __construct(Mephex_Model_Entity $entity, $property_name, Mephex_Model_Entity_Reference $reference = null)
 	{
 		parent::__construct("Entity property '{$property_name} cannot be set to a reference.");
 		
