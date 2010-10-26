@@ -21,13 +21,11 @@ extends Mephex_Model_Accessor_Reader
 	protected function generateEntity(Mephex_Model_Criteria $criteria, Iterator $iterator)
 	{
 		$mapper	= $this->getMapper();
-		$entity	= null;
 		foreach($iterator as $record)
 		{
-			$entity	= $mapper->getMappedEntity($record);
-			break;
+			return $mapper->getMappedEntity($record);
 		}
 		
-		return $entity;
+		throw new Mephex_Model_Accessor_Exception_EmptyResultSet("The result set passed to the reader is empty.");
 	}
 }

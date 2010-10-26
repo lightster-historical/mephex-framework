@@ -51,4 +51,16 @@ extends Mephex_Test_TestCase
 		$entity	= $this->_reader->generateEntity(new Mephex_Model_Criteria_Array(array()), $array->getIterator());
 		$this->assertEquals(1, $entity->getId());
 	}
+	
+	
+	
+	/**
+	 * @expectedException Mephex_Model_Accessor_Exception_EmptyResultSet
+	 */
+	public function testGenerateEntityUsingEmptyIteratorThrowsAnException()
+	{
+		$array	= new ArrayObject();
+		
+		$this->_reader->generateEntity(new Mephex_Model_Criteria_Array(array()), $array->getIterator());
+	}
 }  
