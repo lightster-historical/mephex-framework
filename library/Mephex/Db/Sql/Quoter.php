@@ -8,8 +8,7 @@
  * 
  * @author lightster
  */
-class Mephex_Db_Sql_Base_Quoter
-extends Mephex_Db_Sql_Quoter
+abstract class Mephex_Db_Sql_Quoter
 {
 	/**
 	 * Quotes a table name.
@@ -17,10 +16,7 @@ extends Mephex_Db_Sql_Quoter
 	 * @param string $table - the table name to be quoted
 	 * @return string
 	 */
-	public function quoteTable($table)
-	{
-		return "`" . str_replace('`', '``', $table) . "`";	
-	}
+	public abstract function quoteTable($table);
 	
 	
 	
@@ -30,10 +26,7 @@ extends Mephex_Db_Sql_Quoter
 	 * @param string $column - the column name to be quoted
 	 * @return string
 	 */
-	public function quoteColumn($column)
-	{
-		return "`" . str_replace('`', '``', $column) . "`";
-	}
+	public abstract function quoteColumn($column);
 	
 	
 	
@@ -43,13 +36,5 @@ extends Mephex_Db_Sql_Quoter
 	 * @param string $value - the value to be quoted
 	 * @return string
 	 */
-	public function quoteValue($value)
-	{
-		if(null === $value)
-			return 'null';
-		else if(is_numeric($value))
-			return $value;
-		else
-			return "'" . addslashes($value) . "'";
-	}
+	public abstract function quoteValue($value);
 }

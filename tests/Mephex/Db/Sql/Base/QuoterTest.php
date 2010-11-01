@@ -16,6 +16,13 @@ extends Mephex_Test_TestCase
 	
 	
 	
+	public function testSqlBaseQuoterExtendsSqlQuoter()
+	{
+		$this->assertTrue($this->_quoter instanceof Mephex_Db_Sql_Quoter);
+	}
+	
+	
+	
 	public function testTableNamesAreProperlyQuoted()
 	{
 		$this->assertEquals(
