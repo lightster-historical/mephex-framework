@@ -18,6 +18,8 @@ extends Mephex_Test_TestCase
 		$this->_auto_loader	= new Mephex_App_AutoLoader();
 		$this->_auto_loader->addClassLoader(new Mephex_App_ClassLoader_PathOriented('Stub_Mephex_App_AutoLoader_PrefixA'));
 		$this->_auto_loader->addClassLoader(new Mephex_App_ClassLoader_PathOriented('Stub_Mephex_App_AutoLoader_PrefixB'));
+		// the 'non-loader' will throw an exception if the class has already been loaded
+		$this->_auto_loader->addClassLoader(new Stub_Mephex_App_ClassLoader_NonLoader());
 		
 		// load Stub_Mephex_App_AutoLoader before we lose the autoloader  
 		spl_autoload_call('Stub_Mephex_App_AutoLoader');
@@ -64,11 +66,19 @@ extends Mephex_Test_TestCase
 	
 	
 	
-	public function testAutoLoaderCanUseSecondaryAutoLoader()
+	public function testAutoLoaderCanUseSecondaryClassLoader()
 	{
 		$this->assertFalse(class_exists('Stub_Mephex_App_AutoLoader_PrefixB1', false));
 		$this->_auto_loader->loadClass('Stub_Mephex_App_AutoLoader_PrefixB1');
 		$this->assertTrue(class_exists('Stub_Mephex_App_AutoLoader_PrefixB1', false));
+	}
+	
+	
+	
+	public function testAutoLoaderDoesNotAttemptToLoadAnAlreadyLoadedClass()
+	{
+		$this->_auto_loader->loadClass('Mephex_App_AutoLoader');
+		$this->_auto_loader->loadClass('Mephex_App_AutoLoader');
 	}
 	
 	

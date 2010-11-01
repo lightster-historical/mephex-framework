@@ -81,12 +81,12 @@ class Mephex_App_AutoLoader
 	{
 		foreach($this->_class_loaders as $class_loader)
 		{
-			$class_loader->loadClass($class_name);
-			
 			if(class_exists($class_name, false))
 			{
 				break;
 			}
+			
+			$class_loader->loadClass($class_name);
 		}
 	}
 	
