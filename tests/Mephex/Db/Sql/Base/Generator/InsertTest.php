@@ -2,7 +2,7 @@
 
 
 
-class Mephex_Db_Sql_Base_InsertTest
+class Mephex_Db_Sql_Base_Generator_InsertTest
 extends Mephex_Test_TestCase
 {
 	protected $_insert	= null;
@@ -22,7 +22,11 @@ extends Mephex_Test_TestCase
 	{
 		if(null === $this->_insert)
 		{
-			$this->_insert	= new Stub_Mephex_Db_Sql_Base_Insert($table, $columns, $quoter);
+			if(null === $quoter)
+			{
+				$quoter	= new Mephex_Db_Sql_Base_Quoter();
+			}
+			$this->_insert	= new Stub_Mephex_Db_Sql_Base_Generator_Insert($quoter, $table, $columns);
 		}
 		
 		return $this->_insert;
@@ -30,13 +34,23 @@ extends Mephex_Test_TestCase
 	
 	
 	
-	public function testADefaultQuoterIsUsedIfNotProvided()
+	public function testInsertGeneratorIsGenerator()
 	{
-		$quoter	= new Mephex_Db_Sql_Base_Quoter();
-		$insert	= $this->getInsert('test', array('abc', 'def'));
-		
-		$this->assertTrue($insert->getQuoter() instanceof Mephex_Db_Sql_Base_Quoter);
-		$this->assertFalse($insert->getQuoter() === $quoter);
+		$this->assertTrue(
+			$this->getInsert('test', array('a', 'b', 'c'))
+			instanceof 
+			Mephex_Db_Sql_Base_Generator
+		);
+	}
+	
+	
+	
+	/**
+	 * @expectedException PHPUnit_Framework_Error
+	 */
+	public function testAQuoterIsRequired()
+	{
+		$insert	= new Stub_Mephex_Db_Sql_Base_Generator_Insert('test', array('abc', 'def'));
 	}
 	
 	
@@ -46,13 +60,13 @@ extends Mephex_Test_TestCase
 		$quoter	= new Mephex_Db_Sql_Base_Quoter();
 		$insert	= $this->getInsert('test', array('abc', 'def'), $quoter);
 		
-		$this->assertTrue($insert->getQuoter() instanceof Mephex_Db_Sql_Base_Quoter);
+		$this->assertTrue($insert->getQuoter() instanceof Mephex_Db_Sql_Quoter);
 		$this->assertTrue($insert->getQuoter() === $quoter);
 	}
 	
 	
 	
-	public function testParametersAreReturnedInCorrectOrder()
+	public function testParametersAreReturnedInCorrectOrderAndAreNotQuoted()
 	{
 		$insert	= $this->getInsert('test', array('a', 'b', 'c'));
 		
@@ -63,7 +77,7 @@ extends Mephex_Test_TestCase
 			'b'	=> 'f'
 		);
 		$expected	= array('e', 'f', 'd');
-		$ordered	= $insert->getOrderedValues($params);
+		$ordered	= $insert->getColumnOrderedValues($params, false);
 		
 		$this->assertEquals($expected, $ordered);
 		$this->assertTrue($expected === $ordered);
@@ -82,7 +96,7 @@ extends Mephex_Test_TestCase
 			'b'	=> 'f'
 		);
 		$expected	= array('\'e\\"\'', '\'f\'', '\'\\\'d\'');
-		$ordered	= $insert->getOrderedValues($params, true);
+		$ordered	= $insert->getColumnOrderedValues($params, true);
 		
 		$this->assertEquals($expected, $ordered);
 		$this->assertTrue($expected === $ordered);
@@ -104,7 +118,7 @@ extends Mephex_Test_TestCase
 			'b'	=> 'f'
 		);
 		$expected	= array('\'e\\"\'', '\'f\'', '\'\\\'d\'');
-		$ordered	= $insert->getOrderedValues($params);
+		$ordered	= $insert->getColumnOrderedValues($params, true);
 	}
 	
 	

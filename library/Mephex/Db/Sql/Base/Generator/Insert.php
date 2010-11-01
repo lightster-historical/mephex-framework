@@ -5,9 +5,10 @@
 /**
  * INSERT query generator.
  * 
- * @author lightster
+ * @author mlight
  */
-class Mephex_Db_Sql_Base_Insert
+class Mephex_Db_Sql_Base_Generator_Insert
+extends Mephex_Db_Sql_Base_Generator
 {
 	/**
 	 * The table the record is being inserted into.
@@ -43,19 +44,15 @@ class Mephex_Db_Sql_Base_Insert
 	
 	
 	/**
+	 * @param Mephex_Db_Sql_Quoter $quoter - the object responsible for
+	 * 		quoting table names, column names, and values
 	 * @param string $table - the name of the table being insered into
 	 * @param array $columns - the list of columns that values will be
 	 * 		inserted for 
-	 * @param Mephex_Db_Sql_Base_Quoter $quoter - the object responsible for
-	 * 		quoting table names, column names, and values
 	 */
-	public function __construct($table, array $columns, Mephex_Db_Sql_Base_Quoter $quoter = null)
+	public function __construct(Mephex_Db_Sql_Quoter $quoter, $table, array $columns)
 	{
-		// if a quoter is not provided, use the default
-		$this->_quoter	= (null === $quoter
-			? new Mephex_Db_Sql_Base_Quoter()
-			: $quoter
-		);
+		parent::__construct($quoter);
 		
 		$this->_table	= $table;
 		$this->_columns	= $columns;
@@ -89,7 +86,7 @@ class Mephex_Db_Sql_Base_Insert
 		}
 		else
 		{
-			$values	= $this->getOrderedValues($params, true);
+			$values	= $this->getColumnOrderedValues($params, true);
 			
 			return $this->_cached_sql . ' VALUES (' . implode(',', $values) . ')';
 		}
@@ -98,33 +95,14 @@ class Mephex_Db_Sql_Base_Insert
 	
 	
 	/**
-	 * Retrieves the values ordered in the same way that the columns
-	 * were ordered in the column list. 
+	 * Retrieves the values ordered in the provided column order. 
 	 * 
 	 * @param array $params
 	 * @param bool $quoted - whether or not to quote the values
 	 * @return array
 	 */
-	public function getOrderedValues(array & $params, $quoted = false)
+	public function getColumnOrderedValues(array $params, $quoted)
 	{
-		$values	= array();
-		foreach($this->_columns as $column)
-		{
-			if(!array_key_exists($column, $params))
-			{
-				throw new Mephex_Db_Exception("Expected parameter '{$column}' was not be provided.");
-			}
-
-			if($quoted)
-			{
-				$values[]	= $this->_quoter->quoteValue($params[$column]); 
-			}
-			else
-			{
-				$values[]	= $params[$column];
-			}
-		}
-		
-		return $values;
+		return $this->getOrderedValues($this->_columns, $params, $quoted);
 	}
 }
