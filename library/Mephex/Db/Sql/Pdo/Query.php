@@ -54,7 +54,6 @@ extends Mephex_Db_Sql_Base_Query
 	{
 		try
 		{
-var_dump("SQL::" . $this->getSql());
 			return parent::execute($params);
 		}
 		catch(PDOException $ex)

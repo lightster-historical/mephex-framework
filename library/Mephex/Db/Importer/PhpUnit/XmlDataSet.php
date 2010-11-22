@@ -206,7 +206,6 @@ class Mephex_Db_Importer_PhpUnit_XmlDataSet
 	 */
 	public function processElementBegin($parser, $tag, array $attributes)
 	{
-var_dump($tag);
 		$expected	= $this->getExpectedTags($this->_curr_tag);
 
 		if(!isset($expected[$tag]))
