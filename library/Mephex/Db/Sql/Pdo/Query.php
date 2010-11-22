@@ -50,10 +50,11 @@ extends Mephex_Db_Sql_Base_Query
 	 * @param array $params - parameters to place in the query placeholders.
 	 * @return Mephex_Db_Sql_Pdo_ResultSet
 	 */
-	public function execute(array & $params = array())
+	public function execute(array $params = array())
 	{
 		try
 		{
+var_dump("SQL::" . $this->getSql());
 			return parent::execute($params);
 		}
 		catch(PDOException $ex)
@@ -70,7 +71,7 @@ extends Mephex_Db_Sql_Base_Query
 	 * @param array $params - the parameters to put into the prepared statement
 	 * @return Mephex_Db_Sql_Pdo_ResultSet
 	 */
-	protected function executeNativePrepare(array & $params)
+	protected function executeNativePrepare(array $params)
 	{
 		return $this->executePrepared($params, false);
 	}
@@ -83,7 +84,7 @@ extends Mephex_Db_Sql_Base_Query
 	 * @param array $params - the parameters to put into the prepared statement
 	 * @return Mephex_Db_Sql_Pdo_ResultSet
 	 */
-	protected function executeEmulatedPrepare(array & $params)
+	protected function executeEmulatedPrepare(array $params)
 	{
 		return $this->executePrepared($params, true);
 	}
@@ -97,7 +98,7 @@ extends Mephex_Db_Sql_Base_Query
 	 * @param bool $emulated - TRUE if the prepared statements should be emulated
 	 * @return Mephex_Db_Sql_Pdo_ResultSet
 	 */
-	protected function executePrepared(array & $params, $emulated)
+	protected function executePrepared(array $params, $emulated)
 	{
 		$conn	= $this->getPdoConnection(); 
 			
@@ -124,7 +125,7 @@ extends Mephex_Db_Sql_Base_Query
 	 * @param array $params - the parameters to put into the prepared statement
 	 * @return Mephex_Db_Sql_Pdo_ResultSet
 	 */
-	protected function executeNonPrepare(array & $params)
+	protected function executeNonPrepare(array $params)
 	{
 		$conn	= $this->getPdoConnection();
 		$this->_statement	= $conn->query($this->getSql());

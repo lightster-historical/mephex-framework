@@ -236,7 +236,7 @@ class Mephex_Config_OptionSet
 	 * @param string $option
 	 * @return bool - whether or not the option was loaded
 	 */
-	protected function loadOptions(array & $loaders, $group, $option)
+	protected function loadOptions(array $loaders, $group, $option)
 	{
 		foreach($loaders as $loader)
 		{

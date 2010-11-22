@@ -32,6 +32,6 @@ extends Mephex_Db_Sql_Pdo_CredentialFactory_Dbms
 	{
 		$database	= $config->get($group, "{$connection_name}.database");
 		
-		return new Mephex_Db_Sql_Pdo_Credential("sqlite:{$database}");
+		return new Mephex_Db_Sql_Pdo_Credential("sqlite:{$database}", null, null, array(PDO::ATTR_TIMEOUT => 1.0));
 	}
 }

@@ -13,7 +13,7 @@ extends Mephex_Config_OptionSet
 		{return parent::loadGroupOptions($group, $option);}
 	public function loadGenericOptions($group, $option)
 		{return parent::loadGenericOptions($group, $option);}
-	public function loadOptions(array & $loaders, $group, $option)
+	public function loadOptions(array $loaders, $group, $option)
 		{return parent::loadOptions($loaders, $group, $option);}
 	public function throwNotFoundException($group, $option)
 		{return parent::throwNotFoundException($group, $option);}

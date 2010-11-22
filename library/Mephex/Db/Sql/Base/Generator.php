@@ -37,7 +37,7 @@ abstract class Mephex_Db_Sql_Base_Generator
 	 * @param bool $quoted - whether or not to quote the values
 	 * @return array
 	 */
-	protected function getOrderedValues(array $order, array & $params, $quoted)
+	protected function getOrderedValues(array $order, array $params, $quoted)
 	{
 		$values	= array();
 		foreach($order as $key)

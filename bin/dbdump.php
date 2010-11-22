@@ -8,6 +8,8 @@ function bootstrap()
 {
 	require_once 'Mephex/App/AutoLoader.php';
 	require_once 'Mephex/App/ClassLoader/PathOriented.php';
+	
+	define('ENV_USER', $_ENV['USER']);
 
 	$auto_loader	= Mephex_App_AutoLoader::getInstance();
 	$auto_loader->addClassLoader(new Mephex_App_ClassLoader_PathOriented('Mephex_'));
@@ -34,7 +36,7 @@ function bootstrap()
 
 
 
-function getConfig(array & $options)
+function getConfig(array $options)
 {
 	if(!isset($options['c']))
 	{
@@ -49,7 +51,7 @@ function getConfig(array & $options)
 	
 
 
-function getOutputFormat(array & $options)
+function getOutputFormat(array $options)
 {
 	if(!isset($options['f']))
 	{
@@ -69,7 +71,7 @@ function getOutputFormat(array & $options)
 
 
 
-function getGroupName(array & $options)
+function getGroupName(array $options)
 {
 	return (
 		isset($options['g']) 
@@ -80,7 +82,7 @@ function getGroupName(array & $options)
 
 
 
-function getConnectionName(array & $options)
+function getConnectionName(array $options)
 {
 	if(!isset($options['d']))
 	{
@@ -92,7 +94,7 @@ function getConnectionName(array & $options)
 
 
 
-function getTables(array & $options)
+function getTables(array $options)
 {
 	if(!isset($options['t']))
 	{

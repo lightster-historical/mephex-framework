@@ -143,7 +143,7 @@ extends Mephex_Db_Sql_Base_ResultSet
 	 */
 	public function valid()
 	{
-		return $this->_current !== null && $this->_current !== false;
+		return !($this->_current === null || $this->_current === false);
 	}
 	
 	
@@ -163,7 +163,7 @@ extends Mephex_Db_Sql_Base_ResultSet
 	/**
 	 * Initializes the class' static variables.
 	 */
-	public function initStaticVariables()
+	public static function initStaticVariables()
 	{
 		if(null === self::$_mapped_fetch_mode)
 		{

@@ -46,7 +46,7 @@ class Mephex_Db_Sql_Pdo_Credential
 	 * @param string $password
 	 * @param array $driver_options
 	 */
-	public function __construct($dsn, $username = null, $password = null, array & $driver_options = array())
+	public function __construct($dsn, $username = null, $password = null, array $driver_options = array())
 	{
 		$this->_data_source_name	= $dsn;
 		$this->_username			= $username;

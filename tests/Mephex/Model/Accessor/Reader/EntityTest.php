@@ -39,11 +39,13 @@ extends Mephex_Test_TestCase
 			(
 				array
 				(
-					'id'	=> 1,
+					'id'		=> 1,
+					'parent'	=> null
 				),
 				array
 				(
-					'id'	=> 2
+					'id'		=> 2,
+					'parent'	=> null
 				)
 			)
 		);

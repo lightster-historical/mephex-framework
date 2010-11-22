@@ -102,7 +102,7 @@ extends Mephex_Test_TestCase
 		')->execute();
 		foreach($results as $result)
 		{
-			$counts["{$result['value']}"]	= $result['count'];
+			$counts[""]	= $result['count'];
 		}
 		$this->assertEquals(3, $counts['']);
 	}

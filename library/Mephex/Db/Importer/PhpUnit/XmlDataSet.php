@@ -130,16 +130,17 @@ class Mephex_Db_Importer_PhpUnit_XmlDataSet
 	public function import($file_name)
 	{
 		$parser	= xml_parser_create();
-		
+
 		xml_parser_set_option($parser, XML_OPTION_CASE_FOLDING, false);
 		xml_set_character_data_handler($parser, array($this, 'processCdata'));
 		xml_set_element_handler($parser, array($this, 'processElementBegin'), array($this, 'processElementEnd'));
 		
 		$file	= fopen($file_name, 'r');
-		while(!feof($file))
+		while(($contents = fgets($file, 1024)))
 		{
-			xml_parse($parser, fgets($file, 1024), feof($file));
+			xml_parse($parser, $contents, false);
 		}
+		xml_parse($parser, '', true);
 		fclose($file);
 		
 		xml_parser_free($parser);
@@ -154,11 +155,11 @@ class Mephex_Db_Importer_PhpUnit_XmlDataSet
 	 * @param string $parent_tag
 	 * @return array
 	 */
-	protected function & getExpectedTags($parent_tag)
+	protected function getExpectedTags($parent_tag)
 	{
 		if($this->_curr_tag === null)
 		{
-			return $expected = array('dataset' => true);
+			return array('dataset' => true);
 		}
 
 		return $this->_expected[$this->_curr_tag];
@@ -205,7 +206,8 @@ class Mephex_Db_Importer_PhpUnit_XmlDataSet
 	 */
 	public function processElementBegin($parser, $tag, array $attributes)
 	{
-		$expected	= &$this->getExpectedTags($this->_curr_tag);
+var_dump($tag);
+		$expected	= $this->getExpectedTags($this->_curr_tag);
 
 		if(!isset($expected[$tag]))
 		{
@@ -247,7 +249,7 @@ class Mephex_Db_Importer_PhpUnit_XmlDataSet
 	 * 		the opening tag
 	 * @return void
 	 */
-	protected function processDatasetTagBegin(array & $attributes)
+	protected function processDatasetTagBegin(array $attributes)
 	{
 	}
 	
@@ -272,7 +274,7 @@ class Mephex_Db_Importer_PhpUnit_XmlDataSet
 	 * 		the opening tag
 	 * @return void
 	 */
-	protected function processTableTagBegin(array & $attributes)
+	protected function processTableTagBegin(array $attributes)
 	{
 		if(!isset($attributes['name']))
 		{
@@ -282,7 +284,7 @@ class Mephex_Db_Importer_PhpUnit_XmlDataSet
 		$this->_table	= $attributes['name'];
 		$this->_columns	= array();
 		
-		$this->_connection->write("DELETE FROM {$this->_table}")->execute();
+		$results	= $this->_connection->write("DELETE FROM {$this->_table}")->execute();
 	}
 	
 	
@@ -308,7 +310,7 @@ class Mephex_Db_Importer_PhpUnit_XmlDataSet
 	 * 		the opening tag
 	 * @return void
 	 */
-	protected function processColumnTagBegin(array & $attributes)
+	protected function processColumnTagBegin(array $attributes)
 	{
 	}
 	
@@ -332,7 +334,7 @@ class Mephex_Db_Importer_PhpUnit_XmlDataSet
 	 * 		the opening tag
 	 * @return void
 	 */
-	protected function processRowTagBegin(array & $attributes)
+	protected function processRowTagBegin(array $attributes)
 	{
 		$this->_value_set	= array();
 		reset($this->_columns);
@@ -383,7 +385,7 @@ class Mephex_Db_Importer_PhpUnit_XmlDataSet
 	 * 		the opening tag
 	 * @return void
 	 */
-	protected function processValueTagBegin(array & $attributes)
+	protected function processValueTagBegin(array $attributes)
 	{
 		$key	= $this->getCurrentColumn();
 		$this->_is_column_value_set	= false;
@@ -415,7 +417,7 @@ class Mephex_Db_Importer_PhpUnit_XmlDataSet
 	 * 		the opening tag
 	 * @return void
 	 */
-	protected function processNullTagBegin(array & $attributes)
+	protected function processNullTagBegin(array $attributes)
 	{
 		$key	= $this->getCurrentColumn();
 		$this->_value_set[]			= null;

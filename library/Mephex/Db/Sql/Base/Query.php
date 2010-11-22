@@ -166,7 +166,7 @@ abstract class Mephex_Db_Sql_Base_Query
 	 * 
 	 * @param array $params - parameters to place in the query placeholders.
 	 */
-	public function execute(array & $params = array())
+	public function execute(array $params = array())
 	{
 		switch($this->getDerivedPreparedSetting())
 		{			
@@ -189,17 +189,17 @@ abstract class Mephex_Db_Sql_Base_Query
 	 * 
 	 * @param array $params
 	 */
-	protected abstract function executeNativePrepare(array & $params);
+	protected abstract function executeNativePrepare(array $params);
 	/**
 	 * Executes the query as an emulated prepared statement.
 	 * 
 	 * @param array $params
 	 */
-	protected abstract function executeEmulatedPrepare(array & $params);
+	protected abstract function executeEmulatedPrepare(array $params);
 	/**
 	 * Executes the query as a non-prepared statement.
 	 * 
 	 * @param array $params
 	 */
-	protected abstract function executeNonPrepare(array & $params);
+	protected abstract function executeNonPrepare(array $params);
 }

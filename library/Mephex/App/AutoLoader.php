@@ -46,7 +46,7 @@ class Mephex_App_AutoLoader
 	 * 
 	 * @return Mephex_App_AutoLoader
 	 */
-	public function getInstance()
+	public static function getInstance()
 	{
 		if(self::$_instance === null)
 		{

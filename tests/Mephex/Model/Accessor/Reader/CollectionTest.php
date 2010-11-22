@@ -65,12 +65,12 @@ extends Mephex_Test_TestCase
 				array
 				(
 					'id'		=> 3,
-					'parentId'	=> $criteria->getCriteriaValue('parentId')
+					'parent'	=> $criteria->getCriteriaValue('parentId')
 				),
 				array
 				(
 					'id'		=> 4,
-					'parentId'	=> $criteria->getCriteriaValue('parentId')
+					'parent'	=> $criteria->getCriteriaValue('parentId')
 				)
 			)
 		);	

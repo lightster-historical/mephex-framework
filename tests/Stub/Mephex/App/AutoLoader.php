@@ -5,14 +5,14 @@
 class Stub_Mephex_App_AutoLoader
 extends Mephex_App_AutoLoader
 {
-	public function clearInstance()
+	public static function clearInstance()
 	{
 		self::$_instance	= null;
 	}
 
 	
 	
-	public function restoreInstance($instance)
+	public static function restoreInstance($instance)
 	{
 		self::$_instance	= $instance;
 	}
