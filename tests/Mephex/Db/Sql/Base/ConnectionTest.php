@@ -55,4 +55,44 @@ extends Mephex_Test_TestCase
 			$this->_connection->getPreparedSetting()
 		);
 	}
+	
+	
+	
+	public function testInitializedQuoterIsABaseQuoterByDefault()
+	{
+		$this->assertTrue(
+			$this->_connection->getQuoter()
+			instanceof
+			Mephex_Db_Sql_Base_Quoter
+		);
+	}
+	
+	
+	
+	public function testGeneratingAnInsertGeneratorIsPossible()
+	{
+		$this->assertTrue(
+			$this->_connection->generateInsert(
+				'test',
+				array('a', 'b', 'c')
+			)
+			instanceof
+			Mephex_Db_Sql_Base_Generator_Insert
+		);
+	}
+	
+	
+	
+	public function testGeneratingAnUpdateGeneratorIsPossible()
+	{
+		$this->assertTrue(
+			$this->_connection->generateUpdate(
+				'test',
+				array('a', 'b', 'c'),
+				array('x', 'y')
+			)
+			instanceof
+			Mephex_Db_Sql_Base_Generator_Update
+		);
+	}
 }  

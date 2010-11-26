@@ -20,10 +20,19 @@ abstract class Mephex_Db_Sql_Base_Connection
 	 */
 	protected $_prepared	= Mephex_Db_Sql_Base_Query::PREPARE_NATIVE;
 	
+	/**
+	 * The quoter responsible for quoting table names, column names, and
+	 * values.
+	 * 
+	 * @var Mephex_Db_Sql_Base_Quoter
+	 */
+	private $_quoter		= null;
+	
 	
 	
 	public function __construct()
 	{
+		$this->_quoter	= $this->getDefaultQuoter();
 	}
 	
 	
@@ -77,5 +86,67 @@ abstract class Mephex_Db_Sql_Base_Connection
 	public function setPreparedSetting($prepared)
 	{
 		$this->_prepared	= (int)$prepared;
+	}
+	
+	
+	
+	/**
+	 * Generates an instance of the default quoter.
+	 * 
+	 * @return Mephex_Db_Sql_Base_Quoter
+	 */
+	protected function getDefaultQuoter()
+	{
+		return new Mephex_Db_Sql_Base_Quoter();
+	}
+	
+	
+	
+	/**
+	 * Getter for quoter.
+	 * 
+	 * @return Mephex_Db_Sql_Base_Quoter
+	 */
+	public function getQuoter()
+	{
+		return $this->_quoter;
+	}
+	
+	
+	
+	/**
+	 * Generates an INSERT query.
+	 * 
+	 * @param string $table
+	 * @param array $columns
+	 * @return Mephex_Db_Sql_Base_Generator_Insert
+	 */
+	public function generateInsert($table, array $columns)
+	{
+		return new Mephex_Db_Sql_Base_Generator_Insert(
+			$this->getQuoter(),
+			$table,
+			$columns
+		);
+	}
+	
+	
+	
+	/**
+	 * Generates an UPDATE query.
+	 * 
+	 * @param string $table
+	 * @param array $update_columns
+	 * @param array $update_columns
+	 * @return Mephex_Db_Sql_Base_Generator_Insert
+	 */
+	public function generateUpdate($table, array $update_columns, array $where_columns)
+	{
+		return new Mephex_Db_Sql_Base_Generator_Update(
+			$this->getQuoter(), 
+			$table,
+			$update_columns, 
+			$where_columns
+		);
 	}
 }
