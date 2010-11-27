@@ -69,6 +69,25 @@ extends Mephex_Db_Sql_Base_Generator
 	
 	
 	/**
+	 * Retrieves the values ordered in the provided column order. 
+	 * 
+	 * @param array $params
+	 * @param bool $quoted - whether or not to quote the values
+	 * @return array
+	 */
+	public function getColumnOrderedValues(array $params, $quoted)
+	{
+		return $this->getOrderedValues
+		(
+			array_merge($this->_update_columns, $this->_where_columns), 
+			$params, 
+			$quoted
+		);
+	}
+	
+	
+	
+	/**
 	 * Retrieves the values ordered in the provided update clause column order. 
 	 * 
 	 * @param array $params

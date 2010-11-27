@@ -180,6 +180,99 @@ extends Mephex_Test_TestCase
 	
 	
 	
+	public function testMixedParametersAreReturnedInCorrectOrderAndAreNotQuoted()
+	{
+		$update	= $this->getUpdate('test', array('a', 'b', 'c'), array('x', 'y'));
+		
+		$params	= array
+		(
+			'c'	=> '\'d',
+			'y'	=> '\'u',
+			'a'	=> 'e"',
+			'b'	=> 'f',
+			'x'	=> 'v"',
+		);
+		$expected	= array(
+			'e"', 
+			'f', 
+			'\'d',
+			'v"',
+			'\'u'
+		);
+		$ordered	= $update->getColumnOrderedValues($params, false);
+		
+		$this->assertEquals($expected, $ordered);
+		$this->assertTrue($expected === $ordered);
+	}
+	
+	
+	
+	public function testMixedParemetersAreReturnedInCorrectOrderAndAreQuoted()
+	{
+		$update	= $this->getUpdate('test', array('a', 'b', 'c', 'x'), array('x', 'y'));
+		
+		$params	= array
+		(
+			'c'	=> '\'d',
+			'y'	=> '\'u',
+			'a'	=> 'e"',
+			'b'	=> 'f',
+			'x'	=> 'v"',
+		);
+		$expected	= array(
+			'\'e\\"\'', 
+			'\'f\'', 
+			'\'\\\'d\'',
+			'\'v\\"\'',
+			'\'v\\"\'',
+			'\'\\\'u\''
+		);
+		$ordered	= $update->getColumnOrderedValues($params, true);
+		
+		$this->assertEquals($expected, $ordered);
+		$this->assertTrue($expected === $ordered);
+	}
+	
+	
+	
+	/**
+	 * @expectedException Mephex_Db_Exception
+	 */
+	public function testAMissingMixedUpdateParameterCausesAnExceptionToBeThrown()
+	{
+		$update	= $this->getUpdate('test', array('a', 'b', 'c'), array('x', 'y'));
+		
+		$params	= array
+		(
+			'y'	=> '\'u',
+			'a'	=> 'e"',
+			'b'	=> 'f',
+			'x'	=> 'v"',
+		);
+		$ordered	= $update->getColumnOrderedValues($params, false);
+	}
+	
+	
+	
+	/**
+	 * @expectedException Mephex_Db_Exception
+	 */
+	public function testAMissingMixedWhereParameterCausesAnExceptionToBeThrown()
+	{
+		$update	= $this->getUpdate('test', array('a', 'b', 'c'), array('x', 'y'));
+		
+		$params	= array
+		(
+			'c'	=> '\'d',
+			'a'	=> 'e"',
+			'b'	=> 'f',
+			'x'	=> 'v"',
+		);
+		$ordered	= $update->getColumnOrderedValues($params, false);
+	}
+	
+	
+	
 	public function testAPreparedUpdateIsProperlyGenerated()
 	{
 		$update	= $this->getUpdate('test', array('a', 'b', 'c'), array('x', 'y'));
