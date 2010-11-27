@@ -135,7 +135,7 @@ extends PHPUnit_Framework_TestCase
 	{
 		if(null === $this->_connection_factory)
 		{
-			$this->_connection_factory	= new Mephex_Db_ConnectionFactory();
+			$this->_connection_factory	= new Mephex_Test_Db_ConnectionFactory($this->getTmpCopier());
 		}
 		
 		return $this->_connection_factory;
