@@ -30,11 +30,7 @@ class Mephex_Db_ConnectionFactory
 	{
 		$driver	= $config->get($group, "{$connection_name}.driver");
 		
-		$classes	= array
-		(
-			"Mephex_Db_Sql_{$driver}_ConnectionFactory",
-			$driver
-		);
+		$classes	= $this->getDriverClassNames($driver);
 		
 		foreach($classes as $class)
 		{
@@ -49,5 +45,22 @@ class Mephex_Db_ConnectionFactory
 		}
 		
 		throw new Mephex_Exception("Unknown database driver: {$driver}");
+	}
+	
+	
+	
+	/**
+	 * Generates a list of possible driver class names based on the driver name.
+	 * 
+	 * @param string $driver - the driver name (e.g. Pdo)
+	 * @return array
+	 */
+	protected function getDriverClassNames($driver)
+	{
+		return array
+		(
+			"Mephex_Db_Sql_{$driver}_ConnectionFactory",
+			$driver
+		);
 	}
 }

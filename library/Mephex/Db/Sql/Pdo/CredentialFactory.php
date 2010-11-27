@@ -24,11 +24,7 @@ class Mephex_Db_Sql_Pdo_CredentialFactory
 	{
 		$dbms	= $config->get($group, "{$connection_name}.dbms");
 		
-		$classes	= array
-		(
-			"Mephex_Db_Sql_Pdo_CredentialFactory_{$dbms}",
-			$dbms
-		);
+		$classes	= $this->getDbmsClassNames($dbms);
 		
 		foreach($classes as $class)
 		{
@@ -43,5 +39,22 @@ class Mephex_Db_Sql_Pdo_CredentialFactory
 		}
 		
 		throw new Mephex_Exception("Unknown dbms: {$dbms}");
+	}
+	
+	
+	
+	/**
+	 * Generates a list of possible DBMS class names based on the DBMS name.
+	 * 
+	 * @param string $dbms - the DBMS name (e.g. mysql or sqlite)
+	 * @return array
+	 */
+	protected function getDbmsClassNames($dbms)
+	{ 
+		return array
+		(
+			"Mephex_Db_Sql_Pdo_CredentialFactory_{$dbms}",
+			$dbms
+		);
 	}
 }

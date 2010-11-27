@@ -22,7 +22,19 @@ implements Mephex_Db_Sql_Base_ConnectionFactory
 	
 	public function __construct()
 	{
-		$this->_credential_factory	= new Mephex_Db_Sql_Pdo_CredentialFactory();
+		$this->_credential_factory	= $this->getDefaultCredentialFactory();
+	}
+	
+	
+	
+	/**
+	 * Generates an instance of the default credential factory.
+	 * 
+	 * @return Mephex_Db_Sql_Pdo_CredentialFactory
+	 */
+	protected function getDefaultCredentialFactory()
+	{
+		return new Mephex_Db_Sql_Pdo_CredentialFactory();
 	}
 	
 	
