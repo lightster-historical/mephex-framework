@@ -86,7 +86,7 @@ extends Mephex_Test_TestCase
 			'other'			=> 'What goes here?'
 		);
 		
-		$this->getWriter()->write($data);
+		$this->getWriter()->create($data);
 		
 		$conn	= $this->getDbConnection('sqlite');
 		$results	= $conn->read('
@@ -119,7 +119,7 @@ extends Mephex_Test_TestCase
 			'sort_order'	=> '25',
 			'other'			=> 'What goes here?'
 		);
-		$this->getWriter()->write($data);
+		$this->getWriter()->create($data);
 		
 		$conn	= $this->getDbConnection('sqlite');
 		$results	= $conn->read('
@@ -144,7 +144,7 @@ extends Mephex_Test_TestCase
 		$updated_data['description']	= 'New Description';
 		$updated_data['sort_order']		= 25;
 		$updated_data['other']			= 'Oh!';
-		$this->getWriter()->write($updated_data);
+		$this->getWriter()->update($updated_data);
 		
 		$conn	= $this->getDbConnection('sqlite');
 		$results	= $conn->read('

@@ -6,6 +6,7 @@ class Stub_Mephex_Model_Entity
 extends Mephex_Model_Entity
 {
 	protected $id				= null;
+	protected $name				= null;
 	protected $parent			= null;
 	protected $referenceOnly	= null;
 	
@@ -48,6 +49,20 @@ extends Mephex_Model_Entity
 	public function setId($id)
 	{
 		return $this->setProperty('id', $id);
+	}
+	
+	
+	
+	public function getName()
+	{
+		return $this->getProperty('name');
+	}
+	
+	
+	
+	public function setName($name)
+	{
+		return $this->setProperty('name', $name);
 	}
 	
 	

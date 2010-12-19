@@ -54,6 +54,18 @@ abstract class Mephex_Model_Mapper
 	
 	
 	/**
+	 * Updates a new entity the first time after it is saved. This is useful 
+	 * for updating properties that have their values automatically updated.
+	 * 
+	 * @param Mephex_Model_Entity $entity
+	 * @param mixed $data
+	 * @return Mephex_Model_Entity
+	 */
+	public abstract function processNewEntity(Mephex_Model_Entity $entity, $data);
+	
+	
+	
+	/**
 	 * Converts an entity into data that a storage system
 	 * can store (via a stream writer).
 	 *  

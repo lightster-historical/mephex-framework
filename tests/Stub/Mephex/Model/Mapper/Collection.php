@@ -14,6 +14,13 @@ extends Mephex_Model_Mapper
 	
 	
 	
+	public function processNewEntity(Mephex_Model_Entity $entity, $data)
+	{
+		return $entity;
+	}
+	
+	
+	
 	public function getMappedData(Mephex_Model_Entity $entity)
 	{
 		return array

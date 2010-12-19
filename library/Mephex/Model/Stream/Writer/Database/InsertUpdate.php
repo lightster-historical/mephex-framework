@@ -55,14 +55,6 @@ extends Mephex_Model_Stream_Writer_Database
 	 */
 	protected abstract function getDefaultUpdateGenerator();
 	
-	/**
-	 * Determines whether or not the record is a new record.
-	 * 
-	 * @param $data
-	 * @return bool
-	 */
-	protected abstract function isRecordNew($data);
-	
 	
 	
 	/**
@@ -140,24 +132,58 @@ extends Mephex_Model_Stream_Writer_Database
 	
 	
 	/**
+	 * Creates a new record using the given data.
+	 * 
+	 * @param $data
+	 * @return mixed 
+	 */
+	public function create($data)
+	{
+		$result	= $this->write
+		(
+			$data, 
+			$this->getInsertQuery(), 
+			$this->getInsertGenerator()
+		);
+		return $result->getLastInsertId();
+	}
+	
+	
+	
+	/**
+	 * Updates an existing record using the given data.
+	 * 
+	 * @param $data
+	 * @return mixed 
+	 */
+	public function update($data)
+	{
+		$result	= $this->write
+		(
+			$data, 
+			$this->getUpdateQuery(), 
+			$this->getUpdateGenerator()
+		);
+		return null;
+	}
+	
+	
+	
+	/**
 	 * Writes the given record.
 	 * 
 	 * @param $data
-	 * @return bool 
+	 * @param Mephex_Db_Sql_Base_Query $query
+	 * @param Mephex_Db_Sql_Base_Generator $generator
+	 * @return Mephex_Db_Sql_Base_ResultSet 
 	 */
-	public function write($data)
+	protected function write
+	(
+		$data, 
+		Mephex_Db_Sql_Base_Query $query, 
+		Mephex_Db_Sql_Base_Generator $generator
+	)
 	{
-		if($this->isRecordNew($data))
-		{
-			$query		= $this->getInsertQuery();
-			$generator	= $this->getInsertGenerator();
-		}
-		else
-		{
-			$query		= $this->getUpdateQuery();
-			$generator	= $this->getUpdateGenerator();
-		}
-		
 		return $query->execute($generator->getColumnOrderedValues($data, false));
 	}
 }  

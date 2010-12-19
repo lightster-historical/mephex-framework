@@ -5,16 +5,25 @@
 class Stub_Mephex_Model_Stream_Writer
 extends Mephex_Model_Stream_Writer
 {
-	public function write($data)
+	public function create($data)
 	{
-		$fields	= array_keys($data);
-		
-		if(array_key_exists('id', $fields)
-			&& array_key_exists('name', $fields))
+		if(array_key_exists('id', $data))
 		{
-			return true;	
+			return $data['id'];	
 		}
 		
-		return false;
+		return null;
+	}
+	
+	
+	
+	public function update($data)
+	{
+		if(array_key_exists('id', $data))
+		{
+			return $data['id'];	
+		}
+		
+		return null;
 	}
 }

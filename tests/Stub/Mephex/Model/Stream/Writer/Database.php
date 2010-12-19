@@ -11,6 +11,7 @@ extends Mephex_Model_Stream_Writer_Database
 		{return parent::getTableSet();}
 	public function getTable($table)
 		{return parent::getTable($table);}
-	
-	public function write($data) {}
+
+	public function create($data) {}
+	public function update($data) {}
 }  

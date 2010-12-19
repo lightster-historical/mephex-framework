@@ -82,7 +82,22 @@ extends Mephex_Model_Accessor
 		$cache	= $this->getCache();
 		$stream	= $this->getStream();
 		
-		$stream->write($mapper->getMappedData($entity));
+		$mappedData	= $mapper->getMappedData($entity);
+		
+		if($entity->isMarkedNew())
+		{
+			$updatedData	= $stream->create($mappedData);
+		}
+		else
+		{
+			$updatedData	= $stream->update($mappedData);
+		}
+		
+		if($entity->isMarkedNew())
+		{
+			$mapper->processNewEntity($entity, $updatedData);
+		}
+		
 		$entity->markClean();
 		
 		$this->updateCachedEntity($cache, $entity);

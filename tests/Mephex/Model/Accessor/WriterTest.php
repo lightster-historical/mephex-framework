@@ -12,8 +12,6 @@ extends Mephex_Test_TestCase
 	
 	protected $_accessor;
 	
-	protected $_entity;
-	
 	
 	
 	public function setUp()
@@ -30,9 +28,6 @@ extends Mephex_Test_TestCase
 			$this->_cache,
 			$this->_stream
 		);		
-		
-		$this->_entity		= new Stub_Mephex_Model_Entity();
-		$this->_entity->setId(1);
 	} 
 	
 	
@@ -51,29 +46,77 @@ extends Mephex_Test_TestCase
 	
 	
 	
-	public function testWriteUncachedObject()
+	public function testWriteUncachedNewObject()
 	{
 		$this->assertFalse($this->_cache->has(new Mephex_Model_Criteria_Array($criteria = array('Id' => 1))));
 		
-		$this->_accessor->write($this->_entity);
+		$entity		= new Stub_Mephex_Model_Entity();
+		$entity->setId(1);
+		$entity->setName('test');
+		$entity->markNew();
+		$this->_accessor->write($entity);
 		
 		$this->assertTrue($this->_cache->has(new Mephex_Model_Criteria_Array($criteria = array('Id' => 1))));
 	}
 	
 	
 	
-	public function testWritingCachedObjectUpdatesCacheKey()
+	public function testWriteUncachedExistingObject()
 	{
+		$this->assertFalse($this->_cache->has(new Mephex_Model_Criteria_Array($criteria = array('Id' => 1))));
+		
+		$entity		= new Stub_Mephex_Model_Entity();
+		$entity->setId(1);
+		$entity->setName('test');
+		$entity->markDirty();
+		$this->_accessor->write($entity);
+		
+		$this->assertTrue($this->_cache->has(new Mephex_Model_Criteria_Array($criteria = array('Id' => 1))));
+	}
+	
+	
+	
+	public function testWritingCachedNewObjectUpdatesCacheKey()
+	{
+		$entity		= new Stub_Mephex_Model_Entity();
+		$entity->setId(1);
+		$entity->setName('test');
+		$entity->markNew();
+		
 		$this->assertFalse($this->_cache->has(new Mephex_Model_Criteria_Array($criteria = array('Id' => 1))));
 		$this->assertFalse($this->_cache->has(new Mephex_Model_Criteria_Array($criteria = array('Id' => 2))));
 		
-		$this->_accessor->write($this->_entity);
+		$this->_accessor->write($entity);
 		
 		$this->assertTrue($this->_cache->has(new Mephex_Model_Criteria_Array($criteria = array('Id' => 1))));
 		$this->assertFalse($this->_cache->has(new Mephex_Model_Criteria_Array($criteria = array('Id' => 2))));
 		
-		$this->_entity->setId(2);
-		$this->_accessor->write($this->_entity);
+		$entity->setId(2);
+		$this->_accessor->write($entity);
+		
+		$this->assertFalse($this->_cache->has(new Mephex_Model_Criteria_Array($criteria = array('Id' => 1))));
+		$this->assertTrue($this->_cache->has(new Mephex_Model_Criteria_Array($criteria = array('Id' => 2))));
+	}
+	
+	
+	
+	public function testWritingCachedExistingObjectUpdatesCacheKey()
+	{
+		$entity		= new Stub_Mephex_Model_Entity();
+		$entity->setId(1);
+		$entity->setName('test');
+		$entity->markDirty();
+		
+		$this->assertFalse($this->_cache->has(new Mephex_Model_Criteria_Array($criteria = array('Id' => 1))));
+		$this->assertFalse($this->_cache->has(new Mephex_Model_Criteria_Array($criteria = array('Id' => 2))));
+		
+		$this->_accessor->write($entity);
+		
+		$this->assertTrue($this->_cache->has(new Mephex_Model_Criteria_Array($criteria = array('Id' => 1))));
+		$this->assertFalse($this->_cache->has(new Mephex_Model_Criteria_Array($criteria = array('Id' => 2))));
+		
+		$entity->setId(2);
+		$this->_accessor->write($entity);
 		
 		$this->assertFalse($this->_cache->has(new Mephex_Model_Criteria_Array($criteria = array('Id' => 1))));
 		$this->assertTrue($this->_cache->has(new Mephex_Model_Criteria_Array($criteria = array('Id' => 2))));
@@ -83,11 +126,15 @@ extends Mephex_Test_TestCase
 	
 	public function testTheEntityIsMarkedAsCleanImmediatelyAfterWriting()
 	{
-		$this->_entity->markDirty();
-		$this->assertFalse($this->_entity->isMarkedClean());
+		$entity		= new Stub_Mephex_Model_Entity();
+		$entity->setId(1);
+		$entity->setName('test');
+		$entity->markDirty();
 		
-		$this->_accessor->write($this->_entity);
+		$this->assertFalse($entity->isMarkedClean());
 		
-		$this->assertTrue($this->_entity->isMarkedClean());
+		$this->_accessor->write($entity);
+		
+		$this->assertTrue($entity->isMarkedClean());
 	}
 }  

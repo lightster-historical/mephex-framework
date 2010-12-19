@@ -9,7 +9,17 @@ extends Mephex_Model_Mapper
 	{
 		$entity	= new Stub_Mephex_Model_Entity();
 		$entity->setId($data['id']);
+		$entity->setName(isset($data['name']) ? $data['name'] : null);
 		$entity->setParent($data['parent']);
+		
+		return $entity;
+	}
+	
+	
+	
+	public function processNewEntity(Mephex_Model_Entity $entity, $data)
+	{
+		$entity->setId($data);
 		
 		return $entity;
 	}
@@ -21,6 +31,7 @@ extends Mephex_Model_Mapper
 		return array
 		(
 			'id'		=> $entity->getId(),
+			'name'		=> $entity->getName(),
 			'parentId'	=> ($entity->getParent() ? $entity->getParent()->getId() : null)
 		);	
 	}	

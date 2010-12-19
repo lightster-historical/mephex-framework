@@ -11,10 +11,18 @@
 abstract class Mephex_Model_Stream_Writer
 {
 	/**
-	 * Writes the given records.
+	 * Creates a new record using the given data.
 	 * 
 	 * @param $data
 	 * @return bool 
 	 */
-	public abstract function write($data);
+	public abstract function create($data);
+	
+	/**
+	 * Updates an existing record using the given data.
+	 * 
+	 * @param $data
+	 * @return bool 
+	 */
+	public abstract function update($data);
 }  
