@@ -98,9 +98,9 @@ extends Mephex_Model_Accessor
 			$mapper->processNewEntity($entity, $updatedData);
 		}
 		
-		$entity->markClean();
-		
 		$this->updateCachedEntity($cache, $entity);
+		
+		$entity->markClean();
 		
 		return $entity;
 	}
@@ -115,7 +115,10 @@ extends Mephex_Model_Accessor
 	 */
 	protected function updateCachedEntity(Mephex_Model_Cache $cache, Mephex_Model_Entity $entity)
 	{
-		$cache->forget($entity);
+		if(!$entity->isMarkedNew())
+		{
+			$cache->forget($entity);
+		}
 		$cache->remember($entity);
 	}
 	

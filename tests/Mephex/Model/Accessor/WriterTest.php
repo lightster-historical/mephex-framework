@@ -124,7 +124,31 @@ extends Mephex_Test_TestCase
 	
 	
 	
-	public function testTheEntityIsMarkedAsCleanImmediatelyAfterWriting()
+	/**
+	 * @depends testWriteUncachedNewObject
+	 */
+	public function testNewObjectsAreNotForgottenWhenUpdatingCacheKey()
+	{
+		$entity		= new Stub_Mephex_Model_Entity();
+		$entity->setId(1);
+		$entity->setName('test');
+		$entity->markNew();
+		
+		$this->_cache->remember($entity);
+		
+		$this->assertTrue($this->_cache->has(new Mephex_Model_Criteria_Array($criteria = array('Id' => 1))));
+		
+		$entity->setId(2);
+		
+		$this->_accessor->write($entity);
+		
+		$this->assertTrue($this->_cache->has(new Mephex_Model_Criteria_Array($criteria = array('Id' => 1))));
+		$this->assertTrue($this->_cache->has(new Mephex_Model_Criteria_Array($criteria = array('Id' => 2))));
+	}
+	
+	
+	
+	public function testTheEntityIsMarkedAsCleanAfterWriting()
 	{
 		$entity		= new Stub_Mephex_Model_Entity();
 		$entity->setId(1);
