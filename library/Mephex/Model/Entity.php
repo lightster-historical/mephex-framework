@@ -132,6 +132,8 @@ abstract class Mephex_Model_Entity
 			throw new Mephex_Model_Entity_Exception_UnknownProperty($this, $name);
 		}
 		
+		$this->markUnclean();
+		
 		$this->{$name}	= $value;
 		
 		return $this;
@@ -212,6 +214,8 @@ abstract class Mephex_Model_Entity
 			throw new Mephex_Model_Exception_UnallowedReference($this, $name, $reference);
 		}
 		
+		$this->markUnclean();
+		
 		$this->{$name}	= $reference;
 		
 		return $this;
@@ -276,6 +280,21 @@ abstract class Mephex_Model_Entity
 	public function markNew()
 	{
 		$this->_entity_state	= self::STATE_NEW;
+	}
+	
+	
+	
+	/**
+	 * Marks the entity as dirty if it is currently clean.
+	 * 
+	 * @return void
+	 */
+	public function markUnclean()
+	{
+		if($this->isMarkedClean())
+		{
+			$this->_entity_state	= self::STATE_DIRTY;
+		}
 	}
 	
 	

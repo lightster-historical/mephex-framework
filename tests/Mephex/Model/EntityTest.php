@@ -124,6 +124,30 @@ extends Mephex_Test_TestCase
     
     
     
+    /**
+     * @depends testAnEntityCanBeMarkedClean
+     */
+    public function testMarkingACleanEntityUncleanMakesTheEntityMarkedDirty()
+    {
+    	$this->_entity->markClean();
+    	$this->_entity->markUnclean();
+    	$this->assertTrue($this->_entity->isMarkedDirty());
+    }
+    
+    
+    
+    /**
+     * @depends testAnEntityCanBeMarkedClean
+     */
+    public function testMarkingANewEntityUncleanLeavesTheEntityMarkedNew()
+    {
+    	$this->_entity->markNew();
+    	$this->_entity->markUnclean();
+    	$this->assertTrue($this->_entity->isMarkedNew());
+    }
+    
+    
+    
     public function testAnEntityCanBeMarkedDeleted()
     {
     	$this->_entity->markDeleted();
@@ -241,6 +265,24 @@ extends Mephex_Test_TestCase
     		$this->_entity->setReferencedProperty('parent', $this->_reference)
     			=== $this->_entity
     	);
+    }
+    
+    
+    
+    public function testSettingAPropertyOnACleanEntityMarksTheEntityDirty()
+    {
+    	$this->_entity->markClean();
+    	$this->_entity->setId(5);
+    	$this->assertTrue($this->_entity->isMarkedDirty());
+    }
+    
+    
+    
+    public function testSettingAPropertyOnANewEntityLeavesTheEntityNew()
+    {
+    	$this->_entity->markNew();
+    	$this->_entity->setId(5);
+    	$this->assertTrue($this->_entity->isMarkedNew());
     }
     
     
