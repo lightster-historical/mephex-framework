@@ -161,4 +161,18 @@ extends Mephex_Test_TestCase
 		
 		$this->assertTrue($entity->isMarkedClean());
 	}
+	
+	
+	
+	public function testNoWritingTakesPlaceWhenWriteMethodIsCalledOnAnEntityMarkedAsClean()
+	{
+		$entity		= new Stub_Mephex_Model_Entity();
+		$entity->setId(1);
+		$entity->setName('test');
+		$entity->markClean();
+		
+		$this->_accessor->write($entity);
+		
+		$this->assertFalse($this->_cache->has(new Mephex_Model_Criteria_Array($criteria = array('Id' => 1))));
+	}
 }  

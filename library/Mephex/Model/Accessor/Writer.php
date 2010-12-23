@@ -78,6 +78,12 @@ extends Mephex_Model_Accessor
 	 */
 	public function write(Mephex_Model_Entity $entity)
 	{
+		// if the entity is marked clean, there is nothing to save
+		if($entity->isMarkedClean())
+		{
+			return $entity;
+		}
+		
 		$mapper	= $this->getMapper();
 		$cache	= $this->getCache();
 		$stream	= $this->getStream();
