@@ -30,6 +30,9 @@ extends Mephex_Test_TestCase
 	
 	
 	
+	/**
+	 * @covers Mephex_App_Arguments::has
+	 */
 	public function testCanDetermineIfArgumentIsSet()
 	{
 		$this->assertTrue($this->_args->has('a'));
@@ -39,6 +42,9 @@ extends Mephex_Test_TestCase
 	
 	
 	
+	/**
+	 * @covers Mephex_App_Arguments::has
+	 */
 	public function testCanDetermineIfArgumentWithNullValueIsSet()
 	{
 		$this->assertTrue($this->_args->has('d'));
@@ -46,6 +52,9 @@ extends Mephex_Test_TestCase
 	
 	
 	
+	/**
+	 * @covers Mephex_App_Arguments::has
+	 */
 	public function testCanDetermineIfArgumentIsNotSet()
 	{
 		$this->assertFalse($this->_args->has('z'));
@@ -53,6 +62,9 @@ extends Mephex_Test_TestCase
 	
 	
 	
+	/**
+	 * @covers Mephex_App_Arguments::get
+	 */
 	public function testCanRetrieveArgument()
 	{
 		$this->assertEquals(12, $this->_args->get('a'));
@@ -63,6 +75,9 @@ extends Mephex_Test_TestCase
 	
 	
 	
+	/**
+	 * @covers Mephex_App_Arguments::get
+	 */
 	public function testDefaultValueIsReturnedIfArgumentIsNotSet()
 	{
 		$this->assertNull($this->_args->get('y'));
@@ -72,6 +87,7 @@ extends Mephex_Test_TestCase
 	
 	
 	/**
+	 * @covers Mephex_App_Arguments::set
 	 * @depends testCanRetrieveArgument
 	 */
 	public function testNewArgumentCanBeSet()
@@ -83,6 +99,7 @@ extends Mephex_Test_TestCase
 	
 	
 	/**
+	 * @covers Mephex_App_Arguments::set
 	 * @depends testCanRetrieveArgument
 	 */
 	public function testArgumentValueCanBeChanged()
@@ -94,6 +111,7 @@ extends Mephex_Test_TestCase
 	
 	
 	/**
+	 * @covers Mephex_App_Arguments::setAll
 	 * @depends testCanRetrieveArgument
 	 */
 	public function testManyNewArgumentsCanBeSet()
@@ -111,6 +129,10 @@ extends Mephex_Test_TestCase
 	
 	
 	
+	/**
+	 * @covers Mephex_App_Arguments::setAll
+	 * @depends testCanRetrieveArgument
+	 */
 	public function testManyArgumentValuesCanBeChanged()
 	{
 		$this->_args->setAll(array
@@ -127,6 +149,7 @@ extends Mephex_Test_TestCase
 	
 	
 	/**
+	 * @covers Mephex_App_Arguments::clear
 	 * @depends testCanDetermineIfArgumentIsSet
 	 */
 	public function testArgumentsCanBeCleared()
@@ -150,6 +173,7 @@ extends Mephex_Test_TestCase
 	
 	
 	/**
+	 * @covers Mephex_App_Arguments::clearAll
 	 * @depends testCanDetermineIfArgumentIsSet
 	 */
 	public function testAllArgumentsCanBeCleared()

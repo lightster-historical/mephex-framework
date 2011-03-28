@@ -18,6 +18,9 @@ extends Mephex_Test_TestCase
 	
 	
 	
+	/**
+	 * @covers Mephex_App_Action_Controller::getActionMethodName
+	 */
 	public function testActionMethodNameCanBeRetrieved()
 	{
 		$this->assertEquals('serveindex', $this->_controller->getActionMethodName('index'));
@@ -27,6 +30,10 @@ extends Mephex_Test_TestCase
 	
 	
 	
+	/**
+	 * @covers Mephex_App_Action_Controller::runAction
+	 * @covers Mephex_App_Action_Controller::processAction
+	 */
 	public function testActionMethodCanBeCalled()
 	{
 		$this->_controller->runAction('index');
@@ -42,6 +49,8 @@ extends Mephex_Test_TestCase
 	
 	
 	/**
+	 * @covers Mephex_App_Action_Controller::runAction
+	 * @covers Mephex_App_Action_Controller::processAction
 	 * @expectedException Mephex_App_Action_Controller_Exception_ActionNotFound
 	 */
 	public function testCallingAnUnknownActionThrowsAnException()
@@ -52,6 +61,8 @@ extends Mephex_Test_TestCase
 	
 	
 	/**
+	 * @covers Mephex_App_Action_Controller::runAction
+	 * @covers Mephex_App_Action_Controller::processAction
 	 * @expectedException Mephex_App_Action_Controller_Exception_ActionNotAccessible
 	 */
 	public function testCallingAnInaccessibleActionThrowsAnException()

@@ -39,6 +39,10 @@ extends Mephex_Test_TestCase
     
     
     
+    /**
+	 * @covers Mephex_App_Action_Controller_Exception_ActionNotFound::__construct 
+	 * @covers Mephex_App_Action_Controller_Exception_ActionNotFound::getController 
+     */
     public function testControllerCanBeRetrieved()
     {
     	$this->assertTrue($this->_controller === $this->_exception->getController());
@@ -46,6 +50,10 @@ extends Mephex_Test_TestCase
     
     
     
+    /**
+	 * @covers Mephex_App_Action_Controller_Exception_ActionNotFound::__construct
+	 * @covers Mephex_App_Action_Controller_Exception_ActionNotFound::getMethodName 
+     */
     public function testMethodNameCanBeRetrieved()
     {
     	$this->assertEquals($this->_method_name, $this->_exception->getMethodName());
@@ -53,6 +61,10 @@ extends Mephex_Test_TestCase
     
     
     
+    /**
+	 * @covers Mephex_App_Action_Controller_Exception_ActionNotFound::__construct
+	 * @covers Mephex_App_Action_Controller_Exception_ActionNotFound::getActionName 
+     */
     public function testActionNameCanBeRetrieved()
     {
     	$this->assertEquals($this->_action_name, $this->_exception->getActionName());

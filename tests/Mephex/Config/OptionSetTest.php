@@ -13,6 +13,7 @@ extends Mephex_Test_TestCase
 	
 	
 	/**
+	 * @covers Mephex_Config_OptionSet::throwNotFoundException 
 	 * @expectedException Mephex_Exception
 	 */
 	public function testAnUnknownOptionExceptionCanBeThrown()
@@ -23,6 +24,8 @@ extends Mephex_Test_TestCase
 	
 	
 	/**
+	 * @covers Mephex_Config_OptionSet::get
+	 * @depends testAnUnknownOptionExceptionCanBeThrown
 	 * @expectedException Mephex_Exception
 	 */
 	public function testRetrievingAnUnknownOptionThrowsAnExceptionByDefault()
@@ -32,6 +35,10 @@ extends Mephex_Test_TestCase
 	
 	
 	
+	/**
+	 * @covers Mephex_Config_OptionSet::get
+	 * @depends testAnUnknownOptionExceptionCanBeThrown
+	 */
 	public function testRetrievingAnUnknownOptionCanOptionallyReturnADefaultValue()
 	{
 		$this->assertEquals(
@@ -42,6 +49,10 @@ extends Mephex_Test_TestCase
 	
 	
 	
+	/**
+	 * @covers Mephex_Config_OptionSet::get
+	 * @depends testAnUnknownOptionExceptionCanBeThrown
+	 */
 	public function testRetrievingAnUnknownOptionCanReturnANullDefaultValue()
 	{
 		$this->assertNull(
@@ -52,6 +63,8 @@ extends Mephex_Test_TestCase
 	
 	
 	/**
+	 * @covers Mephex_Config_OptionSet::get
+	 * @depends testAnUnknownOptionExceptionCanBeThrown
 	 * @expectedException Mephex_Exception
 	 */
 	public function testAnUnknownOptionExceptionCanBeForcedRegardlessOfTheDefaultValueWhileRetrievingAnUnknownOption()
@@ -61,6 +74,9 @@ extends Mephex_Test_TestCase
 	
 	
 	
+	/**
+	 * @covers Mephex_Config_OptionSet::canonicalizeKeys
+	 */
 	public function testCaseInsensitiveKeysCanBeCanonicalized()
 	{
 		$option_set	= $this->getOptionSet(false);
@@ -75,6 +91,9 @@ extends Mephex_Test_TestCase
 	
 	
 	
+	/**
+	 * @covers Mephex_Config_OptionSet::canonicalizeKeys
+	 */
 	public function testCaseSensitiveKeysCanBeCanonicalize()
 	{
 		$option_set	= $this->getOptionSet(true);
@@ -89,6 +108,9 @@ extends Mephex_Test_TestCase
 	
 	
 	
+	/**
+	 * @covers Mephex_Config_OptionSet::set
+	 */
 	public function testOptionsCanBeSet()
 	{
 		$option_set	= $this->getOptionSet(false);
@@ -107,6 +129,8 @@ extends Mephex_Test_TestCase
 	
 	
 	/**
+	 * @covers Mephex_Config_OptionSet::get
+	 * @covers Mephex_Config_OptionSet::set
 	 * @depends testOptionsCanBeSet
 	 */
 	public function testOptionsCanBeRetrieved()
@@ -122,6 +146,12 @@ extends Mephex_Test_TestCase
 	
 	
 	
+	/**
+	 * @covers Mephex_Config_OptionSet::get
+	 * @covers Mephex_Config_OptionSet::set
+	 * @depends testOptionsCanBeRetrieved
+	 * @depends testOptionsCanBeSet
+	 */
 	public function testReSettingAnOptionDoesNotOverrideByDefault()
 	{
 		$option_set	= $this->getOptionSet(true);
@@ -135,6 +165,12 @@ extends Mephex_Test_TestCase
 	
 	
 	
+	/**
+	 * @covers Mephex_Config_OptionSet::get
+	 * @covers Mephex_Config_OptionSet::set
+	 * @depends testOptionsCanBeRetrieved
+	 * @depends testOptionsCanBeSet
+	 */
 	public function testForciblyReSettingAnOptionOverridesAlreadySetOption()
 	{
 		$option_set	= $this->getOptionSet(true);
@@ -148,6 +184,10 @@ extends Mephex_Test_TestCase
 	
 	
 	
+	/**
+	 * @covers Mephex_Config_OptionSet::isOptionPreviouslyNotFound
+	 * @depends testOptionsCanBeRetrieved
+	 */
 	public function testUnknownOptionsAreCachedAsNotFound()
 	{
 		$option_set	= $this->getOptionSet(false);
@@ -168,6 +208,12 @@ extends Mephex_Test_TestCase
 	
 	
 	
+	/**
+	 * @covers Mephex_Config_OptionSet::addLoader
+	 * @covers Mephex_Config_OptionSet::get
+	 * @covers Mephex_Config_OptionSet::loadGroupOptions
+	 * @depends testOptionsCanBeRetrieved
+	 */
 	public function testOptionsCanBeLoadedFromGroupLoaders()
 	{
 		$option_set	= $this->getOptionSet(false);
@@ -191,6 +237,9 @@ extends Mephex_Test_TestCase
 	
 	
 	/**
+	 * @covers Mephex_Config_OptionSet::get
+	 * @covers Mephex_Config_OptionSet::loadGroupOptions
+	 * @depends testOptionsCanBeRetrieved
 	 * @expectedException Mephex_Exception
 	 */
 	public function testOptionsCanBeLoadedFromGroupLoadersOnlyIfProvidedGroupMatchesRequestedOptionGroup()
@@ -207,6 +256,12 @@ extends Mephex_Test_TestCase
 	
 	
 	
+	/**
+	 * @covers Mephex_Config_OptionSet::addLoader
+	 * @covers Mephex_Config_OptionSet::get
+	 * @covers Mephex_Config_OptionSet::loadGenericOptions
+	 * @depends testOptionsCanBeRetrieved
+	 */
 	public function testOptionsCanBeLoadedFromGenericLoaders()
 	{
 		$option_set	= $this->getOptionSet(false);
@@ -237,6 +292,14 @@ extends Mephex_Test_TestCase
 	
 	
 	
+	/**
+	 * @covers Mephex_Config_OptionSet::get
+	 * @covers Mephex_Config_OptionSet::loadGroupOptions
+	 * @covers Mephex_Config_OptionSet::loadGenericOptions
+	 * @depends testOptionsCanBeRetrieved
+	 * @depends testOptionsCanBeLoadedFromGroupLoaders
+	 * @depends testOptionsCanBeLoadedFromGenericLoaders
+	 */
 	public function testGroupAndGenericLoadersCanBeUsedInConjunction()
 	{
 		$option_set	= $this->getOptionSet(false);
@@ -256,6 +319,12 @@ extends Mephex_Test_TestCase
 	
 	
 	
+	/**
+	 * @covers Mephex_Config_OptionSet::get
+	 * @depends testOptionsCanBeRetrieved
+	 * @depends testOptionsCanBeLoadedFromGroupLoaders
+	 * @depends testOptionsCanBeLoadedFromGenericLoaders
+	 */
 	public function testGroupOptionsAreLoadedBeforeMainOptions()
 	{
 		$option_set	= $this->getOptionSet(false);
@@ -270,6 +339,9 @@ extends Mephex_Test_TestCase
 	
 	
 	
+	/**
+	 * @covers Mephex_Config_OptionSet::hasOption
+	 */
 	public function testLoadOptionsReturnsTrueIfTheOptionExists()
 	{
 		$option_set	= $this->getOptionSet(false);
@@ -281,6 +353,9 @@ extends Mephex_Test_TestCase
 	
 	
 	
+	/**
+	 * @covers Mephex_Config_OptionSet::hasOption
+	 */
 	public function testLoadOptionsReturnsFalseIfTheOptionDoesNotExist()
 	{
 		$option_set	= $this->getOptionSet(false);

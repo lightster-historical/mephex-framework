@@ -24,6 +24,8 @@ extends Mephex_Test_TestCase
 	
 	
 	/**
+	 * @covers Mephex_Config_Loader_Ini::__construct
+	 * @covers Mephex_Config_Loader_Ini::loadOption
 	 * @expectedException Mephex_Exception
 	 */
 	public function testMissingIniThrowsException()
@@ -36,6 +38,8 @@ extends Mephex_Test_TestCase
 	
 	
 	/**
+	 * @covers Mephex_Config_Loader_Ini::__construct
+	 * @covers Mephex_Config_Loader_Ini::loadOption
 	 * @expectedException Mephex_Exception
 	 */
 	public function testInaccessibleIniThrowsException()
@@ -48,6 +52,8 @@ extends Mephex_Test_TestCase
 	
 	
 	/**
+	 * @covers Mephex_Config_Loader_Ini::__construct
+	 * @covers Mephex_Config_Loader_Ini::loadOption
 	 * @expectedException Mephex_Exception
 	 */
 	public function testInvalidIniThrowsException()
@@ -59,6 +65,10 @@ extends Mephex_Test_TestCase
 	
 	
 	
+	/**
+	 * @covers Mephex_Config_Loader_Ini::__construct
+	 * @covers Mephex_Config_Loader_Ini::loadOption
+	 */
 	public function testIniOptionsCanBeProperlyLoaded()
 	{
 		$this->getIniLoader(PATH_TEST_ROOT

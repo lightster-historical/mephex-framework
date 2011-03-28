@@ -5,6 +5,9 @@
 class Mephex_App_ClassLoaderTest
 extends Mephex_Test_TestCase
 {
+	/**
+	 * @covers Mephex_App_ClassLoader::includeExists
+	 */
 	public function testIncludeExistsFindsPathsInIncludePath()
 	{
 		$class_loader	= new Stub_Mephex_App_ClassLoader();
@@ -15,6 +18,9 @@ extends Mephex_Test_TestCase
 	
 	
 	
+	/**
+	 * @covers Mephex_App_ClassLoader::includeExists
+	 */
 	public function testIncludeExistsDoesNotFindPathsOutsideIncludePath()
 	{
 		$class_loader	= new Stub_Mephex_App_ClassLoader();
@@ -24,6 +30,9 @@ extends Mephex_Test_TestCase
 
 	
 	
+	/**
+	 * @covers Mephex_App_ClassLoader::includeExists
+	 */
 	public function testIncludeExistsDoesNotCheckIncludePathForAbsolutePaths()
 	{
 		$class_loader	= new Stub_Mephex_App_ClassLoader();

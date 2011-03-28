@@ -26,6 +26,10 @@ extends Mephex_Test_TestCase
     
     
     
+    /**
+	 * @covers Mephex_Cache_Exception_UnknownKey::__construct 
+	 * @covers Mephex_Cache_Exception_UnknownKey::getCache 
+     */
     public function testCacheCanBeRetrieved()
     {
     	$this->assertEquals('some_cache_obj', $this->_exception->getCache());
@@ -33,6 +37,10 @@ extends Mephex_Test_TestCase
     
     
     
+    /**
+	 * @covers Mephex_Cache_Exception_UnknownKey::__construct 
+	 * @covers Mephex_Cache_Exception_UnknownKey::getKey 
+     */
     public function testKeyCanBeRetrieved()
     {
     	$this->assertEquals('missing_key', $this->_exception->getKey());

@@ -16,6 +16,9 @@ extends Mephex_Test_TestCase
 	
 	
 	
+	/**
+	 * @covers Mephex_Cache_Object::has
+	 */
     public function testAnEmptyCacheDoesNotHaveAKey()
     {
     	$this->assertFalse($this->_cache->has('unknown_key'));
@@ -23,6 +26,11 @@ extends Mephex_Test_TestCase
     
     
     
+	/**
+	 * @covers Mephex_Cache_Object::has
+	 * @covers Mephex_Cache_Object::remember
+	 * @depends testAnEmptyCacheDoesNotHaveAKey
+	 */
     public function testACacheHasARememberedKey()
     {
     	$key	= 'some_key';
@@ -35,6 +43,7 @@ extends Mephex_Test_TestCase
     
     
     /**
+	 * @covers Mephex_Cache_Object::remember
      * @expectedException Mephex_Cache_Exception_DuplicateKey
      */
     public function testKeysCannotBeRememberedTwice()
@@ -48,6 +57,11 @@ extends Mephex_Test_TestCase
     
     
     
+    /**
+	 * @covers Mephex_Cache_Object::remember
+	 * @covers Mephex_Cache_Object::find
+	 * @depends testACacheHasARememberedKey
+     */
     public function testRememberedValuesAreRetrievable()
     {
     	$key	= 'some_key';
@@ -60,6 +74,7 @@ extends Mephex_Test_TestCase
     
     
     /**
+	 * @covers Mephex_Cache_Object::find
      * @expectedException Mephex_Cache_Exception_UnknownKey
      */
     public function testSearchingForANonRememberedKeyThrowsAnException()
@@ -69,6 +84,11 @@ extends Mephex_Test_TestCase
     
     
     
+    /**
+	 * @covers Mephex_Cache_Object::forget
+     * @depends testACacheHasARememberedKey
+     * @depends testRememberedValuesAreRetrievable
+     */
     public function testARememberedKeyCanBeForgotten()
     {
     	$key	= 'some_key';
@@ -84,6 +104,7 @@ extends Mephex_Test_TestCase
     
     
     /**
+	 * @covers Mephex_Cache_Object::forget
      * @expectedException Mephex_Cache_Exception_UnknownKey
      */
     public function testForgettingANonRememberedKeyThrowsAnException()
@@ -93,6 +114,9 @@ extends Mephex_Test_TestCase
     
     
     
+    /**
+	 * @covers Mephex_Cache_Object::forget
+     */
     public function testTheExceptionThrownByForgettingANonRememberedKeyCanBeSuppressed()
     {
     	$this->assertFalse($this->_cache->forget('unknown_key', true));
@@ -100,6 +124,10 @@ extends Mephex_Test_TestCase
     
     
     
+    /**
+	 * @covers Mephex_Cache_Object::forgetAll
+     * @depends testACacheHasARememberedKey
+     */
     public function testAllKeysAndObjectsCanBeForgotten()
     {
     	$values	= array
@@ -130,6 +158,10 @@ extends Mephex_Test_TestCase
     
     
     
+    /**
+	 * @covers Mephex_Cache_Object::removeObject
+     * @depends testACacheHasARememberedKey
+     */
     public function testObjectCanBeCompletelyRemovedFromCache()
     {
     	$values	= array

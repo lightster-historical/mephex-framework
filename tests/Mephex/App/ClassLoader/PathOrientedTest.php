@@ -5,6 +5,9 @@
 class Mephex_App_ClassLoader_PathOrientedTest
 extends Mephex_Test_TestCase
 {
+	/**
+	 * @covers Mephex_App_ClassLoader_PathOriented::loadClass
+	 */
 	public function testNonPrefixedClassLoaderCanLoadAnyClass()
 	{
 		$class_loader	= new Mephex_App_ClassLoader_PathOriented();
@@ -16,6 +19,11 @@ extends Mephex_Test_TestCase
 	
 	
 	
+	/**
+	 * @covers Mephex_App_ClassLoader_PathOriented::__construct
+	 * @covers Mephex_App_ClassLoader_PathOriented::loadClass
+	 * @covers Mephex_App_ClassLoader_PathOriented::isPrefixRequirementMet
+	 */
 	public function testPrefixedClassLoaderCanLoadPrefixedClass()
 	{
 		$class_loader	= new Mephex_App_ClassLoader_PathOriented('Stub_Mephex_App_ClassLoader_PathOriented_Allowed');
@@ -27,6 +35,11 @@ extends Mephex_Test_TestCase
 	
 	
 	
+	/**
+	 * @covers Mephex_App_ClassLoader_PathOriented::__construct
+	 * @covers Mephex_App_ClassLoader_PathOriented::loadClass
+	 * @covers Mephex_App_ClassLoader_PathOriented::isPrefixRequirementMet
+	 */
 	public function testPrefixedClassLoaderCannotLoadNonPrefixedClass()
 	{
 		$class_loader	= new Mephex_App_ClassLoader_PathOriented('Stub_Mephex_App_ClassLoader_PathOriented_Allowed');
@@ -38,6 +51,9 @@ extends Mephex_Test_TestCase
 	
 	
 	
+	/**
+	 * @covers Mephex_App_ClassLoader_PathOriented::loadClass
+	 */
 	public function testAttemptingToLoadANonExistantClassDoesNotCauseAFatalError()
 	{
 		$class_loader	= new Mephex_App_ClassLoader_PathOriented();

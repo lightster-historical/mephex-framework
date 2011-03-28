@@ -43,6 +43,9 @@ extends Mephex_Test_TestCase
 	
 	
 	
+	/**
+	 * @covers Mephex_App_AutoLoader::getInstance
+	 */
 	public function testGetInstanceReturnsAutoLoaderInstance()
 	{
 		$this->assertTrue(Mephex_App_AutoLoader::getInstance() instanceof Mephex_App_AutoLoader);
@@ -50,6 +53,9 @@ extends Mephex_Test_TestCase
 	
 	
 	
+	/**
+	 * @covers Mephex_App_AutoLoader::getInstance
+	 */
 	public function testGetInstanceConsistentlyReturnsSameInstance()
 	{
 		$this->assertTrue(Mephex_App_AutoLoader::getInstance() === Mephex_App_AutoLoader::getInstance());
@@ -57,6 +63,11 @@ extends Mephex_Test_TestCase
 	
 	
 	
+	/**
+	 * @covers Mephex_App_AutoLoader::__construct
+	 * @covers Mephex_App_AutoLoader::addClassLoader
+	 * @covers Mephex_App_AutoLoader::loadClass
+	 */
 	public function testAutoLoaderCanLoadClass()
 	{
 		$this->assertFalse(class_exists('Stub_Mephex_App_AutoLoader_PrefixA1', false));
@@ -66,6 +77,9 @@ extends Mephex_Test_TestCase
 	
 	
 	
+	/**
+	 * @covers Mephex_App_AutoLoader::loadClass
+	 */
 	public function testAutoLoaderCanUseSecondaryClassLoader()
 	{
 		$this->assertFalse(class_exists('Stub_Mephex_App_AutoLoader_PrefixB1', false));
@@ -75,6 +89,9 @@ extends Mephex_Test_TestCase
 	
 	
 	
+	/**
+	 * @covers Mephex_App_AutoLoader::loadClass
+	 */
 	public function testAutoLoaderDoesNotAttemptToLoadAnAlreadyLoadedClass()
 	{
 		$this->_auto_loader->loadClass('Mephex_App_AutoLoader');
@@ -83,6 +100,9 @@ extends Mephex_Test_TestCase
 	
 	
 	
+	/**
+	 * @covers Mephex_App_AutoLoader::registerSpl
+	 */
 	public function testAutoLoaderCanRegisterItselfWithSpl()
 	{
 		$this->_auto_loader	= new Mephex_App_AutoLoader();
@@ -97,6 +117,10 @@ extends Mephex_Test_TestCase
 	
 	
 	
+	/**
+	 * @covers Mephex_App_AutoLoader::unregisterSpl
+	 * @depends testAutoLoaderCanRegisterItselfWithSpl
+	 */
 	public function testAutoLoaderCanUnregisterItselfWithSpl()
 	{
 		$this->_auto_loader	= new Mephex_App_AutoLoader();
