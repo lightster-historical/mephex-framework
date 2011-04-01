@@ -69,4 +69,56 @@ extends Mephex_Test_TestCase
 	{
 		$this->_controller->runAction('inaccessible');
 	}
+	
+	
+	
+	/**
+	 * @covers Mephex_App_Action_Controller::processPreAction
+	 * @depends testActionMethodCanBeCalled
+	 */
+	public function testProcessPreActionIsCalledBeforeActionAndPostAction()
+	{
+		$this->_controller	= new Stub_Mephex_App_Action_Controller_PreProcess();
+		
+		$this->assertFalse($this->_controller->isPreActionProcessed());
+		$this->assertFalse($this->_controller->isPostActionProcessed());
+		
+		try
+		{
+			$this->_controller->runAction('index');
+		}
+		catch(Stub_Mephex_App_Action_Exception_PreProcessTestException $ex)
+		{
+		}
+		
+		$this->assertTrue($this->_controller->isPreActionProcessed());
+		$this->assertEquals('index', $this->_controller->getActionName());
+		$this->assertFalse($this->_controller->isPostActionProcessed());
+	}
+	
+	
+	
+	/**
+	 * @covers Mephex_App_Action_Controller::processPostAction
+	 * @depends testActionMethodCanBeCalled
+	 */
+	public function testProcessPostActionIsCalledAfterPreActionAndAction()
+	{
+		$this->_controller	= new Stub_Mephex_App_Action_Controller_PostProcess();
+		
+		$this->assertFalse($this->_controller->isPreActionProcessed());
+		$this->assertFalse($this->_controller->isPostActionProcessed());
+		
+		try
+		{
+			$this->_controller->runAction('index');
+		}
+		catch(Stub_Mephex_App_Action_Exception_PostProcessTestException $ex)
+		{
+		}
+		
+		$this->assertTrue($this->_controller->isPreActionProcessed());
+		$this->assertEquals('index', $this->_controller->getActionName());
+		$this->assertTrue($this->_controller->isPostActionProcessed());
+	}
 }
