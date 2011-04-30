@@ -9,6 +9,12 @@
  */
 abstract class Mephex_App_Action_Controller
 {
+	public function __construct()
+	{
+	}
+	
+	
+	
 	/**
 	 * Runs the given action and the pre/post action processes.
 	 * 
