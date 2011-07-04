@@ -6,6 +6,16 @@ class Mephex_App_ClassLoaderTest
 extends Mephex_Test_TestCase
 {
 	/**
+	 * @covers Mephex_App_ClassLoader::__construct
+	 */
+	public function testClassLoaderCanBeInstantiated()
+	{
+		$class_loader	= new Stub_Mephex_App_ClassLoader();	
+	}
+	
+	
+	
+	/**
 	 * @covers Mephex_App_ClassLoader::includeExists
 	 */
 	public function testIncludeExistsFindsPathsInIncludePath()

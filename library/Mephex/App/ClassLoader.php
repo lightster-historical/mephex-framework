@@ -9,6 +9,12 @@
  */
 abstract class Mephex_App_ClassLoader
 {
+	public function __construct()
+	{
+	}
+	
+	
+	
 	/**
 	 * Loads the class of the given name.
 	 * 

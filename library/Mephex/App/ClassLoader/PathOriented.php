@@ -33,6 +33,8 @@ extends Mephex_App_ClassLoader
 	 */
 	public function __construct($required_prefix = null)
 	{
+		parent::__construct();
+		
 		$this->_required_prefix	= $required_prefix;
 	}
 	
