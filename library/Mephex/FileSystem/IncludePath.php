@@ -81,7 +81,7 @@ class Mephex_FileSystem_IncludePath
 			return (is_readable($path) ? $path : null);
 		}
 		
-		foreach($this->_include_paths as $include_path)
+		foreach($this->getIncludePaths() as $include_path)
 		{
 			$full_path	= $include_path . '/' . $path;
 			
@@ -110,7 +110,7 @@ class Mephex_FileSystem_IncludePath
 		}
 
 		$all	= array();
-		foreach($this->_include_paths as $include_path)
+		foreach($this->getIncludePaths() as $include_path)
 		{
 			$full_path	= $include_path . '/' . $path;
 			
