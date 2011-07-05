@@ -87,7 +87,7 @@ extends Mephex_Test_TestCase
 		{
 			$this->_controller->runAction('index');
 		}
-		catch(Stub_Mephex_Controller_Exception_PreProcessTestException $ex)
+		catch(Stub_Mephex_Controller_Action_Exception_PreProcessTestException $ex)
 		{
 		}
 		
@@ -113,7 +113,7 @@ extends Mephex_Test_TestCase
 		{
 			$this->_controller->runAction('index');
 		}
-		catch(Stub_Mephex_Controller_Exception_PostProcessTestException $ex)
+		catch(Stub_Mephex_Controller_Action_Exception_PostProcessTestException $ex)
 		{
 		}
 		

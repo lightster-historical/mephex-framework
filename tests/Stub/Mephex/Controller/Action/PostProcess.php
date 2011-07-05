@@ -8,6 +8,6 @@ extends Stub_Mephex_Controller_Action
 	protected function processPostAction()
 	{
 		parent::processPostAction();
-		throw new Stub_Mephex_Controller_Exception_PostProcessTestException();
+		throw new Stub_Mephex_Controller_Action_Exception_PostProcessTestException();
 	}
 }

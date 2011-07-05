@@ -8,7 +8,7 @@ extends Stub_Mephex_Controller_Action
 	protected function processPostAction()
 	{
 		parent::processPostAction();
-		throw new Stub_Mephex_Controller_Exception_PreProcessTestException();
+		throw new Stub_Mephex_Controller_Action_Exception_PreProcessTestException();
 	}
 	
 	
@@ -16,6 +16,6 @@ extends Stub_Mephex_Controller_Action
 	public function serveIndex()
 	{
 		parent::serveIndex();
-		throw new Stub_Mephex_Controller_Exception_PreProcessTestException();
+		throw new Stub_Mephex_Controller_Action_Exception_PreProcessTestException();
 	}
 }
