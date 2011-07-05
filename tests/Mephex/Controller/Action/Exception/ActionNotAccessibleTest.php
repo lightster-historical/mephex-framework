@@ -2,7 +2,7 @@
 
 
  
-class Mephex_App_Action_Controller_Exception_ActionNotAccessibleTest
+class Mephex_Controller_Action_Exception_ActionNotAccessibleTest
 extends Mephex_Test_TestCase
 {
 	protected $_controller;
@@ -15,11 +15,11 @@ extends Mephex_Test_TestCase
 	
 	public function setUp()
 	{
-		$this->_controller	= new Stub_Mephex_App_Action_Controller();
+		$this->_controller	= new Stub_Mephex_Controller_Action();
 		$this->_method_name	= 'serveindex';
 		$this->_action_name	= 'index';
 		
-		$this->_exception	= new Mephex_App_Action_Controller_Exception_ActionNotAccessible
+		$this->_exception	= new Mephex_Controller_Action_Exception_ActionNotAccessible
 		(
 			$this->_controller, 
 			$this->_method_name, 
@@ -30,7 +30,7 @@ extends Mephex_Test_TestCase
 	
 	
 	/**
-	 * @expectedException Mephex_App_Action_Controller_Exception_ActionNotAccessible
+	 * @expectedException Mephex_Controller_Action_Exception_ActionNotAccessible
 	 */
     public function testExceptionIsThrowable()
     {
@@ -40,8 +40,8 @@ extends Mephex_Test_TestCase
     
     
     /**
-	 * @covers Mephex_App_Action_Controller_Exception_ActionNotAccessible::__construct 
-	 * @covers Mephex_App_Action_Controller_Exception_ActionNotAccessible::getController 
+	 * @covers Mephex_Controller_Action_Exception_ActionNotAccessible::__construct 
+	 * @covers Mephex_Controller_Action_Exception_ActionNotAccessible::getController 
      */
     public function testControllerCanBeRetrieved()
     {
@@ -51,8 +51,8 @@ extends Mephex_Test_TestCase
     
     
     /**
-	 * @covers Mephex_App_Action_Controller_Exception_ActionNotAccessible::__construct
-	 * @covers Mephex_App_Action_Controller_Exception_ActionNotAccessible::getMethodName 
+	 * @covers Mephex_Controller_Action_Exception_ActionNotAccessible::__construct
+	 * @covers Mephex_Controller_Action_Exception_ActionNotAccessible::getMethodName 
      */
     public function testMethodNameCanBeRetrieved()
     {
@@ -62,8 +62,8 @@ extends Mephex_Test_TestCase
     
     
     /**
-	 * @covers Mephex_App_Action_Controller_Exception_ActionNotAccessible::__construct
-	 * @covers Mephex_App_Action_Controller_Exception_ActionNotAccessible::getActionName 
+	 * @covers Mephex_Controller_Action_Exception_ActionNotAccessible::__construct
+	 * @covers Mephex_Controller_Action_Exception_ActionNotAccessible::getActionName 
      */
     public function testActionNameCanBeRetrieved()
     {

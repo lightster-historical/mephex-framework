@@ -2,8 +2,8 @@
 
 
 
-class Stub_Mephex_App_Action_Controller_Http
-extends Mephex_App_Action_Controller_Http
+class Stub_Mephex_Controller_Action_Http
+extends Mephex_Controller_Action_Http
 {
 	public function getHttpConnectionInfo() 
 		{return parent::getHttpConnectionInfo();}

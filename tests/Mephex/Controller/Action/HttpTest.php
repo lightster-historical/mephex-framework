@@ -2,7 +2,7 @@
 
 
 
-class Mephex_App_Action_Controller_HttpTest
+class Mephex_Controller_Action_HttpTest
 extends Mephex_Test_TestCase
 {
 	protected $_controller;
@@ -17,23 +17,23 @@ extends Mephex_Test_TestCase
 		$_POST['unitTesting']	= 'POST';
 		$_GET['unitTesting']	= 'GET';
 		
-		$this->_controller	= new Stub_Mephex_App_Action_Controller_Http();
+		$this->_controller	= new Stub_Mephex_Controller_Action_Http();
 	}
 	
 	
 	
 	/**
-	 * @covers Mephex_App_Action_Controller_Http::__construct
+	 * @covers Mephex_Controller_Action_Http::__construct
 	 */
 	public function testHttpControllerExtendsActionController()
 	{
-		$this->assertTrue($this->_controller instanceof Mephex_App_Action_Controller);
+		$this->assertTrue($this->_controller instanceof Mephex_Controller_Action);
 	}
 	
 	
 	
 	/**
-	 * @covers Mephex_App_Action_Controller_Http::getHttpConnectionInfo
+	 * @covers Mephex_Controller_Action_Http::getHttpConnectionInfo
 	 */
 	public function testHttpConnectionInfoIsAvailable()
 	{
@@ -46,7 +46,7 @@ extends Mephex_Test_TestCase
 	
 	
 	/**
-	 * @covers Mephex_App_Action_Controller_Http::getPostRequest
+	 * @covers Mephex_Controller_Action_Http::getPostRequest
 	 */
 	public function testPostRequestIsAvailable()
 	{
@@ -59,7 +59,7 @@ extends Mephex_Test_TestCase
 	
 	
 	/**
-	 * @covers Mephex_App_Action_Controller_Http::getGetRequest
+	 * @covers Mephex_Controller_Action_Http::getGetRequest
 	 */
 	public function testGetRequestIsAvailable()
 	{
