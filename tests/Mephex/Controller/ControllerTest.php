@@ -2,7 +2,7 @@
 
 
 
-class Mephex_App_Action_ControllerTest
+class Mephex_Controller_ControllerTest
 extends Mephex_Test_TestCase
 {
 	protected $_controller;
@@ -13,13 +13,13 @@ extends Mephex_Test_TestCase
 	{
 		parent::setUp();
 		
-		$this->_controller	= new Stub_Mephex_App_Action_Controller();
+		$this->_controller	= new Stub_Mephex_Controller_Controller();
 	}
 	
 	
 	
 	/**
-	 * @covers Mephex_App_Action_Controller::getActionMethodName
+	 * @covers Mephex_Controller_Controller::getActionMethodName
 	 */
 	public function testActionMethodNameCanBeRetrieved()
 	{
@@ -31,8 +31,8 @@ extends Mephex_Test_TestCase
 	
 	
 	/**
-	 * @covers Mephex_App_Action_Controller::runAction
-	 * @covers Mephex_App_Action_Controller::processAction
+	 * @covers Mephex_Controller_Controller::runAction
+	 * @covers Mephex_Controller_Controller::processAction
 	 */
 	public function testActionMethodCanBeCalled()
 	{
@@ -49,9 +49,9 @@ extends Mephex_Test_TestCase
 	
 	
 	/**
-	 * @covers Mephex_App_Action_Controller::runAction
-	 * @covers Mephex_App_Action_Controller::processAction
-	 * @expectedException Mephex_App_Action_Controller_Exception_ActionNotFound
+	 * @covers Mephex_Controller_Controller::runAction
+	 * @covers Mephex_Controller_Controller::processAction
+	 * @expectedException Mephex_Controller_Controller_Exception_ActionNotFound
 	 */
 	public function testCallingAnUnknownActionThrowsAnException()
 	{
@@ -61,9 +61,9 @@ extends Mephex_Test_TestCase
 	
 	
 	/**
-	 * @covers Mephex_App_Action_Controller::runAction
-	 * @covers Mephex_App_Action_Controller::processAction
-	 * @expectedException Mephex_App_Action_Controller_Exception_ActionNotAccessible
+	 * @covers Mephex_Controller_Controller::runAction
+	 * @covers Mephex_Controller_Controller::processAction
+	 * @expectedException Mephex_Controller_Controller_Exception_ActionNotAccessible
 	 */
 	public function testCallingAnInaccessibleActionThrowsAnException()
 	{
@@ -73,12 +73,12 @@ extends Mephex_Test_TestCase
 	
 	
 	/**
-	 * @covers Mephex_App_Action_Controller::processPreAction
+	 * @covers Mephex_Controller_Controller::processPreAction
 	 * @depends testActionMethodCanBeCalled
 	 */
 	public function testProcessPreActionIsCalledBeforeActionAndPostAction()
 	{
-		$this->_controller	= new Stub_Mephex_App_Action_Controller_PreProcess();
+		$this->_controller	= new Stub_Mephex_Controller_Controller_PreProcess();
 		
 		$this->assertFalse($this->_controller->isPreActionProcessed());
 		$this->assertFalse($this->_controller->isPostActionProcessed());
@@ -87,7 +87,7 @@ extends Mephex_Test_TestCase
 		{
 			$this->_controller->runAction('index');
 		}
-		catch(Stub_Mephex_App_Action_Exception_PreProcessTestException $ex)
+		catch(Stub_Mephex_Controller_Exception_PreProcessTestException $ex)
 		{
 		}
 		
@@ -99,12 +99,12 @@ extends Mephex_Test_TestCase
 	
 	
 	/**
-	 * @covers Mephex_App_Action_Controller::processPostAction
+	 * @covers Mephex_Controller_Controller::processPostAction
 	 * @depends testActionMethodCanBeCalled
 	 */
 	public function testProcessPostActionIsCalledAfterPreActionAndAction()
 	{
-		$this->_controller	= new Stub_Mephex_App_Action_Controller_PostProcess();
+		$this->_controller	= new Stub_Mephex_Controller_Controller_PostProcess();
 		
 		$this->assertFalse($this->_controller->isPreActionProcessed());
 		$this->assertFalse($this->_controller->isPostActionProcessed());
@@ -113,7 +113,7 @@ extends Mephex_Test_TestCase
 		{
 			$this->_controller->runAction('index');
 		}
-		catch(Stub_Mephex_App_Action_Exception_PostProcessTestException $ex)
+		catch(Stub_Mephex_Controller_Exception_PostProcessTestException $ex)
 		{
 		}
 		

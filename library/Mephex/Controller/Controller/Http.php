@@ -7,8 +7,8 @@
  * 
  * @author mlight
  */
-abstract class Mephex_App_Action_Controller_Http
-extends Mephex_App_Action_Controller
+abstract class Mephex_Controller_Controller_Http
+extends Mephex_Controller_Controller
 {
 	/**
 	 * The HTTP connection info.

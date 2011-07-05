@@ -3,17 +3,16 @@
 
 
 /**
- * An exception that is thrown when a controller action exists but is
- * not accessible.
+ * An exception that is thrown when a requested controller action does not exist.
  * 
  * @author mlight
  */
-class Mephex_App_Action_Controller_Exception_ActionNotAccessible
+class Mephex_Controller_Controller_Exception_ActionNotFound
 extends Mephex_Exception
 {
 	/**
 	 * The controller which is supposed to have the accessible action.
-	 * @var Mephex_App_Action_Controller
+	 * @var Mephex_Controller_Controller
 	 */
 	private $_controller;
 	
@@ -33,18 +32,18 @@ extends Mephex_Exception
 	
 	
 	/**
-	 * @param Mephex_App_Action_Controller $controller - the controller in which
+	 * @param Mephex_Controller_Controller $controller - the controller in which
 	 * 		the action was being searched for
 	 * @param string $method_name - the method name that was searched for
 	 * @param string $action_name - the action name that was being search for
 	 * @param string $message - a custom exception message to use
 	 */
-	public function __construct(Mephex_App_Action_Controller $controller, $method_name, $action_name, $message = null) 
+	public function __construct(Mephex_Controller_Controller $controller, $method_name, $action_name, $message = null) 
 	{
 		if(!$message)
 		{
 			$message	= "Controller '" . get_class($controller) 
-				. "' contains method '{$method_name}' for '{$action_name}' action but it is inaccessible.";
+				. "' does not contain method '{$method_name}' for '{$action_name}' action.";
 		}
 		
 		parent::__construct($message);
@@ -59,7 +58,7 @@ extends Mephex_Exception
 	/**
 	 * Getter for controller.
 	 * 
-	 * @return Mephex_App_Action_Controller
+	 * @return Mephex_Controller_Controller
 	 */
 	public function getController()
 	{
