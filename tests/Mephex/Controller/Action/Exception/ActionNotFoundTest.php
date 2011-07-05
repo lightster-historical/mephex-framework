@@ -2,7 +2,7 @@
 
 
  
-class Mephex_Controller_Controller_Exception_ActionNotFoundTest
+class Mephex_Controller_Action_Exception_ActionNotFoundTest
 extends Mephex_Test_TestCase
 {
 	protected $_controller;
@@ -15,11 +15,11 @@ extends Mephex_Test_TestCase
 	
 	public function setUp()
 	{
-		$this->_controller	= new Stub_Mephex_Controller_Controller();
+		$this->_controller	= new Stub_Mephex_Controller_Action();
 		$this->_method_name	= 'serveindex';
 		$this->_action_name	= 'index';
 		
-		$this->_exception	= new Mephex_Controller_Controller_Exception_ActionNotFound
+		$this->_exception	= new Mephex_Controller_Action_Exception_ActionNotFound
 		(
 			$this->_controller, 
 			$this->_method_name, 
@@ -30,7 +30,7 @@ extends Mephex_Test_TestCase
 	
 	
 	/**
-	 * @expectedException Mephex_Controller_Controller_Exception_ActionNotFound
+	 * @expectedException Mephex_Controller_Action_Exception_ActionNotFound
 	 */
     public function testExceptionIsThrowable()
     {
@@ -40,8 +40,8 @@ extends Mephex_Test_TestCase
     
     
     /**
-	 * @covers Mephex_Controller_Controller_Exception_ActionNotFound::__construct 
-	 * @covers Mephex_Controller_Controller_Exception_ActionNotFound::getController 
+	 * @covers Mephex_Controller_Action_Exception_ActionNotFound::__construct 
+	 * @covers Mephex_Controller_Action_Exception_ActionNotFound::getController 
      */
     public function testControllerCanBeRetrieved()
     {
@@ -51,8 +51,8 @@ extends Mephex_Test_TestCase
     
     
     /**
-	 * @covers Mephex_Controller_Controller_Exception_ActionNotFound::__construct
-	 * @covers Mephex_Controller_Controller_Exception_ActionNotFound::getMethodName 
+	 * @covers Mephex_Controller_Action_Exception_ActionNotFound::__construct
+	 * @covers Mephex_Controller_Action_Exception_ActionNotFound::getMethodName 
      */
     public function testMethodNameCanBeRetrieved()
     {
@@ -62,8 +62,8 @@ extends Mephex_Test_TestCase
     
     
     /**
-	 * @covers Mephex_Controller_Controller_Exception_ActionNotFound::__construct
-	 * @covers Mephex_Controller_Controller_Exception_ActionNotFound::getActionName 
+	 * @covers Mephex_Controller_Action_Exception_ActionNotFound::__construct
+	 * @covers Mephex_Controller_Action_Exception_ActionNotFound::getActionName 
      */
     public function testActionNameCanBeRetrieved()
     {

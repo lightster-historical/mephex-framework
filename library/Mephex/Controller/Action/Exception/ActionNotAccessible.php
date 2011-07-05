@@ -8,12 +8,12 @@
  * 
  * @author mlight
  */
-class Mephex_Controller_Controller_Exception_ActionNotAccessible
+class Mephex_Controller_Action_Exception_ActionNotAccessible
 extends Mephex_Exception
 {
 	/**
 	 * The controller which is supposed to have the accessible action.
-	 * @var Mephex_Controller_Controller
+	 * @var Mephex_Controller_Action
 	 */
 	private $_controller;
 	
@@ -33,13 +33,13 @@ extends Mephex_Exception
 	
 	
 	/**
-	 * @param Mephex_Controller_Controller $controller - the controller in which
+	 * @param Mephex_Controller_Action $controller - the controller in which
 	 * 		the action was being searched for
 	 * @param string $method_name - the method name that was searched for
 	 * @param string $action_name - the action name that was being search for
 	 * @param string $message - a custom exception message to use
 	 */
-	public function __construct(Mephex_Controller_Controller $controller, $method_name, $action_name, $message = null) 
+	public function __construct(Mephex_Controller_Action $controller, $method_name, $action_name, $message = null) 
 	{
 		if(!$message)
 		{
@@ -59,7 +59,7 @@ extends Mephex_Exception
 	/**
 	 * Getter for controller.
 	 * 
-	 * @return Mephex_Controller_Controller
+	 * @return Mephex_Controller_Action
 	 */
 	public function getController()
 	{

@@ -7,7 +7,7 @@
  * 
  * @author mlight
  */
-abstract class Mephex_Controller_Controller
+abstract class Mephex_Controller_Action
 {
 	public function __construct()
 	{
@@ -59,8 +59,8 @@ abstract class Mephex_Controller_Controller
 	 * 
 	 * @param unknown_type $action_name
 	 * @return void
-	 * @throws Mephex_Controller_Controller_Exception_ActionNotFound
-	 * @throws Mephex_Controller_Controller_Exception_ActionNotAccessible
+	 * @throws Mephex_Controller_Action_Exception_ActionNotFound
+	 * @throws Mephex_Controller_Action_Exception_ActionNotAccessible
 	 */
 	protected function processAction($action_name)
 	{
@@ -68,11 +68,11 @@ abstract class Mephex_Controller_Controller
 		
 		if(!method_exists($this, $method_name))
 		{
-			throw new Mephex_Controller_Controller_Exception_ActionNotFound($this, $method_name, $action_name);
+			throw new Mephex_Controller_Action_Exception_ActionNotFound($this, $method_name, $action_name);
 		}
 		else if(!is_callable(array($this, $method_name)))
 		{
-			throw new Mephex_Controller_Controller_Exception_ActionNotAccessible($this, $method_name, $action_name);
+			throw new Mephex_Controller_Action_Exception_ActionNotAccessible($this, $method_name, $action_name);
 		}
 		
 		$this->{$method_name}();

@@ -2,8 +2,8 @@
 
 
 
-class Stub_Mephex_Controller_Controller_PreProcess
-extends Stub_Mephex_Controller_Controller
+class Stub_Mephex_Controller_Action_PreProcess
+extends Stub_Mephex_Controller_Action
 {
 	protected function processPostAction()
 	{
