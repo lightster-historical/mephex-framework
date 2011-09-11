@@ -7,7 +7,7 @@
  * 
  * @author mlight
  */
-abstract class Mephex_Controller_Action
+abstract class Mephex_Controller_Action_Base
 {
 	public function __construct()
 	{

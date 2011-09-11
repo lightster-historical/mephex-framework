@@ -12,7 +12,7 @@ extends Mephex_Exception
 {
 	/**
 	 * The controller which is supposed to have the accessible action.
-	 * @var Mephex_Controller_Action
+	 * @var Mephex_Controller_Action_Base
 	 */
 	private $_controller;
 	
@@ -32,13 +32,13 @@ extends Mephex_Exception
 	
 	
 	/**
-	 * @param Mephex_Controller_Action $controller - the controller in which
+	 * @param Mephex_Controller_Action_Base $controller - the controller in which
 	 * 		the action was being searched for
 	 * @param string $method_name - the method name that was searched for
 	 * @param string $action_name - the action name that was being search for
 	 * @param string $message - a custom exception message to use
 	 */
-	public function __construct(Mephex_Controller_Action $controller, $method_name, $action_name, $message = null) 
+	public function __construct(Mephex_Controller_Action_Base $controller, $method_name, $action_name, $message = null) 
 	{
 		if(!$message)
 		{
@@ -58,7 +58,7 @@ extends Mephex_Exception
 	/**
 	 * Getter for controller.
 	 * 
-	 * @return Mephex_Controller_Action
+	 * @return Mephex_Controller_Action_Base
 	 */
 	public function getController()
 	{

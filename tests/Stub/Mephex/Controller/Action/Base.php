@@ -2,8 +2,8 @@
 
 
 
-class Stub_Mephex_Controller_Action
-extends Mephex_Controller_Action
+class Stub_Mephex_Controller_Action_Base
+extends Mephex_Controller_Action_Base
 {
 	private $isPreActionProcessed	= false;
 	private $isPostActionProcessed	= false;

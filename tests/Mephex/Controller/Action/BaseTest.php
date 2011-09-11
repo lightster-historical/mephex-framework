@@ -2,7 +2,7 @@
 
 
 
-class Mephex_Controller_ActionTest
+class Mephex_Controller_Action_BaseTest
 extends Mephex_Test_TestCase
 {
 	protected $_controller;
@@ -13,13 +13,13 @@ extends Mephex_Test_TestCase
 	{
 		parent::setUp();
 		
-		$this->_controller	= new Stub_Mephex_Controller_Action();
+		$this->_controller	= new Stub_Mephex_Controller_Action_Base();
 	}
 	
 	
 	
 	/**
-	 * @covers Mephex_Controller_Action::getActionMethodName
+	 * @covers Mephex_Controller_Action_Base::getActionMethodName
 	 */
 	public function testActionMethodNameCanBeRetrieved()
 	{
@@ -31,8 +31,8 @@ extends Mephex_Test_TestCase
 	
 	
 	/**
-	 * @covers Mephex_Controller_Action::runAction
-	 * @covers Mephex_Controller_Action::processAction
+	 * @covers Mephex_Controller_Action_Base::runAction
+	 * @covers Mephex_Controller_Action_Base::processAction
 	 */
 	public function testActionMethodCanBeCalled()
 	{
@@ -49,8 +49,8 @@ extends Mephex_Test_TestCase
 	
 	
 	/**
-	 * @covers Mephex_Controller_Action::runAction
-	 * @covers Mephex_Controller_Action::processAction
+	 * @covers Mephex_Controller_Action_Base::runAction
+	 * @covers Mephex_Controller_Action_Base::processAction
 	 * @expectedException Mephex_Controller_Action_Exception_ActionNotFound
 	 */
 	public function testCallingAnUnknownActionThrowsAnException()
@@ -61,8 +61,8 @@ extends Mephex_Test_TestCase
 	
 	
 	/**
-	 * @covers Mephex_Controller_Action::runAction
-	 * @covers Mephex_Controller_Action::processAction
+	 * @covers Mephex_Controller_Action_Base::runAction
+	 * @covers Mephex_Controller_Action_Base::processAction
 	 * @expectedException Mephex_Controller_Action_Exception_ActionNotAccessible
 	 */
 	public function testCallingAnInaccessibleActionThrowsAnException()
@@ -73,7 +73,7 @@ extends Mephex_Test_TestCase
 	
 	
 	/**
-	 * @covers Mephex_Controller_Action::processPreAction
+	 * @covers Mephex_Controller_Action_Base::processPreAction
 	 * @depends testActionMethodCanBeCalled
 	 */
 	public function testProcessPreActionIsCalledBeforeActionAndPostAction()
@@ -99,7 +99,7 @@ extends Mephex_Test_TestCase
 	
 	
 	/**
-	 * @covers Mephex_Controller_Action::processPostAction
+	 * @covers Mephex_Controller_Action_Base::processPostAction
 	 * @depends testActionMethodCanBeCalled
 	 */
 	public function testProcessPostActionIsCalledAfterPreActionAndAction()

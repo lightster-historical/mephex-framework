@@ -3,7 +3,7 @@
 
 
 class Stub_Mephex_Controller_Action_PostProcess
-extends Stub_Mephex_Controller_Action
+extends Stub_Mephex_Controller_Action_Base
 {
 	protected function processPostAction()
 	{

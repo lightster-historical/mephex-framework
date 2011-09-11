@@ -15,7 +15,7 @@ extends Mephex_Test_TestCase
 	
 	public function setUp()
 	{
-		$this->_controller	= new Stub_Mephex_Controller_Action();
+		$this->_controller	= new Stub_Mephex_Controller_Action_Base();
 		$this->_method_name	= 'serveindex';
 		$this->_action_name	= 'index';
 		
