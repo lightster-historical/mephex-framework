@@ -19,6 +19,17 @@ extends Mephex_Test_TestCase
 	
 	
 	/**
+	 * @covers Mephex_Controller_Action
+	 * @covers Mephex_Controller_Action_Base::__construct
+	 */
+	public function testHttpControllerExtendsActionController()
+	{
+		$this->assertTrue($this->_controller instanceof Mephex_Controller_Action_Base);
+	}
+	
+	
+	
+	/**
 	 * @covers Mephex_Controller_Action_Base::getActionMethodName
 	 */
 	public function testActionMethodNameCanBeRetrieved()

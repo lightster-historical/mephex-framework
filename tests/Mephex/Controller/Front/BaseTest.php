@@ -15,6 +15,7 @@ extends Mephex_Test_TestCase
 
 
 	/**
+	 * @covers Mephex_Controller_Front
 	 * @covers Mephex_Controller_Front_Base
 	 * @covers Mephex_Controller_Front_Base::__construct
 	 */
