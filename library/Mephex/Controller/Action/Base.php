@@ -3,11 +3,13 @@
 
 
 /**
- * Controller for grouping similar actions/processes.
+ * Controller for grouping similar actions/processes
+ * with base implementation.
  * 
  * @author mlight
  */
 abstract class Mephex_Controller_Action_Base
+implements Mephex_Controller_Action
 {
 	public function __construct()
 	{

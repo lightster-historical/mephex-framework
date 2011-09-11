@@ -27,7 +27,7 @@ extends Mephex_Test_TestCase
 	 */
 	public function testHttpControllerExtendsActionController()
 	{
-		$this->assertTrue($this->_controller instanceof Mephex_Controller_Action_Base);
+		$this->assertTrue($this->_controller instanceof Mephex_Controller_Action);
 	}
 	
 	
