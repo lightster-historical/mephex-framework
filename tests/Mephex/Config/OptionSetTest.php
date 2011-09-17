@@ -340,9 +340,52 @@ extends Mephex_Test_TestCase
 	
 	
 	/**
+	 * @covers Mephex_Config_OptionSet::get
+	 * @covers Mephex_Config_OptionSet::stackLoader
+	 * @covers Mephex_Config_OptionSet::loadGenericOptions
+	 * @depends testOptionsCanBeRetrieved
+	 * @depends testOptionsCanBeLoadedFromGroupLoaders
+	 * @depends testOptionsCanBeLoadedFromGenericLoaders
+	 */
+	public function testGenericLoaderCanBeAddedToFrontOfList()
+	{
+		$option_set	= $this->getOptionSet(false);
+		$option_set->addLoader(new Stub_Mephex_Config_Loader());
+		$option_set->stackLoader(new Stub_Mephex_Config_GroupLoader());
+		
+		$this->assertFalse($option_set->hasOption('collision', 'source'));
+		
+		$this->assertEquals('group', $option_set->get('collision', 'source'));
+	}
+	
+	
+	
+	/**
+	 * @covers Mephex_Config_OptionSet::get
+	 * @covers Mephex_Config_OptionSet::stackLoader
+	 * @covers Mephex_Config_OptionSet::loadGroupOptions
+	 * @depends testOptionsCanBeRetrieved
+	 * @depends testOptionsCanBeLoadedFromGroupLoaders
+	 * @depends testOptionsCanBeLoadedFromGenericLoaders
+	 */
+	public function testGroupLoaderCanBeAddedToFrontOfList()
+	{
+		$option_set	= $this->getOptionSet(false);
+		$option_set->addLoader(new Stub_Mephex_Config_GroupLoader(), 'collision');
+		$option_set->stackLoader(new Stub_Mephex_Config_Loader(), 'collision');
+		$option_set->stackLoader(new Stub_Mephex_Config_GroupLoader());
+		
+		$this->assertFalse($option_set->hasOption('collision', 'source'));
+		
+		$this->assertEquals('main', $option_set->get('collision', 'source'));
+	}
+	
+	
+	
+	/**
 	 * @covers Mephex_Config_OptionSet::hasOption
 	 */
-	public function testLoadOptionsReturnsTrueIfTheOptionExists()
+	public function testHasOptionReturnsTrueIfTheOptionExists()
 	{
 		$option_set	= $this->getOptionSet(false);
 		$option_set->addLoader(new Stub_Mephex_Config_Loader());
@@ -356,7 +399,7 @@ extends Mephex_Test_TestCase
 	/**
 	 * @covers Mephex_Config_OptionSet::hasOption
 	 */
-	public function testLoadOptionsReturnsFalseIfTheOptionDoesNotExist()
+	public function testHasOptionReturnsFalseIfTheOptionDoesNotExist()
 	{
 		$option_set	= $this->getOptionSet(false);
 		$option_set->addLoader(new Stub_Mephex_Config_Loader());

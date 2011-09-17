@@ -268,7 +268,7 @@ class Mephex_Config_OptionSet
 	
 	
 	/**
-	 * Adds a loader to the option set.
+	 * Adds a loader to the end of the option set's loader list.
 	 * 
 	 * @param Mephex_Config_Loader $loader
 	 * @param string $group - the group that the loader
@@ -284,6 +284,28 @@ class Mephex_Config_OptionSet
 		else
 		{
 			$this->_group_loaders[$group][]	= $loader;
+		}
+	}
+
+
+
+	/**
+	 * Adds a loader to the beginning of the option set's loader list.
+	 * 
+	 * @param Mephex_Config_Loader $loader
+	 * @param string $group - the group that the loader
+	 * 		should be used for (null = generic loader) 
+	 * @return void
+	 */
+	public function stackLoader(Mephex_Config_Loader $loader, $group = null)
+	{
+		if($group === null)
+		{
+			array_unshift($this->_loaders, $loader);
+		}
+		else
+		{
+			array_unshift($this->_group_loaders[$group], $loader);
 		}
 	}
 }
