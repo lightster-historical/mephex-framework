@@ -23,13 +23,9 @@ class Mephex_FileSystem_IncludePath
 	 * @param array/string $include_paths - an array/string of
 	 * 		paths to check for the include
 	 */
-	public function __construct($include_paths)
+	public function __construct($include_paths = array())
 	{
-		$this->_include_paths	= $this->parsePaths(
-			is_array($include_paths)
-			? $include_paths
-			: array($include_paths)
-		);
+		$this->setIncludePaths($include_paths);
 	}
 	
 	
@@ -52,6 +48,28 @@ class Mephex_FileSystem_IncludePath
 		}
 		
 		return $parsed_paths;
+	}
+
+
+
+	/**
+	 * Setter for include paths.
+	 *
+	 * @param array/string $include_paths - an array/string of paths
+	 *		to check for the include
+	 * @return void
+	 */
+	public function setIncludePaths($include_paths)
+	{
+		if(!$include_paths) {
+			$include_paths	= array();
+		}
+
+		$this->_include_paths	= $this->parsePaths(
+			is_array($include_paths)
+			? $include_paths
+			: array($include_paths)
+		);
 	}
 	
 	

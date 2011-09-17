@@ -22,27 +22,39 @@ extends Mephex_Test_TestCase
 	
 	
 	
+	/**
+	 * @covers Mephex_FileSystem_IncludePath::parsePaths
+	 */
 	public function testPathIsProperlyParsed()
 	{
 		$paths	= array(
-			'./Mephex/FileSystem/includePathFileSystem/set1',
-			'./Mephex/FileSystem/includePathFileSystem/set2',
-			'./Mephex/FileSystem/includePathFileSystem/set3',
+			'./Mephex/FileSystem/includePathFileSystem/set1'
+				. PATH_SEPARATOR
+				. './Mephex/FileSystem/includePathFileSystem/set2',
+			'./Mephex/FileSystem/includePathFileSystem/set3'
 		);
 		
 		$parsed	= $this->_include_path->parsePaths(array(implode(PATH_SEPARATOR, $paths)));
 		
-		foreach($parsed as $key => $path)
-		{
-			$this->assertEquals($paths[$key], $path);
-		}
+		$this->assertEquals(
+			array(
+				'./Mephex/FileSystem/includePathFileSystem/set1',
+				'./Mephex/FileSystem/includePathFileSystem/set2',
+				'./Mephex/FileSystem/includePathFileSystem/set3',
+			),
+			$parsed
+		);
 	}
 	
 	
 	
-	public function testArrayOfIncludePathsAreParsedProperly()
+	/**
+	 * @covers Mephex_FileSystem_IncludePath::getIncludePaths
+	 * @covers Mephex_FileSystem_IncludePath::setIncludePaths
+	 */
+	public function testArrayOfIncludePathsCanBeSet()
 	{
-		$include_path	= new Stub_Mephex_FileSystem_IncludePath(
+		$this->_include_path->setIncludePaths(
 			array(
 				'./Mephex/FileSystem/includePathFileSystem/set1'
 					. PATH_SEPARATOR
@@ -50,7 +62,6 @@ extends Mephex_Test_TestCase
 				'./Mephex/FileSystem/includePathFileSystem/set3'
 			)
 		);
-		$parsed	= $include_path->getIncludePaths();
 		
 		$this->assertEquals(
 			array(
@@ -58,22 +69,25 @@ extends Mephex_Test_TestCase
 				'./Mephex/FileSystem/includePathFileSystem/set2',
 				'./Mephex/FileSystem/includePathFileSystem/set3',
 			),
-			$parsed
+			$this->_include_path->getIncludePaths()
 		);
 	}
 	
 	
 	
-	public function testStringOfIncludePathsAreParsedProperly()
+	/**
+	 * @covers Mephex_FileSystem_IncludePath::getIncludePaths
+	 * @covers Mephex_FileSystem_IncludePath::setIncludePaths
+	 */
+	public function testStringOfIncludePathsCanBeSet()
 	{
-		$include_path	= new Stub_Mephex_FileSystem_IncludePath(
+		$this->_include_path->setIncludePaths(
 			'./Mephex/FileSystem/includePathFileSystem/set1'
 				. PATH_SEPARATOR
 				. './Mephex/FileSystem/includePathFileSystem/set2'
 				. PATH_SEPARATOR
 				. './Mephex/FileSystem/includePathFileSystem/set3'
 		);
-		$parsed	= $include_path->getIncludePaths();
 		
 		$this->assertEquals(
 			array(
@@ -81,12 +95,45 @@ extends Mephex_Test_TestCase
 				'./Mephex/FileSystem/includePathFileSystem/set2',
 				'./Mephex/FileSystem/includePathFileSystem/set3',
 			),
-			$parsed
+			$this->_include_path->getIncludePaths()
 		);
 	}
 	
 	
 	
+	/**
+	 * @covers Mephex_FileSystem_IncludePath::getIncludePaths
+	 * @covers Mephex_FileSystem_IncludePath::setIncludePaths
+	 */
+	public function testEmptyIncludePathsCanBeSet()
+	{
+		$this->_include_path->setIncludePaths(NULL);
+		
+		$this->assertEquals(array(), $this->_include_path->getIncludePaths());
+	}
+
+
+
+	/**
+	 * @covers Mephex_FileSystem_IncludePath::__construct
+	 */
+	public function testPathsPassedToConstructorAreUsedAsIncludePaths()
+	{
+		$paths	= array(
+			'./Mephex/FileSystem/includePathFileSystem/set1a',
+			'./Mephex/FileSystem/includePathFileSystem/set2b',
+			'./Mephex/FileSystem/includePathFileSystem/set3c'
+		);
+		$include_path	= new Stub_Mephex_FileSystem_IncludePath($paths);
+
+		$this->assertEquals($paths, $include_path->getIncludePaths());
+	}
+	
+	
+	
+	/**
+	 * @covers Mephex_FileSystem_IncludePath::isAbsolutePath
+	 */
 	public function testAbsolutePathCanBeProperlyDetected()
 	{
 		$this->assertTrue($this->_include_path->isAbsolutePath('/usr/bin/php'));
@@ -98,6 +145,9 @@ extends Mephex_Test_TestCase
 	
 	
 	
+	/**
+	 * @covers Mephex_FileSystem_IncludePath::checkFileExistence
+	 */
 	public function testFileExistenceCanBeDetected()
 	{
 		$this->assertTrue($this->_include_path->checkFileExistence(__FILE__));
@@ -106,6 +156,9 @@ extends Mephex_Test_TestCase
 	
 	
 	
+	/**
+	 * @covers Mephex_FileSystem_IncludePath::checkExistence
+	 */
 	public function testIncludeExistenceCanBeDetected()
 	{
 		$this->assertTrue($this->_include_path->checkExistence(__FILE__));
@@ -122,6 +175,9 @@ extends Mephex_Test_TestCase
 	
 	
 	
+	/**
+	 * @covers Mephex_FileSystem_IncludePath::find
+	 */
 	public function testPathToAbsoluteIncludesAreFound()
 	{
 		$this->assertEquals(__FILE__, $this->_include_path->find(__FILE__));
@@ -129,6 +185,9 @@ extends Mephex_Test_TestCase
 	
 	
 	
+	/**
+	 * @covers Mephex_FileSystem_IncludePath::find
+	 */
 	public function testPathToRelativeIncludesAreFound()
 	{
 		$test_cases	= array(
@@ -148,6 +207,9 @@ extends Mephex_Test_TestCase
 	
 	
 	
+	/**
+	 * @covers Mephex_FileSystem_IncludePath::find
+	 */
 	public function testPathToMissingIncludeIsNull()
 	{
 		$this->assertNull($this->_include_path->find('missing.txt'));
@@ -155,13 +217,19 @@ extends Mephex_Test_TestCase
 	
 	
 	
+	/**
+	 * @covers Mephex_FileSystem_IncludePath::findAll
+	 */
 	public function testAllPathsToAbsoluteIncludesAreFound()
 	{
 		$this->assertEquals(array(__FILE__), $this->_include_path->findAll(__FILE__));
 	}
 	
 	
-	
+
+	/**
+	 * @covers Mephex_FileSystem_IncludePath::findAll
+	 */
 	public function testAllPathsToRelativeIncludesAreFound()
 	{
 		$test_cases	= array(
@@ -200,6 +268,9 @@ extends Mephex_Test_TestCase
 	
 	
 	
+	/**
+	 * @covers Mephex_FileSystem_IncludePath::findAll
+	 */
 	public function testAllPathsToMissingIncludeIsEmptyArray()
 	{
 		$this->assertTrue(array() === $this->_include_path->findAll('missing.txt'));
