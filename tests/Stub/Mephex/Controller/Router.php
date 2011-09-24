@@ -5,28 +5,30 @@
 class Stub_Mephex_Controller_Router
 implements Mephex_Controller_Router
 {
-	protected $_class_name;
-	protected $_action_name;
+	protected $_front_ctrl;
 
 
 
-	public function __construct($class_name, $action_name)
+	public function __construct(Mephex_Controller_Front $front_ctrl = null)
 	{
-		$this->_class_name	= $class_name;
-		$this->_action_name	= $action_name;
+		$this->_front_ctrl	= $front_ctrl;
 	}
 
 
 
 	public function getClassName()
 	{
-		return $this->_class_name;
+		if($this->_front_ctrl instanceof Stub_Mephex_Controller_Front_Base) {
+			return $this->_front_ctrl->getActionControllerClassName();
+		}
 	}
 
 
 
 	public function getActionName()
 	{
-		return $this->_action_name;
+		if($this->_front_ctrl instanceof Stub_Mephex_Controller_Front_Base) {
+			return $this->_front_ctrl->getActionControllerActionName();
+		}
 	}
 }

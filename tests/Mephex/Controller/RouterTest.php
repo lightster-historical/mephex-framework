@@ -13,7 +13,7 @@ extends Mephex_Test_TestCase
 	{
 		parent::setUp();
 		
-		$this->_router	= new Stub_Mephex_Controller_Router('', '');
+		$this->_router	= new Stub_Mephex_Controller_Router();
 	}
 	
 	

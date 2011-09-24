@@ -17,15 +17,24 @@ extends Mephex_Controller_Front_Base
 		$this->_action_ctrl_name	= $action_ctrl_name;
 		$this->_action_name	= $action_name;
 	}
+
+
+
+	public function getActionControllerClassName()
+	{
+		return $this->_action_ctrl_name;
+	}
+
+	public function getActionControllerActionName()
+	{
+		return $this->_action_name;
+	}
 	
 	
 	
 	public function generateRouter()
 	{
-		return new Stub_Mephex_Controller_Router(
-			$this->_action_ctrl_name,
-			$this->_action_name
-		);
+		return new Stub_Mephex_Controller_Router($this);
 	}
 
 
