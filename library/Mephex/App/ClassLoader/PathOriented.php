@@ -56,9 +56,9 @@ extends Mephex_App_ClassLoader
 		
 		$path	= str_replace('_', DIRECTORY_SEPARATOR, $class_name) . '.php';
 		
-		if($this->includeExists($path))
+		if($this->getIncludePath()->checkExistence($path))
 		{
-			include_once $path;
+			include_once $this->getIncludePath()->find($path);
 			return true;
 		}
 		

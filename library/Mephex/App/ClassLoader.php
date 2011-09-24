@@ -2,6 +2,11 @@
 
 
 
+require_once 'Mephex/FileSystem/IncludePath.php';
+require_once 'Mephex/FileSystem/IncludePath/Php.php';
+
+
+
 /**
  * Abstract class loader.
  * 
@@ -9,8 +14,29 @@
  */
 abstract class Mephex_App_ClassLoader
 {
-	public function __construct()
+	/**
+	 * The include path to use for finding classes
+	 *
+	 * @var Mephex_FileSystem_IncludePath
+	 */
+	protected $_include_path;
+
+
+
+	/**
+	 * @param Mephex_FileSystem_IncludePath $include_path - the include path
+	 *		to use for finding classes
+	 */
+	public function __construct(Mephex_FileSystem_IncludePath $include_path = null)
 	{
+		if($include_path)
+		{
+			$this->_include_path	= $include_path;
+		}
+		else
+		{
+			$this->_include_path	= new Mephex_FileSystem_IncludePath_Php();
+		}
 	}
 	
 	
@@ -22,33 +48,11 @@ abstract class Mephex_App_ClassLoader
 	 * @return bool
 	 */
 	public abstract function loadClass($class_name);
-	
-	
-	
-	/**
-	 * Determines if a readable path/file exists in the include path.
-	 * 
-	 * @param string $path
-	 * @return bool
-	 */
-	protected function includeExists($path)
+
+
+
+	public function getIncludePath()
 	{
-		if(substr($path, 0, 1) === '/')
-		{
-			return is_readable($path);
-		}
-		else
-		{
-	        $include_paths	= explode(PATH_SEPARATOR, get_include_path());
-	        foreach($include_paths as $include_path)
-	        {
-				if(is_readable($include_path . '/' . $path))
-				{
-					return true;
-				}
-	        }
-		}
-	        
-        return false;
+		return $this->_include_path;
 	}
 }
