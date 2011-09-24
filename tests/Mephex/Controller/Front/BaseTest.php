@@ -8,7 +8,7 @@ extends Mephex_Test_TestCase
 	protected function getFrontController($action_ctrl_name, $action_name)
 	{
 		return new Stub_Mephex_Controller_Front_Base(
-			new Stub_Mephex_Controller_Router($action_ctrl_name, $action_name)
+			$action_ctrl_name, $action_name
 		);
 	}
 
@@ -24,6 +24,176 @@ extends Mephex_Test_TestCase
 		$this->assertTrue(
 			$this->getFrontController('', '')
 			instanceof Mephex_Controller_Front_Base
+		);
+	}
+
+
+
+	/**
+	 * @covers Mephex_Controller_Front_Base::checkObjectInheritance
+	 * @expectedException Mephex_Controller_Front_Exception_ExpectedObject
+	 */
+	public function testNonObjectFailsObjectInheritanceCheck()
+	{
+		$front_ctrl	= $this->getFrontController('', '');
+		$front_ctrl->checkObjectInheritance(
+			'non_object', 
+			'Mephex_Controller_Action_Base'
+		);
+	}
+
+
+
+	/**
+	 * @covers Mephex_Controller_Front_Base::checkObjectInheritance
+	 * @expectedException Mephex_Controller_Front_Exception_NonexistentClass
+	 */
+	public function testNonexistentExpectedClassFailsObjectInheritanceCheck()
+	{
+		$front_ctrl	= $this->getFrontController('', '');
+		$front_ctrl->checkObjectInheritance(
+			$front_ctrl, 
+			'not_a_class'
+		);
+	}
+
+
+
+	/**
+	 * @covers Mephex_Controller_Front_Base::checkObjectInheritance
+	 * @expectedException Mephex_Controller_Front_Exception_ExpectedObject
+	 */
+	public function testUnexpectedObjectTypeFailsObjectInheritanceCheck()
+	{
+		$front_ctrl	= $this->getFrontController('', '');
+		$front_ctrl->checkObjectInheritance(
+			$front_ctrl, 
+			'Mephex_Controller_Action_Base'
+		);
+	}
+
+
+
+	/**
+	 * @covers Mephex_Controller_Front_Base::checkObjectInheritance
+	 */
+	public function testObjectCanPassObjectInheritanceCheck()
+	{
+		$front_ctrl	= $this->getFrontController('', '');
+		$checked	= $front_ctrl->checkObjectInheritance(
+			$front_ctrl, 
+			'Mephex_Controller_Front_Base'
+		);
+		$this->assertTrue($front_ctrl === $checked);
+	}
+
+
+
+	/**
+	 * @covers Mephex_Controller_Front_Base::checkClassInheritance
+	 * @expectedException Mephex_Controller_Front_Exception_NonexistentClass
+	 */
+	public function testNonexistentExpectedClassFailsClassInheritanceCheck()
+	{
+		$front_ctrl	= $this->getFrontController('', '');
+		$front_ctrl->checkClassInheritance(
+			'Mephex_Controller_Front_Base', 
+			'not_a_class'
+		);
+	}
+
+
+
+	/**
+	 * @covers Mephex_Controller_Front_Base::checkClassInheritance
+	 * @expectedException Mephex_Controller_Front_Exception_NonexistentClass
+	 */
+	public function testNonexistentPassedClassFailsClassInheritanceCheck()
+	{
+		$front_ctrl	= $this->getFrontController('', '');
+		$front_ctrl->checkClassInheritance(
+			'not_a_class', 
+			'Mephex_Controller_Front'
+		);
+	}
+
+
+
+	/**
+	 * @covers Mephex_Controller_Front_Base::checkClassInheritance
+	 * @expectedException Mephex_Controller_Front_Exception_UnexpectedClass
+	 */
+	public function testUnexpecteClassTypeFailsClassInheritanceCheck()
+	{
+		$front_ctrl	= $this->getFrontController('', '');
+		$front_ctrl->checkClassInheritance(
+			'Mephex_Controller_Action_Base', 
+			'Mephex_Controller_Front_Base'
+		);
+	}
+
+
+
+	/**
+	 * @covers Mephex_Controller_Front_Base::checkClassInheritance
+	 * @expectedException Mephex_Controller_Front_Exception_UnexpectedClass
+	 */
+	public function testUnexpecteClassTypeFailsInterfaceClassInheritanceCheck()
+	{
+		$front_ctrl	= $this->getFrontController('', '');
+		$front_ctrl->checkClassInheritance(
+			'Mephex_Controller_Action_Base', 
+			'Mephex_Controller_Front'
+		);
+	}
+
+
+
+	/**
+	 * @covers Mephex_Controller_Front_Base::checkClassInheritance
+	 */
+	public function testClassCanPassClassInheritanceCheck()
+	{
+		$front_ctrl	= $this->getFrontController('', '');
+		$checked	= $front_ctrl->checkClassInheritance(
+			'Stub_Mephex_Controller_Front_Base', 
+			'Mephex_Controller_Front_Base'
+		);
+		$this->assertEquals('Stub_Mephex_Controller_Front_Base', $checked);
+	}
+
+
+
+	/**
+	 * @covers Mephex_Controller_Front_Base::checkClassInheritance
+	 */
+	public function testClassCanPassInterfaceClassInheritanceCheck()
+	{
+		$front_ctrl	= $this->getFrontController('', '');
+		$checked	= $front_ctrl->checkClassInheritance(
+			'Mephex_Controller_Front_Base', 
+			'Mephex_Controller_Front'
+		);
+		$this->assertEquals('Mephex_Controller_Front_Base', $checked);
+	}
+	
+	
+	
+	/**
+	 * @covers Mephex_Controller_Front_Base::getRouter
+	 */
+	public function testRouterIsLazyLoaded()
+	{
+		$action_ctrl_name	= 'Stub_Mephex_Controller_Action_Base';
+		$action_name		= 'index';
+		$front_ctrl			= $this->getFrontController(
+			$action_ctrl_name,
+			$action_name
+		);
+		$router		= $front_ctrl->getRouter();
+
+		$this->assertTrue(
+			$router === $front_ctrl->getRouter()
 		);
 	}
 	

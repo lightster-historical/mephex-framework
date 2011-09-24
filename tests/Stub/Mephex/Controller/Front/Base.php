@@ -5,27 +5,34 @@
 class Stub_Mephex_Controller_Front_Base
 extends Mephex_Controller_Front_Base
 {
-	protected $_router;
+	private $_action_ctrl_name;
+	private $_action_name;
 
 
 
-	public function __construct(Mephex_Controller_Router $router)
+	public function __construct($action_ctrl_name, $action_name)
 	{
 		parent::__construct();
 
-		$this->_router	= $router;
+		$this->_action_ctrl_name	= $action_ctrl_name;
+		$this->_action_name	= $action_name;
 	}
 	
 	
 	
-	public function getRouter()
+	public function generateRouter()
 	{
-		return $this->_router;
+		return new Stub_Mephex_Controller_Router(
+			$this->_action_ctrl_name,
+			$this->_action_name
+		);
 	}
 
 
 
 	// make protected methods public for unit testing purposes
+	public function getRouter()
+		{return parent::getRouter();}
 	public function getActionController()
 		{return parent::getActionController();}
 	public function generateActionController($class_name)
@@ -37,4 +44,8 @@ extends Mephex_Controller_Front_Base
 	{
 		return parent::runAction($action_controller, $action_name);
 	}
+	public function checkObjectInheritance($object, $expected)
+		{return parent::checkObjectInheritance($object, $expected);}
+	public function checkClassInheritance($class, $expected)
+		{return parent::checkClassInheritance($class, $expected);}
 }
