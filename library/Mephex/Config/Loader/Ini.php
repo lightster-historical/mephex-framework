@@ -4,7 +4,7 @@
 
 /**
  * Loader used for lazy-loading configuration options from
- * an INI file..
+ * an INI file.
  * 
  * @author mlight
  */
@@ -17,6 +17,13 @@ extends Mephex_Config_Loader
 	 * @var string
 	 */
 	protected $_file_name	= null;
+
+	/**
+	 * The raw options from the parsed ini file.
+	 *
+	 * @var array
+	 */
+	protected $_options		= null;
 	
 	
 	
@@ -27,18 +34,15 @@ extends Mephex_Config_Loader
 	{
 		$this->_file_name	= $file_name;
 	}
-	
-	
-	
+
+
+
 	/**
-	 * Loads the given group/option from an INI file into the option set.
-	 * 
-	 * @param Mephex_Config_OptionSet $option_set
-	 * @param string $group
-	 * @param string $option
-	 * @return bool - whether or not the option was loaded
+	 * Loads the options from the configuration file.
+	 *
+	 * @return void
 	 */
-	public function loadOption(Mephex_Config_OptionSet $option_set, $req_group, $req_option)
+	protected function readFile()
 	{
 		// check to see if the path exists
 		if(!file_exists($this->_file_name))
@@ -52,31 +56,68 @@ extends Mephex_Config_Loader
 		}
 		
 		// load and parse the INI file
-		$groups	= @parse_ini_file($this->_file_name, true);
+		$this->_options	= @parse_ini_file($this->_file_name, true);
 		
 		// check to see if the INI file was successfully parsed
-		if($groups === false)
+		if($this->_options === false)
 		{
 			throw new Mephex_Exception("Error processing INI file: '{$this->_file_name}'");
 		}
-		
-		foreach($groups as $group => $options)
+	}
+
+
+
+	/**
+	 * Lazy-loading getter for options.
+	 *
+	 * @return array
+	 */
+	protected function getOptions()
+	{
+		if(null === $this->_options)
 		{
-			// if the option was within a section,
-			// use the section name as the group name
-			if(is_array($options))
+			$this->readFile();
+		}
+
+		return $this->_options;
+	}
+	
+	
+	
+	/**
+	 * Loads the given group/option from an INI file into the option set.
+	 * 
+	 * @param Mephex_Config_OptionSet $option_set
+	 * @param string $group
+	 * @param string $option
+	 * @return bool - whether or not the option was loaded
+	 */
+	public function loadOption(
+		Mephex_Config_OptionSet $option_set, $req_group, $req_option
+	)
+	{
+		$options	= $this->getOptions();
+
+		$found	= false;
+		if($req_group === 'default')
+		{
+			if(array_key_exists($req_option, $options)) 
 			{
-				foreach($options as $option => $value)
-				{
-					$option_set->set($group, $option, $value);
-				}
+				$found	= true;
+				$value	= $options[$req_option];
 			}
-			// if the option was outside a section, place it in
-			// the 'default' group
-			else if(is_scalar($options))
-			{
-				$option_set->set('default', $group, $options);
-			}
+		}
+		else if(array_key_exists($req_group, $options)
+			&& array_key_exists($req_option, $options[$req_group])
+		)
+		{
+			$found	= true;
+			$value	= $options[$req_group][$req_option];
+		}
+
+		if($found)
+		{
+			$option_set->set($req_group, $req_option, $value);
 		}
 	}
 }
