@@ -11,14 +11,6 @@
 class Mephex_Config_OptionSet
 {
 	/**
-	 * Whether or not group and option names are case sensitive.
-	 * 
-	 * @var bool
-	 */
-	protected $_case_sensitive	= true;
-
-	
-	/**
 	 * Multi-dimensional associative array of options.
 	 * 
 	 * options[group_name][option_name]	= value
@@ -55,13 +47,8 @@ class Mephex_Config_OptionSet
 	
 	
 	
-	/**
-	 * @param bool $case_sensitive - whether or not group and option names
-	 * 		are case sensitive
-	 */
-	public function __construct($case_sensitive = true)
+	public function __construct()
 	{
-		$this->_case_sensitive	= (bool)$case_sensitive;
 	}
 	
 	
@@ -79,8 +66,6 @@ class Mephex_Config_OptionSet
 	 */
 	public function get($group, $option, $default = null, $required = null)
 	{
-		$this->canonicalizeKeys($group, $option);
-		
 		// check the cache to see if the option is already loaded
 		$found	= $this->hasOption($group, $option) ? true : null;
 		
@@ -131,9 +116,7 @@ class Mephex_Config_OptionSet
 	 * @return bool - whether or not the option value was set
 	 */
 	public function set($group, $option, $value, $override = false)
-	{
-		$this->canonicalizeKeys($group, $option);
-		
+	{		
 		$store	= !$this->hasOption($group, $option) || $override;
 		if($store)
 		{
@@ -141,24 +124,6 @@ class Mephex_Config_OptionSet
 		}
 		
 		return $store;
-	}
-	
-	
-	
-	/**
-	 * Canonicalizes the group and option keys.
-	 * 
-	 * @param string $group
-	 * @param string $option
-	 * @return void
-	 */
-	protected function canonicalizeKeys(&$group, &$option)
-	{
-		if(!$this->_case_sensitive)
-		{
-			$group	= strtolower($group);
-			$option	= strtolower($option);
-		}
 	}
 	
 	

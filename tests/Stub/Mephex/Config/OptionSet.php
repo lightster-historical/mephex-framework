@@ -5,8 +5,6 @@
 class Stub_Mephex_Config_OptionSet
 extends Mephex_Config_OptionSet
 {
-	public function canonicalizeKeys(&$group, &$option)
-		{return parent::canonicalizeKeys($group, $option);}
 	public function isOptionPreviouslyNotFound($group, $option)
 		{return parent::isOptionPreviouslyNotFound($group, $option);}
 	public function loadGroupOptions($group, $option)

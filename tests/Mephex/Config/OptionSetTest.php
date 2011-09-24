@@ -5,9 +5,9 @@
 class Mephex_Config_OptionSetTest
 extends Mephex_Test_TestCase
 {
-	public function getOptionSet($case_sensitive)
+	public function getOptionSet()
 	{
-		return new Stub_Mephex_Config_OptionSet($case_sensitive);
+		return new Stub_Mephex_Config_OptionSet();
 	}
 	
 	
@@ -18,7 +18,7 @@ extends Mephex_Test_TestCase
 	 */
 	public function testAnUnknownOptionExceptionCanBeThrown()
 	{
-		$this->getOptionSet(true)->throwNotFoundException('some_group', 'some_option');
+		$this->getOptionSet()->throwNotFoundException('some_group', 'some_option');
 	}
 	
 	
@@ -30,7 +30,7 @@ extends Mephex_Test_TestCase
 	 */
 	public function testRetrievingAnUnknownOptionThrowsAnExceptionByDefault()
 	{
-		$this->getOptionSet(true)->get('unknown_group', 'unknown_option');
+		$this->getOptionSet()->get('unknown_group', 'unknown_option');
 	}
 	
 	
@@ -43,7 +43,7 @@ extends Mephex_Test_TestCase
 	{
 		$this->assertEquals(
 			'default_value',
-			$this->getOptionSet(true)->get('unknown_group', 'unknown_option', 'default_value')
+			$this->getOptionSet()->get('unknown_group', 'unknown_option', 'default_value')
 		);
 	}
 	
@@ -56,7 +56,7 @@ extends Mephex_Test_TestCase
 	public function testRetrievingAnUnknownOptionCanReturnANullDefaultValue()
 	{
 		$this->assertNull(
-			$this->getOptionSet(true)->get('unknown_group', 'unknown_option', null, false)
+			$this->getOptionSet()->get('unknown_group', 'unknown_option', null, false)
 		);
 	}
 	
@@ -69,41 +69,7 @@ extends Mephex_Test_TestCase
 	 */
 	public function testAnUnknownOptionExceptionCanBeForcedRegardlessOfTheDefaultValueWhileRetrievingAnUnknownOption()
 	{
-		$this->getOptionSet(true)->get('unknown_group', 'unknown_option', 'default_value', true);
-	}
-	
-	
-	
-	/**
-	 * @covers Mephex_Config_OptionSet::canonicalizeKeys
-	 */
-	public function testCaseInsensitiveKeysCanBeCanonicalized()
-	{
-		$option_set	= $this->getOptionSet(false);
-		
-		$group		= 'aAbBcC';
-		$option		= 'XxYyZz';
-		$option_set->canonicalizeKeys($group, $option);
-		
-		$this->assertEquals('aabbcc', $group);
-		$this->assertEquals('xxyyzz', $option);
-	}
-	
-	
-	
-	/**
-	 * @covers Mephex_Config_OptionSet::canonicalizeKeys
-	 */
-	public function testCaseSensitiveKeysCanBeCanonicalize()
-	{
-		$option_set	= $this->getOptionSet(true);
-		
-		$group		= 'aAbBcC';
-		$option		= 'XxYyZz';
-		$option_set->canonicalizeKeys($group, $option);
-		
-		$this->assertEquals('aAbBcC', $group);
-		$this->assertEquals('XxYyZz', $option);
+		$this->getOptionSet()->get('unknown_group', 'unknown_option', 'default_value', true);
 	}
 	
 	
@@ -113,15 +79,12 @@ extends Mephex_Test_TestCase
 	 */
 	public function testOptionsCanBeSet()
 	{
-		$option_set	= $this->getOptionSet(false);
+		$option_set	= $this->getOptionSet();
 		$this->assertTrue($option_set->set('some_GROUP', 'some_OPTION', 'some_value'));
 		
 		// if these do not throw an exception, we know the option is 
 		// no longer unknown (the options were at least somewhat set)
 		$option_set->get('some_GROUP', 'some_OPTION');
-		$option_set->get('some_GROUP', 'some_option');
-		$option_set->get('some_group', 'some_OPTION');
-		$option_set->get('some_group', 'some_option');
 		// make sure we get here (no exception was thrown)
 		$this->assertTrue(true);
 	}
@@ -135,13 +98,10 @@ extends Mephex_Test_TestCase
 	 */
 	public function testOptionsCanBeRetrieved()
 	{
-		$option_set	= $this->getOptionSet(false);
+		$option_set	= $this->getOptionSet();
 		$option_set->set('some_GROUP', 'some_OPTION', 'some_value');
 		
 		$this->assertEquals('some_value', $option_set->get('some_GROUP', 'some_OPTION'));
-		$this->assertEquals('some_value', $option_set->get('some_GROUP', 'some_option'));
-		$this->assertEquals('some_value', $option_set->get('some_group', 'some_OPTION'));
-		$this->assertEquals('some_value', $option_set->get('some_group', 'some_option'));
 	}
 	
 	
@@ -154,7 +114,7 @@ extends Mephex_Test_TestCase
 	 */
 	public function testReSettingAnOptionDoesNotOverrideByDefault()
 	{
-		$option_set	= $this->getOptionSet(true);
+		$option_set	= $this->getOptionSet();
 		
 		$this->assertTrue($option_set->set('some_group', 'some_option', 'value1'));
 		$this->assertEquals('value1', $option_set->get('some_group', 'some_option'));
@@ -173,7 +133,7 @@ extends Mephex_Test_TestCase
 	 */
 	public function testForciblyReSettingAnOptionOverridesAlreadySetOption()
 	{
-		$option_set	= $this->getOptionSet(true);
+		$option_set	= $this->getOptionSet();
 		
 		$this->assertTrue($option_set->set('some_group', 'some_option', 'value1'));
 		$this->assertEquals('value1', $option_set->get('some_group', 'some_option'));
@@ -190,7 +150,7 @@ extends Mephex_Test_TestCase
 	 */
 	public function testUnknownOptionsAreCachedAsNotFound()
 	{
-		$option_set	= $this->getOptionSet(false);
+		$option_set	= $this->getOptionSet();
 		
 		$this->assertFalse($option_set->isOptionPreviouslyNotFound('some_group', 'some_option'));
 		
@@ -216,7 +176,7 @@ extends Mephex_Test_TestCase
 	 */
 	public function testOptionsCanBeLoadedFromGroupLoaders()
 	{
-		$option_set	= $this->getOptionSet(false);
+		$option_set	= $this->getOptionSet();
 		$option_set->addLoader(new Stub_Mephex_Config_GroupLoader(), 'in_db');
 		$option_set->addLoader(new Stub_Mephex_Config_GroupLoader(), 'secondary_group');
 		$option_set->addLoader(new Stub_Mephex_Config_GroupLoader(), 'collision');
@@ -244,7 +204,7 @@ extends Mephex_Test_TestCase
 	 */
 	public function testOptionsCanBeLoadedFromGroupLoadersOnlyIfProvidedGroupMatchesRequestedOptionGroup()
 	{
-		$option_set	= $this->getOptionSet(false);
+		$option_set	= $this->getOptionSet();
 		$option_set->addLoader(new Stub_Mephex_Config_GroupLoader(), 'in_db2');
 		
 		$this->assertFalse($option_set->hasOption('in_db', 'option_a'));
@@ -264,7 +224,7 @@ extends Mephex_Test_TestCase
 	 */
 	public function testOptionsCanBeLoadedFromGenericLoaders()
 	{
-		$option_set	= $this->getOptionSet(false);
+		$option_set	= $this->getOptionSet();
 		$option_set->addLoader(new Stub_Mephex_Config_Loader());
 		
 		$this->assertFalse($option_set->hasOption('database', 'main_conn.host'));
@@ -302,7 +262,7 @@ extends Mephex_Test_TestCase
 	 */
 	public function testGroupAndGenericLoadersCanBeUsedInConjunction()
 	{
-		$option_set	= $this->getOptionSet(false);
+		$option_set	= $this->getOptionSet();
 		$option_set->addLoader(new Stub_Mephex_Config_Loader());
 		$option_set->addLoader(new Stub_Mephex_Config_GroupLoader(), 'in_db');
 		
@@ -327,7 +287,7 @@ extends Mephex_Test_TestCase
 	 */
 	public function testGroupOptionsAreLoadedBeforeMainOptions()
 	{
-		$option_set	= $this->getOptionSet(false);
+		$option_set	= $this->getOptionSet();
 		$option_set->addLoader(new Stub_Mephex_Config_Loader());
 		$option_set->addLoader(new Stub_Mephex_Config_GroupLoader(), 'collision');
 		
@@ -349,7 +309,7 @@ extends Mephex_Test_TestCase
 	 */
 	public function testGenericLoaderCanBeAddedToFrontOfList()
 	{
-		$option_set	= $this->getOptionSet(false);
+		$option_set	= $this->getOptionSet();
 		$option_set->addLoader(new Stub_Mephex_Config_Loader());
 		$option_set->stackLoader(new Stub_Mephex_Config_GroupLoader());
 		
@@ -370,7 +330,7 @@ extends Mephex_Test_TestCase
 	 */
 	public function testGroupLoaderCanBeAddedToFrontOfList()
 	{
-		$option_set	= $this->getOptionSet(false);
+		$option_set	= $this->getOptionSet();
 		$option_set->addLoader(new Stub_Mephex_Config_GroupLoader(), 'collision');
 		$option_set->stackLoader(new Stub_Mephex_Config_Loader(), 'collision');
 		$option_set->stackLoader(new Stub_Mephex_Config_GroupLoader());
@@ -387,7 +347,7 @@ extends Mephex_Test_TestCase
 	 */
 	public function testHasOptionReturnsTrueIfTheOptionExists()
 	{
-		$option_set	= $this->getOptionSet(false);
+		$option_set	= $this->getOptionSet();
 		$option_set->addLoader(new Stub_Mephex_Config_Loader());
 		$option_set->set('manually_set', 'set_option', 'value');
 		
@@ -401,7 +361,7 @@ extends Mephex_Test_TestCase
 	 */
 	public function testHasOptionReturnsFalseIfTheOptionDoesNotExist()
 	{
-		$option_set	= $this->getOptionSet(false);
+		$option_set	= $this->getOptionSet();
 		$option_set->addLoader(new Stub_Mephex_Config_Loader());
 		
 		$this->assertFalse($option_set->hasOption('manually_set', 'not_set_option'));
