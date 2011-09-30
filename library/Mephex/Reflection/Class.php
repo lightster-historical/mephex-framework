@@ -3,13 +3,16 @@
 
 
 /**
+ * Extension of PHP's ReflectionClass.
  *
- *
- *
+ * @author mlight
  */
 class Mephex_Reflection_Class
 extends ReflectionClass
 {
+	/**
+	 * @param string $class - the class to reflect on
+	 */
 	public function __construct($class)
 	{
 		if(!is_object($class)
