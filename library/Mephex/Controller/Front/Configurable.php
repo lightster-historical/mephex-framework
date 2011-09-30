@@ -93,9 +93,11 @@ extends Mephex_Controller_Front_Base
 	 */
 	public function getSystemClassFromConfig($option, $expected_class)
 	{
-		return $this->checkClassInheritance(
-			$this->getSystemConfigOption($option),
+		$expected	= new Mephex_Reflection_Class(
 			$expected_class
+		);
+		return $expected->checkClassInheritance(
+			$this->getSystemConfigOption($option)
 		);
 	}
 }

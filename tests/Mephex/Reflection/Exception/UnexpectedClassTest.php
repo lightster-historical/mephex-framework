@@ -2,7 +2,7 @@
 
 
  
-class Mephex_Controller_Front_Exception_UnexpectedClassTest
+class Mephex_Reflection_Exception_UnexpectedClassTest
 extends Mephex_Test_TestCase
 {
 	protected $_exception;
@@ -12,7 +12,7 @@ extends Mephex_Test_TestCase
 	public function setUp()
 	{
 		$this->_exception	
-			= new Mephex_Controller_Front_Exception_UnexpectedClass(
+			= new Mephex_Reflection_Exception_UnexpectedClass(
 				'expected_class', 'other_class'
 			);
 	}
@@ -20,7 +20,7 @@ extends Mephex_Test_TestCase
 	
 	
 	/**
-	 * @expectedException Mephex_Controller_Front_Exception_UnexpectedClass
+	 * @expectedException Mephex_Reflection_Exception_UnexpectedClass
 	 */
 	public function testExceptionIsThrowable()
 	{
@@ -30,8 +30,8 @@ extends Mephex_Test_TestCase
 
 
 	/**
-	 * @covers Mephex_Controller_Front_Exception_UnexpectedClass::__construct 
-	 * @covers Mephex_Controller_Front_Exception_UnexpectedClass::getExpectedClass 
+	 * @covers Mephex_Reflection_Exception_UnexpectedClass::__construct 
+	 * @covers Mephex_Reflection_Exception_UnexpectedClass::getExpectedClass 
 	 */
 	public function testExpectedClassCanBeRetrieved()
 	{
@@ -41,8 +41,8 @@ extends Mephex_Test_TestCase
 
 
 	/**
-	 * @covers Mephex_Controller_Front_Exception_UnexpectedClass::__construct 
-	 * @covers Mephex_Controller_Front_Exception_UnexpectedClass::getPassedClass 
+	 * @covers Mephex_Reflection_Exception_UnexpectedClass::__construct 
+	 * @covers Mephex_Reflection_Exception_UnexpectedClass::getPassedClass 
 	 */
 	public function testPassedClassCanBeRetrieved()
 	{

@@ -3,16 +3,15 @@
 
 
 /**
- * An exception thrown when the front controller could not find a
- * system class.
+ * An exception thrown when a class could not be found.
  * 
  * @author mlight
  */
-class Mephex_Controller_Front_Exception_NonexistentClass
+class Mephex_Reflection_Exception_NonexistentClass
 extends Mephex_Exception
 {
 	/**
-	 * The class or interface name the front controller was attempting to use.
+	 * The name of the missing class or interface that was used.
 	 * @var string
 	 */
 	protected $_class;
@@ -20,7 +19,7 @@ extends Mephex_Exception
 	
 	
 	/**
-	 * @param string $class - the class the front controller was attempting to use.
+	 * @param string $class - the name of the missing class
 	 */
 	public function __construct($class)
 	{

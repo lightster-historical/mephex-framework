@@ -3,23 +3,22 @@
 
 
 /**
- * An exception thrown when the front controller was expecting an instance
- * of a specific class but received something else.
+ * An exception thrown when an instance of a specific class was expected but
+ * something else was received.
  * 
  * @author mlight
  */
-class Mephex_Controller_Front_Exception_ExpectedObject
+class Mephex_Reflection_Exception_ExpectedObject
 extends Mephex_Exception
 {
 	/**
-	 * The class name the front controller was expecting
-	 * the object to be.
+	 * The class name the object was expected to extend/implement.
 	 * @ar string
 	 */
 	protected $_expected_class;
 
 	/**
-	 * The value the front contoller received.
+	 * The value that was received
 	 * @var mixed
 	 */
 	protected $_passed_value;
@@ -27,8 +26,8 @@ extends Mephex_Exception
 	
 	
 	/**
-	 * @param string $expected_class - the name of the class that the front
-	 *		controller was expecting an object to be
+	 * @param string $expected_class - class name the object was
+	 * 		expected to extend/implement
 	 * @param mixed $passed_value - the actual value passed
 	 */
 	public function __construct($expected_class, $passed_value)

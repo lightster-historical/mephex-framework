@@ -2,7 +2,7 @@
 
 
  
-class Mephex_Controller_Front_Exception_NonexistentClassTest
+class Mephex_Reflection_Exception_NonexistentClassTest
 extends Mephex_Test_TestCase
 {
 	protected $_exception;
@@ -12,7 +12,7 @@ extends Mephex_Test_TestCase
 	public function setUp()
 	{
 		$this->_exception	
-			= new Mephex_Controller_Front_Exception_NonexistentClass(
+			= new Mephex_Reflection_Exception_NonexistentClass(
 				'missing_class'
 			);
 	}
@@ -20,7 +20,7 @@ extends Mephex_Test_TestCase
 	
 	
 	/**
-	 * @expectedException Mephex_Controller_Front_Exception_NonexistentClass
+	 * @expectedException Mephex_Reflection_Exception_NonexistentClass
 	 */
 	public function testExceptionIsThrowable()
 	{
@@ -30,8 +30,8 @@ extends Mephex_Test_TestCase
 
 
 	/**
-	 * @covers Mephex_Controller_Front_Exception_NonexistentClass::__construct 
-	 * @covers Mephex_Controller_Front_Exception_NonexistentClass::getClass 
+	 * @covers Mephex_Reflection_Exception_NonexistentClass::__construct 
+	 * @covers Mephex_Reflection_Exception_NonexistentClass::getClass 
 	 */
 	public function testClassCanBeRetrieved()
 	{

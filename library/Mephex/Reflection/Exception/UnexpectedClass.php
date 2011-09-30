@@ -3,24 +3,22 @@
 
 
 /**
- * An exception thrown when the front controller was expecting a class name
- * of a class that implements/extends the expected class, but received something
- * else.
- * 
+ * An exception thrown when a child class name was expected but another class
+ * was received.
+ *
  * @author mlight
  */
-class Mephex_Controller_Front_Exception_UnexpectedClass
+class Mephex_Reflection_Exception_UnexpectedClass
 extends Mephex_Exception
 {
 	/**
-	 * The class name the front controller was expecting
-	 * the class to implement/extend.
+	 * The class name the child class was expected to extend/implement.
 	 * @var string
 	 */
 	protected $_expected_class;
 
 	/**
-	 * The class the front controller received
+	 * The class that was being checked
 	 * @var string
 	 */
 	protected $_passed_class;
@@ -28,9 +26,9 @@ extends Mephex_Exception
 	
 	
 	/**
-	 * @param string $expected_class - the name of the class that the front
-	 *		controller was expecting the class to implement/extend.
-	 * @param string $passed_class - the class the front controller received
+	 * @param string $expected_class - the class name the child class was
+	 *		expected to extend/implement
+	 * @param string $passed_class - the class that was being checked
 	 */
 	public function __construct($expected_class, $passed_class)
 	{

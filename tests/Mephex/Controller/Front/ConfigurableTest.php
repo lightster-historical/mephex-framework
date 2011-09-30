@@ -98,7 +98,7 @@ extends Mephex_Test_TestCase
 	/**
 	 * @covers Mephex_Controller_Front_Configurable::getSystemClassFromConfig
 	 * @depends testSystemConfigOptionCanBeRead
-	 * @expectedException Mephex_Controller_Front_Exception_NonExistentClass
+	 * @expectedException Mephex_Reflection_Exception_NonExistentClass
 	 */
 	public function testSystemClassMustExist()
 	{
@@ -117,7 +117,7 @@ extends Mephex_Test_TestCase
 	/**
 	 * @covers Mephex_Controller_Front_Configurable::getSystemClassFromConfig
 	 * @depends testSystemConfigOptionCanBeRead
-	 * @expectedException Mephex_Controller_Front_Exception_UnexpectedClass
+	 * @expectedException Mephex_Reflection_Exception_UnexpectedClass
 	 */
 	public function testSystemClassMustInheritGivenClass()
 	{
