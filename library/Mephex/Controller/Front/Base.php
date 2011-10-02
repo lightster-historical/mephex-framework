@@ -36,16 +36,29 @@ implements Mephex_Controller_Front
 	/**
 	 * Runs the application.
 	 *
-	 * @Return void
+	 * @return void
 	 */
 	public function run()
 	{
-		$router	= $this->getRouter();
-		
 		return $this->runAction(
 			$this->getActionController(),
 			$this->getRouter()->getActionName()
 		);
+	}
+
+
+
+	/**
+	 * Runs the application with a router other than the default router.
+	 *
+	 * @param Mephex_controller_Router $router - the router to use
+	 * @return void
+	 */
+	public function runWithRouterOverride(Mephex_Controller_Router $router)
+	{
+		$this->_router	= $router;
+
+		return $this->run();
 	}
 	
 	
@@ -56,7 +69,7 @@ implements Mephex_Controller_Front
 	 *
 	 * @return Mephex_Controller_Router
 	 */	
-	protected abstract function generateRouter();
+	protected abstract function generateDefaultRouter();
 
 
 
@@ -73,7 +86,7 @@ implements Mephex_Controller_Front
 				'Mephex_Controller_Router'
 			);
 			$this->_router	= $expected->checkObjectType(
-				$this->generateRouter()
+				$this->generateDefaultRouter()
 			);
 		}
 

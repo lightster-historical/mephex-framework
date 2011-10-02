@@ -32,9 +32,9 @@ extends Mephex_Controller_Front_Base
 	
 	
 	
-	public function generateRouter()
+	public function generateDefaultRouter()
 	{
-		return new Stub_Mephex_Controller_Router($this);
+		return new Stub_Mephex_Controller_Router_Front($this);
 	}
 
 

@@ -134,20 +134,24 @@ extends Mephex_Test_TestCase
 
 
 	/**
-	 * @covers Mephex_Controller_Front_Configurable::generateRouter
+	 * @covers Mephex_Controller_Front_Configurable::generateDefaultRouter
 	 * @depends testSystemConfigOptionCanBeRead
 	 * @depends testSystemClassCanBeReadFromConfig
 	 */
 	public function testRouterCanBeGenerated()
 	{
 		$config		= new Mephex_Config_OptionSet();
-		$config->set('mephex', 'router.class_name', 'Stub_Mephex_Controller_Router');
+		$config->set(
+			'mephex',
+			'router.class_name',
+			'Stub_Mephex_Controller_Router_Front'
+		);
 		$front_ctrl	= new Stub_Mephex_Controller_Front_Configurable($config);
 
 		$this->assertTrue(
-			$front_ctrl->generateRouter()
+			$front_ctrl->generateDefaultRouter()
 			instanceof
-			Stub_Mephex_Controller_Router
+			Stub_Mephex_Controller_Router_Front
 		);
 	}
 }

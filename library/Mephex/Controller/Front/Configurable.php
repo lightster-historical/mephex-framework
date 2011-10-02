@@ -55,7 +55,7 @@ extends Mephex_Controller_Front_Base
 	 * @return Mephex_Controller_Router
 	 * @see Mephex_Controller_Front_Base#generateRouter
 	 */	
-	protected function generateRouter()
+	protected function generateDefaultRouter()
 	{
 		$class_name	= $this->getSystemClassFromConfig(
 			'router.class_name',
