@@ -12,7 +12,10 @@ extends Mephex_Test_TestCase
 	public function testConfigurableFrontControllerCanBeInstantiated()
 	{
 		$config		= new Mephex_Config_OptionSet();
-		$front_ctrl	= new Stub_Mephex_Controller_Front_Configurable($config);
+		$front_ctrl	= new Stub_Mephex_Controller_Front_Configurable(
+			new Mephex_App_Arguments(),
+			$config
+		);
 
 		$this->assertTrue(
 			$front_ctrl
@@ -29,7 +32,10 @@ extends Mephex_Test_TestCase
 	public function testConfigCanBeRetrievedFromFrontController()
 	{
 		$config		= new Mephex_Config_OptionSet();
-		$front_ctrl	= new Stub_Mephex_Controller_Front_Configurable($config);
+		$front_ctrl	= new Stub_Mephex_Controller_Front_Configurable(
+			new Mephex_App_Arguments(),
+			$config
+		);
 
 		$this->assertTrue($config === $front_ctrl->getConfig());
 	}
@@ -43,7 +49,10 @@ extends Mephex_Test_TestCase
 	{
 		$config		= new Mephex_Config_OptionSet();
 		$config->set('mephex', 'some_opt', 'some_val');
-		$front_ctrl	= new Stub_Mephex_Controller_Front_Configurable($config);
+		$front_ctrl	= new Stub_Mephex_Controller_Front_Configurable(
+			new Mephex_App_Arguments(),
+			$config
+		);
 
 		$this->assertEquals(
 			'some_val',
@@ -63,7 +72,9 @@ extends Mephex_Test_TestCase
 		$config		= new Mephex_Config_OptionSet();
 		$config->set('not_mephex', 'some_opt', 'some_val');
 		$front_ctrl	= new Stub_Mephex_Controller_Front_Configurable(
-			$config, 'not_mephex'
+			new Mephex_App_Arguments(),
+			$config,
+			'not_mephex'
 		);
 
 		$this->assertEquals(
@@ -82,7 +93,10 @@ extends Mephex_Test_TestCase
 	{
 		$config		= new Mephex_Config_OptionSet();
 		$config->set('mephex', 'router', 'Stub_Mephex_Controller_Router');
-		$front_ctrl	= new Stub_Mephex_Controller_Front_Configurable($config);
+		$front_ctrl	= new Stub_Mephex_Controller_Front_Configurable(
+			new Mephex_App_Arguments(),
+			$config
+		);
 
 		$this->assertEquals(
 			'Stub_Mephex_Controller_Router',
@@ -104,7 +118,10 @@ extends Mephex_Test_TestCase
 	{
 		$config		= new Mephex_Config_OptionSet();
 		$config->set('mephex', 'router', 'Stub_Mephex_Controller_Router_Haha');
-		$front_ctrl	= new Stub_Mephex_Controller_Front_Configurable($config);
+		$front_ctrl	= new Stub_Mephex_Controller_Front_Configurable(
+			new Mephex_App_Arguments(),
+			$config
+		);
 
 		$front_ctrl->getSystemClassFromConfig(
 			'router',
@@ -123,7 +140,10 @@ extends Mephex_Test_TestCase
 	{
 		$config		= new Mephex_Config_OptionSet();
 		$config->set('mephex', 'router', 'Stub_Mephex_Controller_Front');
-		$front_ctrl	= new Stub_Mephex_Controller_Front_Configurable($config);
+		$front_ctrl	= new Stub_Mephex_Controller_Front_Configurable(
+			new Mephex_App_Arguments(),
+			$config
+		);
 
 		$front_ctrl->getSystemClassFromConfig(
 			'router',
@@ -146,7 +166,10 @@ extends Mephex_Test_TestCase
 			'router.class_name',
 			'Stub_Mephex_Controller_Router_Front'
 		);
-		$front_ctrl	= new Stub_Mephex_Controller_Front_Configurable($config);
+		$front_ctrl	= new Stub_Mephex_Controller_Front_Configurable(
+			new Mephex_App_Arguments(),
+			$config
+		);
 
 		$this->assertTrue(
 			$front_ctrl->generateDefaultRouter()

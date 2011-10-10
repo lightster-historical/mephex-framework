@@ -27,9 +27,21 @@ extends Mephex_Controller_Front_Base
 
 
 
+	/**
+	 * @param Mephex_App_Arguments $arguments - the arguments to pass to the 
+	 *		front controller
+	 * @param Mephex_Config_OptionSet $config - the config options
+	 * @param string $config_sys_group - the config group that the system
+	 *		options can be located in
+	 */
 	public function __construct(
-		Mephex_Config_OptionSet $config, $config_sys_group = 'mephex')
+		Mephex_App_Arguments $arguments,
+		Mephex_Config_OptionSet $config, 
+		$config_sys_group = 'mephex'
+	)
 	{
+		parent::__construct($arguments);
+
 		$this->_config				= $config;
 		$this->_config_sys_group	= $config_sys_group;
 	}

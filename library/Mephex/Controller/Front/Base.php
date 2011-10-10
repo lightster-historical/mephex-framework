@@ -15,7 +15,7 @@ implements Mephex_Controller_Front
 	 *
 	 * @var Mephex_Controller_Router
 	 */
-	protected $_router	= null;
+	private $_router	= null;
 
 
 	/**
@@ -23,12 +23,37 @@ implements Mephex_Controller_Front
 	 *
 	 * @var Mephex_Controller_Action_Base
 	 */
-	protected $_action_controller	= null;
+	private $_action_controller	= null;
+
+
+	/**
+	 * Arguments inputted to the program.
+	 *
+	 * @var Mephex_App_Arguments
+	 */
+	private $_arguments;
 
 
 
-	public function __construct()
+	/**
+	 * @param Mephex_App_Arguments $arguments - the arguments inputted
+	 *		to the program
+	 */
+	public function __construct(Mephex_App_Arguments $arguments)
 	{
+		$this->_arguments	= $arguments;
+	}
+
+
+
+	/**
+	 * Getter for arguments.
+	 *
+	 * @return Mephex_App_Arguments
+	 */
+	public function getArguments()
+	{
+		return $this->_arguments;
 	}
 	
 	

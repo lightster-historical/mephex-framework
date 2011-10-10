@@ -12,12 +12,12 @@ extends Mephex_App_Bootstrap_Base
 
 
 
-	public function __construct(array $args)
+	public function __construct($args)
 	{
+		parent::__construct();
+
 		$this->_action_ctrl_name	= $args['action_ctrl_name'];
 		$this->_action_name			= $args['action_name'];
-
-		parent::__construct($args);
 	}
 
 
@@ -55,9 +55,10 @@ extends Mephex_App_Bootstrap_Base
 
 
 
-	protected function generateFrontController()
+	protected function generateFrontController(Mephex_App_Arguments $arguments)
 	{
 		return new Stub_Mephex_Controller_Front_Base(
+			$arguments,
 			$this->_action_ctrl_name,
 			$this->_action_name
 		);
@@ -65,8 +66,6 @@ extends Mephex_App_Bootstrap_Base
 
 
 
-	public function getArguments()
-		{return parent::getArguments();}
-	public function getFrontController()
-		{return parent::getFrontController();}
+	public function getFrontController(Mephex_App_Arguments $arguments)
+		{return parent::getFrontController($arguments);}
 }

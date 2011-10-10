@@ -37,12 +37,10 @@ extends Mephex_Test_TestCase
 	/**
 	 * @covers Mephex_App_Bootstrap_Configurable::__construct
 	 */
-	public function testConfigurableBootstrapIsInstanceOfBootsrap()
+	public function testConfigurableBootstrapIsInstanceOfBootstrap()
 	{
-		$args		= array();
 		$config		= new Mephex_Config_OptionSet();
 		$bootstrap	= new Stub_Mephex_App_Bootstrap_Configurable(
-			$args,
 			$config
 		);
 
@@ -56,10 +54,8 @@ extends Mephex_Test_TestCase
 	 */
 	public function testConfigPassedToBootstrapIsSameRetrievedFromBootstrap()
 	{
-		$args		= array();
 		$config		= new Mephex_Config_OptionSet();
 		$bootstrap	= new Stub_Mephex_App_Bootstrap_Configurable(
-			$args,
 			$config
 		);
 
@@ -73,13 +69,13 @@ extends Mephex_Test_TestCase
 	 */
 	public function testFrontControllerIsInstanceOfConfigurableFrontController()
 	{
-		$args		= array();
 		$config		= new Mephex_Config_OptionSet();
 		$bootstrap	= new Stub_Mephex_App_Bootstrap_Configurable(
-			$args,
 			$config
 		);
-		$front_ctrl	= $bootstrap->generateFrontController();
+		$front_ctrl	= $bootstrap->generateFrontController(
+			new Mephex_App_Arguments()
+		);
 
 		$this->assertTrue(
 			$front_ctrl
@@ -94,13 +90,14 @@ extends Mephex_Test_TestCase
 	 */
 	public function testConfigPassedToBootstrapIsSameRetrievedFromFrontController()
 	{
-		$args		= array();
+		$args		= new Mephex_App_Arguments();
 		$config		= new Mephex_Config_OptionSet();
 		$bootstrap	= new Stub_Mephex_App_Bootstrap_Configurable(
-			$args,
 			$config
 		);
-		$front_ctrl	= $bootstrap->generateFrontController();
+		$front_ctrl	= $bootstrap->generateFrontController(
+			new Mephex_App_Arguments()
+		);
 
 		$this->assertTrue($config === $front_ctrl->getConfig());
 	}
@@ -112,15 +109,16 @@ extends Mephex_Test_TestCase
 	 */
 	public function testConfigDefaultSystemGroupIsMephex()
 	{
-		$args		= array();
+		$args		= new Mephex_App_Arguments();
 		$config		= new Mephex_Config_OptionSet();
 		$config->set('mephex', 'option_name', 'mephex_value');
 		$config->set('other', 'option_name', 'other_value');
 		$bootstrap	= new Stub_Mephex_App_Bootstrap_Configurable(
-			$args,
 			$config
 		);
-		$front_ctrl	= $bootstrap->generateFrontController();
+		$front_ctrl	= $bootstrap->generateFrontController(
+			new Mephex_App_Arguments()
+		);
 
 		$this->assertEquals(
 			'mephex_value',
@@ -135,16 +133,16 @@ extends Mephex_Test_TestCase
 	 */
 	public function testConfigDefaultSystemGroupCanBeSetInConfigOptions()
 	{
-		$args		= array();
 		$config		= new Mephex_Config_OptionSet();
 		$config->set('default', 'system_group', 'other');
 		$config->set('mephex', 'option_name', 'mephex_value');
 		$config->set('other', 'option_name', 'other_value');
 		$bootstrap	= new Stub_Mephex_App_Bootstrap_Configurable(
-			$args,
 			$config
 		);
-		$front_ctrl	= $bootstrap->generateFrontController();
+		$front_ctrl	= $bootstrap->generateFrontController(
+			new Mephex_App_Arguments()
+		);
 
 		$this->assertEquals(
 			'other_value',

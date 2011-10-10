@@ -22,30 +22,13 @@ extends Mephex_App_Bootstrap
 	 */
 	private $_auto_loader;
 
-	/**
-	 * Lazy-loaded front controller.
-	 *
-	 * @var Mephex_Controller_Front_Base
-	 */
-	private $_front_ctrl;
-
-
-	/**
-	 * Arguments passed into the program.
-	 *
-	 * @ar array
-	 */
-	private $_arguments;
-
 
 
 	/**
 	 * @param array $arguments - the arguments passed into the program
 	 */
-	public function __construct(array $arguments)
+	public function __construct()
 	{
-		$this->_arguments	= $arguments;
-
 		$this->init();
 	}
 
@@ -66,18 +49,6 @@ extends Mephex_App_Bootstrap
 	protected function init()
 	{
 		$this->setupAutoLoader();
-	}
-
-
-
-	/**
-	 * Getter for arguments.
-	 *
-	 * @return array
-	 */
-	protected function getArguments()
-	{
-		return $this->_arguments;
 	}
 
 
@@ -132,27 +103,27 @@ extends Mephex_App_Bootstrap
 	 *
 	 * @return Mephex_Controller_Front_Base
 	 */
-	protected abstract function generateFrontController();
+	protected abstract function generateFrontController(
+		Mephex_App_Arguments $arguments
+	);
 
 
 
 	/**
-	 * Lazy-loading getter for front controller.
+	 * Getter for front controller.
 	 *
+	 * @param Mephex_App_Arguments $arguments - the arguments to pass to the 
+	 *		front controller
 	 * @return Mephex_Controller_Front_Base
 	 */
-	protected function getFrontController()
+	protected function getFrontController(Mephex_App_Arguments $arguments)
 	{
-		if(null === $this->_front_ctrl) {
-			$expected	= new Mephex_Reflection_Class(
-				'Mephex_Controller_Front_Base'
-			);
-			$this->_front_ctrl	= $expected->checkObjectType(
-				$this->generateFrontController()
-			);
-		}
-
-		return $this->_front_ctrl;
+		$expected	= new Mephex_Reflection_Class(
+			'Mephex_Controller_Front_Base'
+		);
+		return $expected->checkObjectType(
+			$this->generateFrontController($arguments)
+		);
 	}
 
 
@@ -160,11 +131,15 @@ extends Mephex_App_Bootstrap
 	/**
 	 * Runs the application.
 	 *
-	 * @return void
+	 * @param Mephex_App_Arguments $arguments - the arguments to pass to the 
+	 *		front controller
+	 * @return Mephex_Controller_Front_Base
 	 */
-	public function run()
+	public function run(Mephex_App_Arguments $arguments)
 	{
-		return $this->getFrontController()->run();
+		$front_ctrl	= $this->getFrontController($arguments);
+		$front_ctrl->run($arguments);
+		return $front_ctrl;
 	}
 
 
@@ -172,10 +147,18 @@ extends Mephex_App_Bootstrap
 	/**
 	 * Runs the application, overriding the default router.
 	 *
-	 * @return void
+	 * @param Mephex_App_Arguments $arguments - the arguments to pass to the 
+	 *		front controller
+	 * @param Mephex_Controller_Router $router - the router to use
+	 * @return Mephex_Controller_Front_Base
 	 */
-	public function runWithRouterOverride(Mephex_Controller_Router $router)
+	public function runWithRouterOverride(
+		Mephex_App_Arguments $arguments,
+		Mephex_Controller_Router $router
+	)
 	{
-		return $this->getFrontController()->runWithRouterOverride($router);
+		$front_ctrl	= $this->getFrontController($arguments);
+		$front_ctrl->runWithRouterOverride($router);
+		return $front_ctrl;
 	}
 }

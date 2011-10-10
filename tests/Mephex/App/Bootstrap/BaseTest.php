@@ -51,23 +51,6 @@ extends Mephex_Test_TestCase
 
 
 	/**
-	 * @covers Mephex_App_Bootstrap_Base::getArguments
-	 */
-	public function testArgumentsPassedToConstructorAreReturnedByGetter()
-	{
-		$args	= array(
-			'action_ctrl_name'	=> 'Stub_Mephex_Controller_Action_Base',
-			'action_name'		=> 'index',
-			'cmd_line_arg'		=> '-v'
-		);
-		$bootstrap	= new Stub_Mephex_App_Bootstrap_Base($args);
-
-		$this->assertEquals($args, $bootstrap->getArguments());
-	}
-
-
-
-	/**
 	 * @covers Mephex_App_Bootstrap_Base::init
 	 */
 	public function testInitIsCalledWhenBootstrapIsConstructed()
@@ -162,18 +145,18 @@ extends Mephex_Test_TestCase
 	/**
 	 * @covers Mephex_App_Bootstrap_Base::getFrontController
 	 */
-	public function testFrontControllerIsLazyLoaded()
+	public function testFrontControllerCanBeGenerated()
 	{
 		$args	= array(
 			'action_ctrl_name'	=> 'Stub_Mephex_Controller_Action_Base',
 			'action_name'		=> 'index'
 		);
 		$bootstrap		= new Stub_Mephex_App_Bootstrap_Base($args);
-		$front_ctrl		= $bootstrap->getFrontController();
-
-		$this->assertTrue(
-			$front_ctrl === $bootstrap->getFrontController()
+		$front_ctrl		= $bootstrap->getFrontController(
+			new Mephex_App_Arguments()
 		);
+
+		$this->assertTrue($front_ctrl instanceof Mephex_Controller_Front_Base);
 	}
 
 
@@ -188,12 +171,29 @@ extends Mephex_Test_TestCase
 			'action_name'		=> 'index'
 		);
 		$bootstrap		= new Stub_Mephex_App_Bootstrap_Base($args);
-		$bootstrap->run();
-
-		$front_ctrl		= $bootstrap->getFrontController();
+		$front_ctrl		= $bootstrap->run(new Mephex_App_Arguments());
 		$action_ctrl	= $front_ctrl->getActionController();
 
 		$this->assertEquals('index', $action_ctrl->getActionName());
+	}
+
+
+
+	/**
+	 * @covers Mephex_App_Bootstrap_Base::run
+	 */
+	public function testArgumentsPassedToRunAreSameArgumentsReceivedByFrontController()
+	{
+		$args	= array(
+			'action_ctrl_name'	=> 'Stub_Mephex_Controller_Action_Base',
+			'action_name'		=> 'index',
+			'cmd_line_arg'		=> '-v -a'
+		);
+		$arguments	= new Mephex_App_Arguments($args);
+		$bootstrap	= new Stub_Mephex_App_Bootstrap_Base($args);
+		$front_ctrl	= $bootstrap->run($arguments);
+
+		$this->assertTrue($arguments === $front_ctrl->getArguments());
 	}
 
 
@@ -212,11 +212,36 @@ extends Mephex_Test_TestCase
 			'Stub_Mephex_Controller_Action_Base',
 			'builder'
 		);
-		$bootstrap->runWithRouterOverride($router);
-
-		$front_ctrl		= $bootstrap->getFrontController();
+		$front_ctrl		= $bootstrap->runWithRouterOverride(
+			new Mephex_App_Arguments(),
+			$router
+		);
 		$action_ctrl	= $front_ctrl->getActionController();
 
 		$this->assertEquals('builder', $action_ctrl->getActionName());
+	}
+
+
+
+	/**
+	 * @covers Mephex_App_Bootstrap_Base::runWithRouterOverride
+	 */
+	public function testArgumentsPassedToRunWithOverrideAreSameArgumentsReceivedByFrontController()
+	{
+		$args	= array(
+			'action_ctrl_name'	=> 'Stub_Mephex_Controller_Action_Base',
+			'action_name'		=> 'index'
+		);
+		$arguments	= new Mephex_App_Arguments($args);
+
+		$router			= new Stub_Mephex_Controller_Router(
+			'Stub_Mephex_Controller_Action_Base',
+			'builder'
+		);
+
+		$bootstrap	= new Stub_Mephex_App_Bootstrap_Base($args);
+		$front_ctrl	= $bootstrap->runWithRouterOverride($arguments, $router);
+
+		$this->assertTrue($arguments === $front_ctrl->getArguments());
 	}
 }

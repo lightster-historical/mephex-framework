@@ -9,5 +9,5 @@
  */
 abstract class Mephex_App_Bootstrap
 {
-	public abstract function run(); 
+	public abstract function run(Mephex_App_Arguments $arguments); 
 }

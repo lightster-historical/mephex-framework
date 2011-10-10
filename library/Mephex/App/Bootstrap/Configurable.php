@@ -25,15 +25,11 @@ extends Mephex_App_Bootstrap_Base
 
 
 	/**
-	 * @param array $arguments - the arguments passed into the program
 	 * @param Mephex_Config_OptionSet $config - the option set to use with app
 	 */
-	public function __construct(
-		array $arguments,
-		Mephex_Config_OptionSet $config
-	)
+	public function __construct(Mephex_Config_OptionSet $config)
 	{
-		parent::__construct($arguments);
+		parent::__construct();
 
 		$this->_config	= $config;
 	}
@@ -55,12 +51,15 @@ extends Mephex_App_Bootstrap_Base
 	/**
 	 * Generates the front controller to be used by the application.
 	 *
+	 * @param Mephex_App_Arguments $arguments - the arguments to pass to the 
+	 *		front controller
 	 * @return Mephex_Controller_Front_Configurable
 	 * @see Mephex_App_Bootstrap_Base#generateFrontController
 	 */
-	protected function generateFrontController()
+	protected function generateFrontController(Mephex_App_Arguments $arguments)
 	{
 		return new Mephex_Controller_Front_Configurable(
+			$arguments,
 			$this->getConfig(), 
 			$this->getConfig()->get('default', 'system_group', 'mephex')
 		);

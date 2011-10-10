@@ -10,9 +10,11 @@ extends Mephex_Controller_Front_Base
 
 
 
-	public function __construct($action_ctrl_name, $action_name)
+	public function __construct(
+		Mephex_App_Arguments $arguments, $action_ctrl_name, $action_name
+	)
 	{
-		parent::__construct();
+		parent::__construct($arguments);
 
 		$this->_action_ctrl_name	= $action_ctrl_name;
 		$this->_action_name	= $action_name;
