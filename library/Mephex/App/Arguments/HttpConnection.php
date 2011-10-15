@@ -13,9 +13,9 @@ extends Mephex_App_Arguments
 	/**
 	 * @param array $args - a list of argument values to start off with
 	 */
-	public function __construct(array $args = null)
+	public function __construct(array $arguments)
 	{
-		parent::__construct($args ? $args : $_SERVER);
+		parent::__construct($arguments);
 	}
 	
 	

@@ -17,7 +17,7 @@ extends Mephex_Test_TestCase
 	 */
 	public function testDefaultArgumentsAreFromServerSuperGlobal()
 	{
-		$args	= new Mephex_App_Arguments_HttpConnection();
+		$args	= new Mephex_App_Arguments_HttpConnection($_SERVER);
 		
 		$match	= true;
 		foreach($_SERVER as $key => $val)

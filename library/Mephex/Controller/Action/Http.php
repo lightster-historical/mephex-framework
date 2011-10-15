@@ -37,7 +37,7 @@ extends Mephex_Controller_Action_Base
 	{
 		parent::__construct();
 		
-		$this->_http_connection	= new Mephex_App_Arguments_HttpConnection();
+		$this->_http_connection	= new Mephex_App_Arguments_HttpConnection($_SERVER);
 		$this->_request_post	= new Mephex_App_Arguments($_POST);
 		$this->_request_get		= new Mephex_App_Arguments($_GET);
 	}
