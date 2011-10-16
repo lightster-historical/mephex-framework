@@ -52,10 +52,17 @@ class Mephex_App_Arguments
 	 */
 	public function get($key, $default = null)
 	{
-		return 
-			($this->has($key)) ? $this->_args[$key]
-				: $default
-		;
+		if(!$this->has($key))
+		{
+			if(func_num_args() < 2)
+			{
+				throw new Mephex_App_Arguments_Exception_UnknownKey($this, $key);
+			}
+
+			return $default;
+		}
+
+		return $this->_args[$key];
 	}
 	
 	

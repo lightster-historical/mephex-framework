@@ -80,8 +80,18 @@ extends Mephex_Test_TestCase
 	 */
 	public function testDefaultValueIsReturnedIfArgumentIsNotSet()
 	{
-		$this->assertNull($this->_args->get('y'));
 		$this->assertEquals('some_default', $this->_args->get('z', 'some_default'));
+	}
+	
+	
+	
+	/**
+	 * @covers Mephex_App_Arguments::get
+	 * @expectedException Mephex_App_Arguments_Exception_UnknownKey
+	 */
+	public function testExceptionIsThrownIfRequestedKeyIsNotFound()
+	{
+		$this->assertNull($this->_args->get('y'));
 	}
 	
 	

@@ -45,7 +45,7 @@ extends Mephex_Test_TestCase
 		$this->assertFalse($args->isXmlHttpRequest());
 		
 		$args	= new Mephex_App_Arguments_HttpConnection(array());
-		$this->assertFalse($args->isXmlHttpRequest());
+		$this->assertNull($args->isXmlHttpRequest());
 	}
 	
 	
@@ -62,6 +62,6 @@ extends Mephex_Test_TestCase
 		$this->assertFalse($args->isNoCacheRequest());
 		
 		$args	= new Mephex_App_Arguments_HttpConnection(array());
-		$this->assertFalse($args->isNoCacheRequest());
+		$this->assertNull($args->isNoCacheRequest());
 	}
 }

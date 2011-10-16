@@ -27,7 +27,10 @@ extends Mephex_App_Arguments
 	 */
 	public function isXmlHttpRequest()
 	{
-		return strtolower($this->get('HTTP_X_REQUESTED_WITH')) === 'xmlhttprequest';
+		$value	= $this->get('HTTP_X_REQUESTED_WITH', null);
+
+		return (null === $value) ?	null :
+									(strtolower($value) === 'xmlhttprequest');
 	}
 	
 	
@@ -40,6 +43,9 @@ extends Mephex_App_Arguments
 	 */
 	public function isNoCacheRequest()
 	{
-		return (bool)preg_match('/no-cache/', (string)$this->get('HTTP_CACHE_CONTROL'));
+		$value	= $this->get('HTTP_CACHE_CONTROL', null);
+
+		return (null === $value) ?	null :
+									(bool)preg_match('/no-cache/i', (string)$value);
 	}
 }
