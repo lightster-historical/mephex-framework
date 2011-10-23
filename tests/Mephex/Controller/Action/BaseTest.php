@@ -5,6 +5,8 @@
 class Mephex_Controller_Action_BaseTest
 extends Mephex_Test_TestCase
 {
+	protected $_arguments;
+	protected $_front_ctrl;
 	protected $_controller;
 	
 	
@@ -13,7 +15,13 @@ extends Mephex_Test_TestCase
 	{
 		parent::setUp();
 		
-		$this->_controller	= new Stub_Mephex_Controller_Action_Base();
+		$this->_arguments	= new Mephex_App_Arguments();
+		$this->_front_ctrl	= new Stub_Mephex_Controller_Front_Base(
+			$this->_arguments, 'Stub_Mephex_Controller_Action_Base', 'index'
+		);
+		$this->_controller	= new Stub_Mephex_Controller_Action_Base(
+			$this->_front_ctrl
+		);
 	}
 	
 	
@@ -22,9 +30,20 @@ extends Mephex_Test_TestCase
 	 * @covers Mephex_Controller_Action
 	 * @covers Mephex_Controller_Action_Base::__construct
 	 */
-	public function testHttpControllerExtendsActionController()
+	public function testBaseControllerExtendsActionController()
 	{
-		$this->assertTrue($this->_controller instanceof Mephex_Controller_Action_Base);
+		$this->assertTrue($this->_controller instanceof Mephex_Controller_Action);
+	}
+
+
+
+	/**
+	 * @covers Mephex_Controller_Action_Base::__construct
+	 * @covers Mephex_Controller_Action_Base::getFrontController
+	 */
+	public function testFrontControllerPassedToActionControllerConstructorIsReturnedByGetter()
+	{
+		$this->assertTrue($this->_front_ctrl === $this->_controller->getFrontController());
 	}
 	
 	
@@ -80,6 +99,60 @@ extends Mephex_Test_TestCase
 	{
 		$this->_controller->runAction('inaccessible');
 	}
+
+
+
+	/**
+	 * @covers Mephex_Controller_Action_Base::getExpectedArgumentsClass
+	 */
+	public function testExpectedArgumentsClassIsAppArgumentsClass()
+	{
+		$this->assertEquals(
+			'Mephex_App_Arguments',
+			$this->_controller->getExpectedArgumentsClass()
+		);
+	}
+
+
+
+	/**
+	 * @covers Mephex_Controller_Action_Base::checkArguments
+	 * @expectedException Mephex_Reflection_Exception_ExpectedObject
+	 */
+	public function testArgumentsClassCanBeChecked()
+	{
+		$this->_controller	= new Stub_Mephex_Controller_Action_Base(
+			$this->_front_ctrl,
+			'Mephex_App_Arguments_Http'
+		);
+		$this->_controller->checkArguments(new Mephex_App_Arguments());
+	}
+
+
+
+	/**
+	 * @covers Mephex_Controller_Action_Base::checkArguments
+	 */
+	public function testArgumentsClassIsCheckedBeforeProcessingPreAction()
+	{
+		$this->_controller	= new Stub_Mephex_Controller_Action_Base(
+			$this->_front_ctrl,
+			'Mephex_App_Arguments_Http'
+		);
+
+		$exception_thrown	= false;
+		try
+		{
+			$this->_controller->runAction('index');
+		}
+		catch(Mephex_Reflection_Exception_ExpectedObject $ex)
+		{
+			$exception_thrown	= true;
+		}
+
+		$this->assertTrue($exception_thrown);
+		$this->assertFalse($this->_controller->isPreActionProcessed());
+	}
 	
 	
 	
@@ -89,7 +162,9 @@ extends Mephex_Test_TestCase
 	 */
 	public function testProcessPreActionIsCalledBeforeActionAndPostAction()
 	{
-		$this->_controller	= new Stub_Mephex_Controller_Action_PreProcess();
+		$this->_controller	= new Stub_Mephex_Controller_Action_PreProcess(
+			$this->_front_ctrl
+		);
 		
 		$this->assertFalse($this->_controller->isPreActionProcessed());
 		$this->assertFalse($this->_controller->isPostActionProcessed());
@@ -115,7 +190,9 @@ extends Mephex_Test_TestCase
 	 */
 	public function testProcessPostActionIsCalledAfterPreActionAndAction()
 	{
-		$this->_controller	= new Stub_Mephex_Controller_Action_PostProcess();
+		$this->_controller	= new Stub_Mephex_Controller_Action_PostProcess(
+			$this->_front_ctrl
+		);
 		
 		$this->assertFalse($this->_controller->isPreActionProcessed());
 		$this->assertFalse($this->_controller->isPostActionProcessed());

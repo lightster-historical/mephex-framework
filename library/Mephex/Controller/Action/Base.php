@@ -39,6 +39,8 @@ implements Mephex_Controller_Action
 	 */
 	public function runAction($action_name)
 	{
+		$this->checkArguments($this->getFrontController()->getArguments());
+
 		$this->processPreAction();
 		
 		$this->processAction($action_name);
@@ -117,5 +119,32 @@ implements Mephex_Controller_Action
 	protected function getFrontController()
 	{
 		return $this->_front_ctrl;
+	}
+
+
+
+	/**
+	 * Checks the arguments object to make sure it extends the expected class.
+	 *
+	 * @return void
+	 */
+	protected function checkArguments(Mephex_App_Arguments $args)
+	{
+		$expected	= new Mephex_Reflection_Class(
+			$this->getExpectedArgumentsClass()
+		);
+		$this->_router	= $expected->checkObjectType($args);
+	}
+
+
+
+	/**
+	 * Getter for the expected arguments class name.
+	 *
+	 * @return string
+	 */
+	protected function getExpectedArgumentsClass()
+	{
+		return 'Mephex_App_Arguments';
 	}
 }
