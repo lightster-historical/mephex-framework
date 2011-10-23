@@ -5,7 +5,11 @@
 class Mephex_Controller_Action_HttpTest
 extends Mephex_Test_TestCase
 {
+	protected $_arguments;
+	protected $_front_ctrl;
 	protected $_controller;
+	
+	protected $_exception;
 	
 	
 	
@@ -17,7 +21,15 @@ extends Mephex_Test_TestCase
 		$_POST['unitTesting']	= 'POST';
 		$_GET['unitTesting']	= 'GET';
 		
-		$this->_controller	= new Stub_Mephex_Controller_Action_Http();
+		$this->_arguments	= new Mephex_App_Arguments();
+		$this->_front_ctrl	= new Stub_Mephex_Controller_Front_Base(
+			$this->_arguments,
+			'Stub_Mephex_Controller_Action_Base',
+			'index'
+		);
+		$this->_controller	= new Stub_Mephex_Controller_Action_Http(
+			$this->_front_ctrl
+		);
 	}
 	
 	

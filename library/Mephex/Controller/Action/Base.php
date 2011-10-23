@@ -11,8 +11,22 @@
 abstract class Mephex_Controller_Action_Base
 implements Mephex_Controller_Action
 {
-	public function __construct()
+	/**
+	 * The front controller running the action
+	 *
+	 * @var Mephex_Controller_Front
+	 */
+	private $_front_ctrl;
+
+
+
+	/**
+	 * @param Mephex_App_Arguments $arguments - the arguments passed into the
+	 *		program
+	 */
+	public function __construct(Mephex_Controller_Front_Base $front_ctrl)
 	{
+		$this->_front_ctrl	= $front_ctrl;
 	}
 	
 	
@@ -91,5 +105,17 @@ implements Mephex_Controller_Action
 	protected function getActionMethodName($action_name)
 	{
 		return "serve{$action_name}";
+	}
+
+
+
+	/**
+	 * Getter for front controller.
+	 *
+	 * @return Mephex_Controller_Front_Base
+	 */
+	protected function getFrontController()
+	{
+		return $this->_front_ctrl;
 	}
 }

@@ -78,4 +78,6 @@ extends Mephex_Controller_Action_Base
 	
 	public function getActionMethodName($actionName)
 		{return parent::getActionMethodName($actionName);}
+	public function getFrontController()
+		{return parent::getFrontController();}
 }

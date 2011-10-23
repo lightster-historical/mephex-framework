@@ -33,9 +33,9 @@ extends Mephex_Controller_Action_Base
 	
 	
 	
-	public function __construct()
+	public function __construct(Mephex_Controller_Front_Base $front_ctrl)
 	{
-		parent::__construct();
+		parent::__construct($front_ctrl);
 		
 		$this->_http_connection	= new Mephex_App_Arguments_HttpConnection($_SERVER);
 		$this->_request_post	= new Mephex_App_Arguments($_POST);

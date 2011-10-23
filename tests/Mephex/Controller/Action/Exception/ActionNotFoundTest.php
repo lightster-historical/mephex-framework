@@ -5,6 +5,8 @@
 class Mephex_Controller_Action_Exception_ActionNotFoundTest
 extends Mephex_Test_TestCase
 {
+	protected $_arguments;
+	protected $_front_ctrl;
 	protected $_controller;
 	protected $_method_name;
 	protected $_action_name;
@@ -15,9 +17,17 @@ extends Mephex_Test_TestCase
 	
 	public function setUp()
 	{
-		$this->_controller	= new Stub_Mephex_Controller_Action_Base();
 		$this->_method_name	= 'serveindex';
 		$this->_action_name	= 'index';
+		$this->_arguments	= new Mephex_App_Arguments();
+		$this->_front_ctrl	= new Stub_Mephex_Controller_Front_Base(
+			$this->_arguments,
+			'Stub_Mephex_Controller_Action_Base',
+			$this->_action_name
+		);
+		$this->_controller	= new Stub_Mephex_Controller_Action_Base(
+			$this->_front_ctrl
+		);
 		
 		$this->_exception	= new Mephex_Controller_Action_Exception_ActionNotFound
 		(
