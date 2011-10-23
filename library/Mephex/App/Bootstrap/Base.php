@@ -3,7 +3,6 @@
 
 
 require_once 'Mephex/App/Bootstrap.php';
-require_once 'Mephex/Config/OptionSet.php';
 
 
 

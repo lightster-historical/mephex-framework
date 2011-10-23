@@ -3,6 +3,8 @@
 
 
 require_once 'Mephex/App/Bootstrap/Base.php';
+// load this so the app's "index.php"/"bootstrap.php"-like file does not need to
+require_once 'Mephex/Config/OptionSet.php';
 
 
 
@@ -18,7 +20,7 @@ extends Mephex_App_Bootstrap_Base
 	/**
 	 * The option set to use with the application.
 	 *
-	 * @var Mphex_Config_OptionSet
+	 * @var Mephex_Config_OptionSet
 	 */
 	private $_config;
 
