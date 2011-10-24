@@ -82,6 +82,16 @@ extends Mephex_Test_TestCase
 	{
 		$this->assertEquals('some_default', $this->_args->get('z', 'some_default'));
 	}
+
+
+
+	/**
+	 * @covers Mephex_App_Arguments::getAll
+	 */
+	public function testAllArgumentsCanBeRetrieved()
+	{
+		$this->assertEquals($this->_default_args, $this->_args->getAll());
+	}
 	
 	
 	

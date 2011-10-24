@@ -64,6 +64,18 @@ class Mephex_App_Arguments
 
 		return $this->_args[$key];
 	}
+
+
+
+	/**
+	 * Retrieves all arguments.
+	 *
+	 * @return array
+	 */
+	public function getAll()
+	{
+		return $this->_args;
+	}
 	
 	
 	
