@@ -30,16 +30,37 @@ extends Mephex_Controller_Action_Base
 	 * @var Mephex_App_Arguments
 	 */
 	private $_request_get;
-	
-	
-	
-	public function __construct(Mephex_Controller_Front_Base $front_ctrl)
+
+
+
+	/**
+	 * Checks the arguments object to make sure it extends the expected class.
+	 *
+	 * @param Mephex_App_Arguments $args - the arguments object to check
+	 *		the class type of
+	 * @return void
+	 * @see Mephex_Controller_Action_Http#checkArguments
+	 */
+	protected function checkArguments(Mephex_App_Arguments $arguments)
 	{
-		parent::__construct($front_ctrl);
-		
-		$this->_http_connection	= new Mephex_App_Arguments_HttpConnection($_SERVER);
-		$this->_request_post	= new Mephex_App_Arguments($_POST);
-		$this->_request_get		= new Mephex_App_Arguments($_GET);
+		parent::checkArguments($arguments);
+
+		$this->_http_connection	= $arguments->getHttpConnectionInfo();
+		$this->_request_post	= $arguments->getPostRequest();
+		$this->_request_get		= $arguments->getGetRequest();
+	}
+
+
+
+	/**
+	 * Getter for the expected arguments class name.
+	 *
+	 * @return string
+	 * @see Mephex_Controller_Action_Http#getExpectedArgumentsClass
+	 */
+	protected function getExpectedArgumentsClass()
+	{
+		return 'Mephex_App_Arguments_Http';
 	}
 	
 	

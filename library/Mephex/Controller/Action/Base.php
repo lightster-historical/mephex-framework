@@ -126,6 +126,8 @@ implements Mephex_Controller_Action
 	/**
 	 * Checks the arguments object to make sure it extends the expected class.
 	 *
+	 * @param Mephex_App_Arguments $args - the arguments object to check
+	 *		the class type of
 	 * @return void
 	 */
 	protected function checkArguments(Mephex_App_Arguments $args)
