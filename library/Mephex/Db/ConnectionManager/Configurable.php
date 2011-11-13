@@ -17,14 +17,18 @@ extends Mephex_Db_ConnectionManager
 	 */
 	private $_config;
 
-
 	/**
+	 * Array of database connection config info.
 	 *
-	 *
-	 *
+	 * @var array
 	 */
 	private $_db_config_info		= array();
 
+	/**
+	 * Array of lazy-loaded connection factories.
+	 *
+	 * @var Mephex_Db_ConnectionFactory[]
+	 */
 	private $_connection_factories	= array();
 
 
