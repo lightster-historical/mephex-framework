@@ -366,4 +366,18 @@ extends Mephex_Test_TestCase
 		
 		$this->assertFalse($option_set->hasOption('manually_set', 'not_set_option'));
 	}
+
+
+
+	/**
+	 * @covers Mephex_Config_OptionSet
+	 */
+	public function testConfigOptionSetIsAnAppResource()
+	{
+		$this->assertTrue(
+			$this->getOptionSet()
+			instanceof
+			Mephex_App_Resource
+		);
+	}
 }  
