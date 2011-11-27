@@ -9,7 +9,7 @@
  * @author mlight
  */
 class Mephex_Test_Db_ConnectionFactory
-extends Mephex_Db_ConnectionFactory
+extends Mephex_Db_Sql_ConnectionFactory
 {
 	/**
 	 * The temporary file copier responsible for copying temporary files.

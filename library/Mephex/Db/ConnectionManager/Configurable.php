@@ -27,7 +27,7 @@ extends Mephex_Db_ConnectionManager
 	/**
 	 * Array of lazy-loaded connection factories.
 	 *
-	 * @var Mephex_Db_ConnectionFactory[]
+	 * @var Mephex_Db_Sql_ConnectionFactory[]
 	 */
 	private $_connection_factories	= array();
 
@@ -50,7 +50,7 @@ extends Mephex_Db_ConnectionManager
 	 *
 	 * @param string $group - the config option set group name that the
 	 *		connection factory is needed for
-	 * @return Mephex_Db_ConnectionFactory
+	 * @return Mephex_Db_Sql_ConnectionFactory
 	 */
 	public function getConnectionFactory($group)
 	{
@@ -68,11 +68,11 @@ extends Mephex_Db_ConnectionManager
 	/**
 	 * Generates a default connection factory for the given config group.
 	 *
-	 * @return Mephex_Db_ConnectionFactory
+	 * @return Mephex_Db_Sql_ConnectionFactory
 	 */
 	protected function generateDefaultConnectionFactory($group)
 	{
-		return new Mephex_Db_ConnectionFactory();
+		return new Mephex_Db_Sql_ConnectionFactory();
 	}
 
 
@@ -81,12 +81,12 @@ extends Mephex_Db_ConnectionManager
 	 * Sets the connection factory to use for the given config group.
 	 *
 	 * @param string $group - the config group to use the connection factory with
-	 * @param Mephex_Db_ConnectionFactory $conn_factory - the connection factory
+	 * @param Mephex_Db_Sql_ConnectionFactory $conn_factory - the connection factory
 	 *		to use for the config group
 	 * @return void
 	 */
 	public function setConnectionFactory(
-		$group, Mephex_Db_ConnectionFactory $conn_factory
+		$group, Mephex_Db_Sql_ConnectionFactory $conn_factory
 	)
 	{
 		$this->_connection_factories[$group]	= $conn_factory;

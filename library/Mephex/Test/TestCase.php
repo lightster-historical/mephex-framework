@@ -16,7 +16,7 @@ extends PHPUnit_Framework_TestCase
 	/**
 	 * Lazy-loaded database connection factory.
 	 * 
-	 * @var Mephex_Db_ConnectionFactory
+	 * @var Mephex_Db_Sql_ConnectionFactory
 	 */
 	protected $_connection_factory	= null;
 	
@@ -129,7 +129,7 @@ extends PHPUnit_Framework_TestCase
 	/**
 	 * Lazy-loads a connection factory.
 	 * 
-	 * @return Mephex_Db_ConnectionFactory
+	 * @return Mephex_Db_Sql_ConnectionFactory
 	 */
 	protected function getDbConnectionFactory()
 	{

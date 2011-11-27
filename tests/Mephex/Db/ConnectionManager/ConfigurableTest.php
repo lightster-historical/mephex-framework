@@ -30,7 +30,7 @@ extends Mephex_Test_TestCase
 			'b'	=> new Stub_Mephex_Db_Sql_Base_Connection(),
 			'c'	=> new Stub_Mephex_Db_Sql_Base_Connection(),
 		);
-		$this->_connection_factory	= new Stub_Mephex_Db_ConnectionFactory(
+		$this->_connection_factory	= new Stub_Mephex_Db_Sql_ConnectionFactory(
 			$this->_connections
 		);
 
@@ -68,7 +68,7 @@ extends Mephex_Test_TestCase
 		$this->assertTrue(
 			$factory
 			instanceof
-			Mephex_Db_ConnectionFactory
+			Mephex_Db_Sql_ConnectionFactory
 		);
 		$this->assertTrue(
 			$factory
@@ -85,7 +85,7 @@ extends Mephex_Test_TestCase
 	 */
 	public function testConnectionFactoryCanBeSet()
 	{
-		$connection_factory	= new Stub_Mephex_Db_ConnectionFactory(
+		$connection_factory	= new Stub_Mephex_Db_Sql_ConnectionFactory(
 			$this->_connections
 		);
 		$this->_manager->setConnectionFactory('test', $connection_factory);

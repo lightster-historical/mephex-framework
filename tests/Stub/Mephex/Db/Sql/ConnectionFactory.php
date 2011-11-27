@@ -2,8 +2,8 @@
 
 
 
-class Stub_Mephex_Db_ConnectionFactory
-extends Mephex_Db_ConnectionFactory
+class Stub_Mephex_Db_Sql_ConnectionFactory
+extends Mephex_Db_Sql_ConnectionFactory
 {
 	protected $_connections;
 

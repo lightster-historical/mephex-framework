@@ -7,7 +7,7 @@
  * 
  * @author mlight
  */
-class Mephex_Db_ConnectionFactory
+class Mephex_Db_Sql_ConnectionFactory
 {
 	public function __construct()
 	{

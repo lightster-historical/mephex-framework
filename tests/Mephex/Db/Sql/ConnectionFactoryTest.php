@@ -2,7 +2,7 @@
 
 
 
-class Mephex_Db_ConnectionFactoryTest
+class Mephex_Db_Sql_ConnectionFactoryTest
 extends Mephex_Test_TestCase
 {
 	protected $_connection_factory;
@@ -13,7 +13,7 @@ extends Mephex_Test_TestCase
 	{
 		parent::setUp();
 		
-		$this->_connection_factory	= new Mephex_Db_ConnectionFactory();
+		$this->_connection_factory	= new Mephex_Db_Sql_ConnectionFactory();
 		$this->_config	= new Mephex_Config_OptionSet();
 	}
 	
@@ -82,7 +82,7 @@ extends Mephex_Test_TestCase
 	 */
 	public function testExceptionIsThrownIfReturnedDriverIsNotAConnectionFactory()
 	{
-		$this->_config->set('group4', 'conn4.driver', 'Mephex_Db_ConnectionFactoryTest');
+		$this->_config->set('group4', 'conn4.driver', 'Mephex_Db_Sql_ConnectionFactoryTest');
 		
 		$connection	= $this->_connection_factory->connectUsingConfig(
 			$this->_config, 'group4', 'conn4'

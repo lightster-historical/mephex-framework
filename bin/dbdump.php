@@ -21,7 +21,7 @@ function bootstrap()
 	$group		= getGroupName($options);
 	$conn_name	= getConnectionName($options);
 	
-	$factory	= new Mephex_Db_ConnectionFactory();
+	$factory	= new Mephex_Db_Sql_ConnectionFactory();
 	$conn		= $factory->connectUsingConfig($config, $group, $conn_name);
 	
 	$tables		= getTables($options);
