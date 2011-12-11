@@ -32,7 +32,7 @@ extends Mephex_Exception
 	 */
 	public function __construct($expected_class, $passed_class)
 	{
-		parent::__construct("Class implementing/extending '{$expected_class}' expected.");
+		parent::__construct("Class implementing/extending '{$expected_class}' expected ('{$passed_class}' received).");
 		
 		$this->_expected_class	= $expected_class;
 		$this->_passed_class	= $passed_class;
