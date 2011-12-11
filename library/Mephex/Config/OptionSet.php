@@ -228,7 +228,7 @@ implements Mephex_App_Resource
 	 */
 	protected function throwNotFoundException($group, $option)
 	{
-		throw new Mephex_Exception("Config option '{$group}'.'{$option}' not found.");
+		throw new Mephex_Config_OptionSet_Exception_UnknownKey($this, $group, $option);
 	}
 	
 	
