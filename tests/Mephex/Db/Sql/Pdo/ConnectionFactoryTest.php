@@ -20,16 +20,6 @@ extends Mephex_Test_TestCase
 	
 	
 	
-	public function testTheCredentialFactoryIsCorrectlyInitialized()
-	{
-		$this->assertTrue(
-			$this->_connection_factory->getCredentialFactory()
-				instanceof Mephex_Db_Sql_Pdo_CredentialFactory
-		);
-	}
-	
-	
-	
 	/**
 	 * @expectedException Mephex_Exception
 	 */
