@@ -11,6 +11,26 @@ class Mephex_Db_Sql_Pdo_ConnectionFactory
 implements Mephex_Db_Sql_Base_ConnectionFactory
 {
 	/**
+	 * Generates a credential factory using the given config option set and
+	 * the given config group.
+	 *
+	 * @param Mephex_Config_OptionSet $config - the config option set to use
+	 *		for determining credential property values
+	 * @param string $group - the config group to use for determining credential
+	 * 		property values
+	 * @return Mephex_Db_Sql_Pdo_CredentialFactory_Configurable
+	 */
+	protected function getCredentialFactory(Mephex_Config_OptionSet $config, $group)
+	{
+		return new Mephex_Db_Sql_Pdo_CredentialFactory_Configurable(
+			$config,
+			$group
+		);
+	}
+
+
+
+	/**
 	 * Generates a connection to a database using a config option set,
 	 * the group name, and connection name.
 	 * 
@@ -23,10 +43,7 @@ implements Mephex_Db_Sql_Base_ConnectionFactory
 		Mephex_Config_OptionSet $config, $group, $connection_name
 	)
 	{
-		$credential_factory	= new Mephex_Db_Sql_Pdo_CredentialFactory_Configurable(
-			$config,
-			$group
-		);
+		$credential_factory	= $this->getCredentialFactory($config, $group);
 
 		try
 		{

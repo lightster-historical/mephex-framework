@@ -36,14 +36,17 @@ extends Mephex_Test_TestCase
 	
 	
 	
-	public function testDefaultCredentialFactoryIsATestCredentialFactory()
+	/**
+	 * @covers Mephex_Test_Db_Sql_Pdo_ConnectionFactory::getCredentialFactory
+	 */
+	public function testRetrievedCredentialFactoryIsAConfigurableTestCredentialFactory()
 	{
 		$factory	= $this->getConnectionFactory();
 		
 		$this->assertTrue(
-			$factory->getDefaultCredentialFactory()
+			$factory->getCredentialFactory(new Mephex_Config_OptionSet(), 'group')
 			instanceof
-			Mephex_Test_Db_Sql_Pdo_CredentialFactory 
+			Mephex_Test_Db_Sql_Pdo_CredentialFactory_Configurable
 		);
 	}
 }  
