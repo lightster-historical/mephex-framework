@@ -450,7 +450,7 @@ class Mephex_Db_Importer_PhpUnit_XmlDataSet
 			{
 				$insert		= new Mephex_Db_Sql_Base_Generator_Insert
 				(
-					new Mephex_Db_Sql_Base_Quoter(),
+					$this->_connection->getQuoter(),
 					$this->_table,
 					$this->_columns
 				);

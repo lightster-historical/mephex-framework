@@ -63,7 +63,7 @@ extends Mephex_Test_TestCase
 		$this->assertTrue(
 			$this->_connection->getQuoter()
 			instanceof
-			Mephex_Db_Sql_Base_Quoter
+			Mephex_Db_Sql_Base_Quoter_Mysql
 		);
 	}
 	

@@ -4,11 +4,11 @@
 
 /**
  * A utility class for properly quoting database table names,
- * column names, and values.
+ * column names, and values in MySQL.
  * 
  * @author lightster
  */
-class Mephex_Db_Sql_Base_Quoter
+class Mephex_Db_Sql_Base_Quoter_Mysql
 extends Mephex_Db_Sql_Quoter
 {
 	/**

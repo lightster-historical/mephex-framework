@@ -24,7 +24,7 @@ abstract class Mephex_Db_Sql_Base_Connection
 	 * The quoter responsible for quoting table names, column names, and
 	 * values.
 	 * 
-	 * @var Mephex_Db_Sql_Base_Quoter
+	 * @var Mephex_Db_Sql_Quoter
 	 */
 	private $_quoter		= null;
 	
@@ -93,11 +93,11 @@ abstract class Mephex_Db_Sql_Base_Connection
 	/**
 	 * Generates an instance of the default quoter.
 	 * 
-	 * @return Mephex_Db_Sql_Base_Quoter
+	 * @return Mephex_Db_Sql_Quoter
 	 */
 	protected function getDefaultQuoter()
 	{
-		return new Mephex_Db_Sql_Base_Quoter();
+		return new Mephex_Db_Sql_Base_Quoter_Mysql();
 	}
 	
 	
@@ -105,7 +105,7 @@ abstract class Mephex_Db_Sql_Base_Connection
 	/**
 	 * Getter for quoter.
 	 * 
-	 * @return Mephex_Db_Sql_Base_Quoter
+	 * @return Mephex_Db_Sql_Quoter
 	 */
 	public function getQuoter()
 	{

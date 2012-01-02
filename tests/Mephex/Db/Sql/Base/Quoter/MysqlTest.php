@@ -2,7 +2,7 @@
 
 
 
-class Mephex_Db_Sql_Base_QuoterTest
+class Mephex_Db_Sql_Base_Quoter_MysqlTest
 extends Mephex_Test_TestCase
 {
 	protected $_quoter	= null;
@@ -11,7 +11,7 @@ extends Mephex_Test_TestCase
 	
 	protected function setUp()
 	{	
-		$this->_quoter	= new Mephex_Db_Sql_Base_Quoter();
+		$this->_quoter	= new Mephex_Db_Sql_Base_Quoter_Mysql();
 	}
 	
 	
