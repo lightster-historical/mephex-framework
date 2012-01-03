@@ -30,9 +30,9 @@ abstract class Mephex_Db_Sql_Base_Connection
 	
 	
 	
-	public function __construct()
+	public function __construct(Mephex_Db_Sql_Quoter $quoter)
 	{
-		$this->_quoter	= $this->getDefaultQuoter();
+		$this->_quoter	= $quoter;
 	}
 	
 	
@@ -86,18 +86,6 @@ abstract class Mephex_Db_Sql_Base_Connection
 	public function setPreparedSetting($prepared)
 	{
 		$this->_prepared	= (int)$prepared;
-	}
-	
-	
-	
-	/**
-	 * Generates an instance of the default quoter.
-	 * 
-	 * @return Mephex_Db_Sql_Quoter
-	 */
-	protected function getDefaultQuoter()
-	{
-		return new Mephex_Db_Sql_Base_Quoter_Mysql();
 	}
 	
 	

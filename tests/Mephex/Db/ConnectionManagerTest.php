@@ -14,10 +14,12 @@ extends Mephex_Test_TestCase
 	{
 		parent::setUp();
 
+		$quoter		= new Mephex_Db_Sql_Base_Quoter_Mysql();
+
 		$this->_connections		= array(
-			'a'	=> new Stub_Mephex_Db_Sql_Base_Connection(),
-			'b'	=> new Stub_Mephex_Db_Sql_Base_Connection(),
-			'c'	=> new Stub_Mephex_Db_Sql_Base_Connection(),
+			'a'	=> new Stub_Mephex_Db_Sql_Base_Connection($quoter),
+			'b'	=> new Stub_Mephex_Db_Sql_Base_Connection($quoter),
+			'c'	=> new Stub_Mephex_Db_Sql_Base_Connection($quoter),
 		);
 		$this->_manager			= new Stub_Mephex_Db_ConnectionManager(
 			$this->_connections

@@ -5,13 +5,28 @@
 class Mephex_Db_Sql_Base_ConnectionTest
 extends Mephex_Test_TestCase
 {
+	protected $_quoter		= null;
 	protected $_connection	= null;
 	
 	
 	
 	public function setUp()
-	{	
-		$this->_connection	= new Stub_Mephex_Db_Sql_Base_Connection();
+	{
+		$this->_quoter		= new Mephex_Db_Sql_Base_Quoter_Mysql();
+		$this->_connection	= new Stub_Mephex_Db_Sql_Base_Connection(
+			$this->_quoter
+		);
+	}
+
+
+
+	public function testQuoterReturnedByConnectionIsQuoterPassedToConstructor()
+	{
+		$this->assertTrue(
+			$this->_quoter
+			===
+			$this->_connection->getQuoter()
+		);
 	}
 	
 	

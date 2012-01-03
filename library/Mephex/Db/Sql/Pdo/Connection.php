@@ -50,7 +50,7 @@ extends Mephex_Db_Sql_Base_Connection
 	public function __construct(Mephex_Db_Sql_Pdo_Credential $write_credential,
 		Mephex_Db_Sql_Pdo_Credential $read_credential = null)
 	{
-		parent::__construct();
+		parent::__construct(new Mephex_Db_Sql_Base_Quoter_Mysql());
 		
 		$this->_write_credential	= $write_credential;
 		$this->_read_credential		= $read_credential;

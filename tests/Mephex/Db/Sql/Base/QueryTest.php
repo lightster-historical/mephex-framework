@@ -11,7 +11,9 @@ extends Mephex_Test_TestCase
 	
 	public function setUp()
 	{	
-		$this->_connection	= new Stub_Mephex_Db_Sql_Base_Connection();
+		$this->_connection	= new Stub_Mephex_Db_Sql_Base_Connection(
+			new Mephex_Db_Sql_Base_Quoter_Mysql()
+		);
 	}
 	
 	

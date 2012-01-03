@@ -13,7 +13,9 @@ extends Mephex_Test_TestCase
 	
 	public function setUp()
 	{
-		$this->_connection	= new Stub_Mephex_Db_Sql_Base_Connection();
+		$this->_connection	= new Stub_Mephex_Db_Sql_Base_Connection(
+			new Mephex_Db_Sql_Base_Quoter_Mysql()
+		);
 		$this->_table_set	= new Mephex_Db_TableSet('prefix_', '_suffix');
 		$this->_reader		= new Stub_Mephex_Model_Stream_Reader_Database($this->_connection, $this->_table_set);
 	}
