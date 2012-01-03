@@ -90,7 +90,9 @@ implements Mephex_Db_Sql_Base_ConnectionFactory
 		}
 		
 		return $this->connectUsingCredentials(
-			$write_credential, $read_credential
+			new Mephex_Db_Sql_Base_Quoter_Mysql(),
+			$write_credential,
+			$read_credential
 		);
 	}
 	
@@ -100,17 +102,22 @@ implements Mephex_Db_Sql_Base_ConnectionFactory
 	/**
 	 * Generates a connection using the given credentials.
 	 * 
+	 * @param Mephex_Db_Sql_Quoter $quoter - the quoter used for escaping SQL
+	 *		query values, fields, and table names
 	 * @param Mephex_Db_Sql_Pdo_Credential $write_credential
 	 * @param Mephex_Db_Sql_Pdo_Credential $read_credential
 	 * @return Mephex_Db_Sql_Pdo_Connection
 	 */
 	protected function connectUsingCredentials(
+		Mephex_Db_Sql_Quoter $quoter,
 		Mephex_Db_Sql_Pdo_Credential $write_credential,
 		Mephex_Db_Sql_Pdo_Credential $read_credential = null
 	)
 	{
 		return new Mephex_Db_Sql_Pdo_Connection(
-			$write_credential, $read_credential
+			$quoter,
+			$write_credential,
+			$read_credential
 		);
 	}
 }

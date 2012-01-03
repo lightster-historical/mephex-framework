@@ -30,6 +30,10 @@ abstract class Mephex_Db_Sql_Base_Connection
 	
 	
 	
+	/**
+	 * @param Mephex_Db_Sql_Quoter $quoter - the quoter used for escaping SQL
+	 *		query values, fields, and table names
+	 */
 	public function __construct(Mephex_Db_Sql_Quoter $quoter)
 	{
 		$this->_quoter	= $quoter;

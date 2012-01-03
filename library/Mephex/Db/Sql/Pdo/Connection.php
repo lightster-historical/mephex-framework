@@ -41,16 +41,20 @@ extends Mephex_Db_Sql_Base_Connection
 	
 	
 	/**
+	 * @param Mephex_Db_Sql_Quoter $quoter - the quoter used for escaping SQL
+	 *		query values, fields, and table names
 	 * @param Mephex_Db_Sql_Pdo_Credential $write_credential - the credential used
 	 * 		for connecting to the master/writable server
 	 * @param Mephex_Db_Sql_Pdo_Credential $read_credential - the credential used
 	 * 		for connection to the slave/readable server; if not provided, the
 	 * 		write connection is used as the read connection
 	 */
-	public function __construct(Mephex_Db_Sql_Pdo_Credential $write_credential,
+	public function __construct(
+		Mephex_Db_Sql_Quoter $quoter,
+		Mephex_Db_Sql_Pdo_Credential $write_credential,
 		Mephex_Db_Sql_Pdo_Credential $read_credential = null)
 	{
-		parent::__construct(new Mephex_Db_Sql_Base_Quoter_Mysql());
+		parent::__construct($quoter);
 		
 		$this->_write_credential	= $write_credential;
 		$this->_read_credential		= $read_credential;
