@@ -3,7 +3,8 @@
 
 
 /**
- * Generates a PDO connection based on options provided in a config option set. 
+ * Generates a PDO connection based on a credential factory and
+ * credential names.
  * 
  * @author mlight
  */
@@ -11,46 +12,46 @@ class Mephex_Db_Sql_Pdo_ConnectionFactory
 implements Mephex_Db_Sql_Base_ConnectionFactory
 {
 	/**
-	 * Generates a credential factory using the given config option set and
-	 * the given config group.
+	 * The credential factory that should be used for generating credentials
+	 * based on connection names.
 	 *
-	 * @param Mephex_Config_OptionSet $config - the config option set to use
-	 *		for determining credential property values
-	 * @param string $group - the config group to use for determining credential
-	 * 		property values
-	 * @return Mephex_Db_Sql_Pdo_CredentialFactory_Configurable
+	 * @var Mephex_Db_Sql_Base_CredentialFactory
 	 */
-	protected function getCredentialFactory(Mephex_Config_OptionSet $config, $group)
+	protected $_credential_factory;
+
+
+
+	/**
+	 * @param Mephex_Db_Sql_Base_CredentialFactory $credential_factory -
+	 *		the credential factory that should be used for generating
+	 *		credentials based on connection names
+	 */
+	public function __construct(
+		Mephex_Db_Sql_Base_CredentialFactory $credential_factory
+	)
 	{
-		return new Mephex_Db_Sql_Pdo_CredentialFactory_Configurable(
-			$config,
-			$group
-		);
+		$this->_credential_factory	= $credential_factory;
 	}
 
 
 
 	/**
-	 * Generates a connection to a database using a config option set,
-	 * the group name, and connection name.
+	 * Generates a database connection of the given name.
 	 * 
-	 * @param Mephex_Config_OptionSet $config
-	 * @param string $group
-	 * @param string $connection_name
-	 * @return Mephex_Db_Sql_Pdo_CredentialDetails
+	 * @param string $name - the name of the connection to generate
+	 * @return Mephex_Db_Sql_Pdo_Connection
+	 * @see Mephex_Db_Sql_Base_ConnectionFactory#getConnection
 	 */
-	public function connectUsingConfig(
-		Mephex_Config_OptionSet $config, $group, $connection_name
-	)
+	public function getConnection($name)
 	{
-		$credential_factory	= $this->getCredentialFactory($config, $group);
+		$credential_factory	= $this->_credential_factory;
 
 		try
 		{
 			// try to get a 'write' credential (which can be used for
 			// writing and reading)
 			$write_credential	= $credential_factory->getCredential(
-				"{$connection_name}.write"
+				"{$name}.write"
 			);
 			
 			try
@@ -58,7 +59,7 @@ implements Mephex_Db_Sql_Base_ConnectionFactory
 				// try to get a 'read' credential (which can only be used for
 				// reading)
 				$read_credential	= $credential_factory->getCredential(
-					"{$connection_name}.read"
+					"{$name}.read"
 				);
 			}
 			catch(Mephex_Config_OptionSet_Exception_UnknownKey $read_ex)
@@ -77,7 +78,7 @@ implements Mephex_Db_Sql_Base_ConnectionFactory
 				// a 'read' credential was not loaded), attempt to load a general
 				// credential
 				$write_credential	= $credential_factory->getCredential(
-					"{$connection_name}"
+					"{$name}"
 				);
 				$read_credential	= null;
 			}

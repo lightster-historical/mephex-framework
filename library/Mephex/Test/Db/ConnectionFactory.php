@@ -50,6 +50,24 @@ extends Mephex_Db_Sql_ConnectionFactory
 		
 		return parent::connectUsingConfig($config, $group, $connection_name);
 	}
+
+
+
+	/**
+	 * Returns a credential factory for the given config option set and group.
+	 *
+	 * @param Mephex_Config_OptionSet $config
+	 * @param string $group
+	 * @return Mephex_Db_Sql_Pdo_CredentialFactory
+	 * @see Mephex_Db_Sql_ConnectionFactory#getCredentialFactory
+	 */
+	protected function getCredentialFactory(Mephex_Config_OptionSet $config, $group)
+	{
+		return new Mephex_Test_Db_Sql_Pdo_CredentialFactory_Configurable(
+			$config,
+			$group
+		);
+	}
 	
 	
 	

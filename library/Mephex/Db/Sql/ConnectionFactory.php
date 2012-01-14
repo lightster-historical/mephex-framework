@@ -30,21 +30,42 @@ class Mephex_Db_Sql_ConnectionFactory
 	{
 		$driver	= $config->get($group, "{$connection_name}.driver");
 		
-		$classes	= $this->getDriverClassNames($driver);
+		$classes			= $this->getDriverClassNames($driver);
+		$credential_factory	= $this->getCredentialFactory(
+			$config,
+			$group
+		);
 		
 		foreach($classes as $class)
 		{
 			if(class_exists($class))
 			{
-				$factory	= new $class();
+				$factory	= new $class($credential_factory);
 				if($factory instanceof Mephex_Db_Sql_Base_ConnectionFactory)
 				{
-					return $factory->connectUsingConfig($config, $group, $connection_name);
+					return $factory->getConnection($connection_name);
 				}
 			}
 		}
 		
 		throw new Mephex_Exception("Unknown database driver: {$driver}");
+	}
+
+
+
+	/**
+	 * Returns a credential factory for the given config option set and group.
+	 *
+	 * @param Mephex_Config_OptionSet $config
+	 * @param string $group
+	 * @return Mephex_Db_Sql_Pdo_CredentialFactory
+	 */
+	public function getCredentialFactory(Mephex_Config_OptionSet $config, $group)
+	{
+		return new Mephex_Db_Sql_Pdo_CredentialFactory_Configurable(
+			$config,
+			$group
+		);
 	}
 	
 	

@@ -5,6 +5,7 @@
 class Mephex_Db_Sql_Pdo_ConnectionFactoryTest
 extends Mephex_Test_TestCase
 {
+	protected $_credential_factory;
 	protected $_connection_factory;
 	protected $_config;
 	
@@ -14,8 +15,14 @@ extends Mephex_Test_TestCase
 	{	
 		parent::setUp();
 		
-		$this->_connection_factory	= new Stub_Mephex_Db_Sql_Pdo_ConnectionFactory();
 		$this->_config	= new Mephex_Config_OptionSet();
+		$this->_credential_factory	= new Mephex_Db_Sql_Pdo_CredentialFactory_Configurable(
+			$this->_config,
+			'group123'
+		);
+		$this->_connection_factory	= new Stub_Mephex_Db_Sql_Pdo_ConnectionFactory(
+			$this->_credential_factory
+		);
 	}
 	
 	
@@ -25,26 +32,22 @@ extends Mephex_Test_TestCase
 	 */
 	public function testAnExceptionIsThrownIfNoMatchingCredentialsAreFound()
 	{
-		$this->_connection_factory->connectUsingConfig(
-			$this->_config, 'group1', 'conn1'
-		);
+		$this->_connection_factory->getConnection('conn1');
 	}
 	
 	
 	
 	public function testAConnectionCanBeGeneratedUsingSeparateReadAndWriteCredentials()
 	{
-		$this->_config->set('group2', 'conn2.write.dbms', 'Stub_Mephex_Db_Sql_Pdo_CredentialFactory_Dummy');
-		$this->_config->set('group2', 'conn2.read.dbms', 'Stub_Mephex_Db_Sql_Pdo_CredentialFactory_Dummy');
+		$this->_config->set('group123', 'conn2.write.dbms', 'Stub_Mephex_Db_Sql_Pdo_CredentialFactory_Dummy');
+		$this->_config->set('group123', 'conn2.read.dbms', 'Stub_Mephex_Db_Sql_Pdo_CredentialFactory_Dummy');
 		
-		$connection	= $this->_connection_factory->connectUsingConfig(
-			$this->_config, 'group2', 'conn2'
-		);
+		$connection	= $this->_connection_factory->getConnection('conn2');
 		
 		$this->assertTrue($connection instanceof Mephex_Db_Sql_Pdo_Connection);
 		
 		$this->assertEquals(
-			'group2',
+			'group123',
 			$connection->getWriteCredential()->getUsername()
 		);
 		$this->assertEquals(
@@ -53,7 +56,7 @@ extends Mephex_Test_TestCase
 		);
 		
 		$this->assertEquals(
-			'group2',
+			'group123',
 			$connection->getReadCredential()->getUsername()
 		);
 		$this->assertEquals(
@@ -66,16 +69,14 @@ extends Mephex_Test_TestCase
 	
 	public function testAConnectionCanBeGeneratedUsingOnlyAWriteCredential()
 	{
-		$this->_config->set('group3', 'conn3.write.dbms', 'Stub_Mephex_Db_Sql_Pdo_CredentialFactory_Dummy');
+		$this->_config->set('group123', 'conn3.write.dbms', 'Stub_Mephex_Db_Sql_Pdo_CredentialFactory_Dummy');
 		
-		$connection	= $this->_connection_factory->connectUsingConfig(
-			$this->_config, 'group3', 'conn3'
-		);
+		$connection	= $this->_connection_factory->getConnection('conn3');
 		
 		$this->assertTrue($connection instanceof Mephex_Db_Sql_Pdo_Connection);
 		
 		$this->assertEquals(
-			'group3',
+			'group123',
 			$connection->getWriteCredential()->getUsername()
 		);
 		$this->assertEquals(
@@ -90,16 +91,14 @@ extends Mephex_Test_TestCase
 	
 	public function testAConnectionCanBeGeneratedUsingAGeneralCredential()
 	{
-		$this->_config->set('group4', 'conn4.dbms', 'Stub_Mephex_Db_Sql_Pdo_CredentialFactory_Dummy');
+		$this->_config->set('group123', 'conn4.dbms', 'Stub_Mephex_Db_Sql_Pdo_CredentialFactory_Dummy');
 		
-		$connection	= $this->_connection_factory->connectUsingConfig(
-			$this->_config, 'group4', 'conn4'
-		);
+		$connection	= $this->_connection_factory->getConnection('conn4');
 		
 		$this->assertTrue($connection instanceof Mephex_Db_Sql_Pdo_Connection);
 		
 		$this->assertEquals(
-			'group4',
+			'group123',
 			$connection->getWriteCredential()->getUsername()
 		);
 		$this->assertEquals(
@@ -112,15 +111,15 @@ extends Mephex_Test_TestCase
 	
 	
 	
-	public function testAConnectionCanBeCreatedFromAConfigOptionSet()
+	public function testAConnectionCanBeGeneratedUsingAConnectionName()
 	{
-		$this->_connection_factory	= new Mephex_Db_Sql_Pdo_ConnectionFactory();
-		
-		$this->_config->set('group0', 'conn0.dbms', 'Stub_Mephex_Db_Sql_Pdo_CredentialFactory_Dummy');
-		
-		$connection	= $this->_connection_factory->connectUsingConfig(
-			$this->_config, 'group0', 'conn0'
+		$this->_connection_factory	= new Mephex_Db_Sql_Pdo_ConnectionFactory(
+			$this->_credential_factory
 		);
+		
+		$this->_config->set('group123', 'conn0.dbms', 'Stub_Mephex_Db_Sql_Pdo_CredentialFactory_Dummy');
+		
+		$connection	= $this->_connection_factory->getConnection('conn0');
 		
 		$this->assertTrue($connection instanceof Mephex_Db_Sql_Pdo_Connection);
 	}
