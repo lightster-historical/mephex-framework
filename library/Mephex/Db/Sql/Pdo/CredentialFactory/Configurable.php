@@ -8,7 +8,7 @@
  * @author mlight
  */
 class Mephex_Db_Sql_Pdo_CredentialFactory_Configurable
-implements Mephex_Db_CredentialFactory
+implements Mephex_Db_Sql_Base_CredentialFactory
 {
 	/**
 	 * The config option set that the database credentials are stored in.
@@ -58,7 +58,7 @@ implements Mephex_Db_CredentialFactory
 	 *
 	 * @param string $name - the name of the credential/connection
 	 * @return Mephex_Db_Sql_Pdo_CredentialDetails
-	 * @see Mephex_Db_CredentialFactory#getCredential
+	 * @see Mephex_Db_Sql_Base_CredentialFactory#getCredential
 	 */
 	public function getCredential($name)
 	{

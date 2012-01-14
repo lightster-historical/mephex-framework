@@ -13,20 +13,20 @@ extends Mephex_Test_TestCase
 	{	
 		parent::setUp();
 		
-		$this->_credential_factory	= new Stub_Mephex_Db_CredentialFactory();
+		$this->_credential_factory	= new Stub_Mephex_Db_Sql_Base_CredentialFactory();
 	}
 
 
 
 	/**
-	 * @covers Mephex_Db_CredentialFactory
+	 * @covers Mephex_Db_Sql_Base_CredentialFactory
 	 */
 	public function testInterfaceIsImplementable()
 	{
 		$this->assertTrue(
 			$this->_credential_factory
 			instanceof
-			Mephex_Db_CredentialFactory
+			Mephex_Db_Sql_Base_CredentialFactory
 		);
 	}
 }

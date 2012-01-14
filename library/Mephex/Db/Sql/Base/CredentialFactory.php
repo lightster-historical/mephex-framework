@@ -7,7 +7,7 @@
  *
  * @author mlight
  */
-interface Mephex_Db_CredentialFactory
+interface Mephex_Db_Sql_Base_CredentialFactory
 {
 	/**
 	 * Generates the credential of the given name.
