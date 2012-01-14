@@ -60,7 +60,7 @@ class Mephex_Db_Sql_ConnectionFactory
 	 * @param string $group
 	 * @return Mephex_Db_Sql_Pdo_CredentialFactory
 	 */
-	public function getCredentialFactory(Mephex_Config_OptionSet $config, $group)
+	protected function getCredentialFactory(Mephex_Config_OptionSet $config, $group)
 	{
 		return new Mephex_Db_Sql_Pdo_CredentialFactory_Configurable(
 			$config,
