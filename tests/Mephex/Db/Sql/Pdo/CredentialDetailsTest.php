@@ -2,7 +2,7 @@
 
 
 
-class Mephex_Db_Sql_Pdo_CredentialTest
+class Mephex_Db_Sql_Pdo_CredentialDetailsTest
 extends Mephex_Test_TestCase
 {
 	protected $_dsn;
