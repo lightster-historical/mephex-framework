@@ -33,9 +33,11 @@ implements Mephex_Db_Sql_Base_Credential
 
 
 	/**
-	 * Getter for quoter.
+	 * Returns a quoter, which is responsible for quoting table names,
+	 * column names, and values.
 	 *
 	 * @return Mephex_Db_Sql_Quoter
+	 * @see Mephex_Db_Sql_Base_Credential#getQuoter
 	 */
 	public function getQuoter()
 	{
