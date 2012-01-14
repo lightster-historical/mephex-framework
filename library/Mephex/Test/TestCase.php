@@ -80,11 +80,11 @@ extends PHPUnit_Framework_TestCase
 	 * Generates a database credential for the given sqlite3 database.
 	 * 
 	 * @param string $db_name - the name of the database file
-	 * @return Mephex_Db_Sql_Pdo_Credential
+	 * @return Mephex_Db_Sql_Pdo_CredentialDetails
 	 */
 	protected function getSqliteCredential($db_name)
 	{
-		return new Mephex_Db_Sql_Pdo_Credential("sqlite:{$db_name}");
+		return new Mephex_Db_Sql_Pdo_CredentialDetails("sqlite:{$db_name}");
 	}
 	
 	
@@ -92,9 +92,9 @@ extends PHPUnit_Framework_TestCase
 	/**
 	 * Generates a PDO connection using the given credentials.
 	 * 
-	 * @param Mephex_Db_Sql_Pdo_Credential $write_db - the database credential
+	 * @param Mephex_Db_Sql_Pdo_CredentialDetails $write_db - the database credential
 	 * 		for the write connection
-	 * @param Mephex_Db_Sql_Pdo_Credential $read_db - the database credential
+	 * @param Mephex_Db_Sql_Pdo_CredentialDetails $read_db - the database credential
 	 * 		for the read connection; if not provided, the write connection is 
 	 * 		used for reading as well
 	 * @return Mephex_Db_Sql_Pdo_Connection

@@ -48,7 +48,7 @@ extends Mephex_Test_TestCase
 		$credential	= 
 			$this->_credential_factory->loadFromConfig($this->_config, 'group4', 'conn4');
 			
-		$this->assertTrue($credential instanceof Mephex_Db_Sql_Pdo_Credential);
+		$this->assertTrue($credential instanceof Mephex_Db_Sql_Pdo_CredentialDetails);
 		$this->assertEquals('mysql:host=hostname4;dbname=dbname4', $credential->getDataSourceName());
 	}
 	
@@ -63,7 +63,7 @@ extends Mephex_Test_TestCase
 		$credential	= 
 			$this->_credential_factory->loadFromConfig($this->_config, 'group4', 'conn4');
 			
-		$this->assertTrue($credential instanceof Mephex_Db_Sql_Pdo_Credential);
+		$this->assertTrue($credential instanceof Mephex_Db_Sql_Pdo_CredentialDetails);
 		$this->assertEquals('username4', $credential->getUsername());
 	}
 	
@@ -78,7 +78,7 @@ extends Mephex_Test_TestCase
 		$credential	= 
 			$this->_credential_factory->loadFromConfig($this->_config, 'group4', 'conn4');
 			
-		$this->assertTrue($credential instanceof Mephex_Db_Sql_Pdo_Credential);
+		$this->assertTrue($credential instanceof Mephex_Db_Sql_Pdo_CredentialDetails);
 		$this->assertEquals('password4', $credential->getPassword());
 	}
 	
@@ -93,7 +93,7 @@ extends Mephex_Test_TestCase
 		$credential	= 
 			$this->_credential_factory->loadFromConfig($this->_config, 'group4', 'conn4');
 			
-		$this->assertTrue($credential instanceof Mephex_Db_Sql_Pdo_Credential);
+		$this->assertTrue($credential instanceof Mephex_Db_Sql_Pdo_CredentialDetails);
 		$this->assertEquals('mysql:host=hostname4;port=3306;dbname=dbname4', $credential->getDataSourceName());
 	}
 	
@@ -107,7 +107,7 @@ extends Mephex_Test_TestCase
 		$credential	= 
 			$this->_credential_factory->loadFromConfig($this->_config, 'group4', 'conn4');
 			
-		$this->assertTrue($credential instanceof Mephex_Db_Sql_Pdo_Credential);
+		$this->assertTrue($credential instanceof Mephex_Db_Sql_Pdo_CredentialDetails);
 		$this->assertEquals('mysql:unix_socket=socket.sock;dbname=dbname4', $credential->getDataSourceName());
 	}
 	
@@ -122,7 +122,7 @@ extends Mephex_Test_TestCase
 		$credential	= 
 			$this->_credential_factory->loadFromConfig($this->_config, 'group4', 'conn4');
 			
-		$this->assertTrue($credential instanceof Mephex_Db_Sql_Pdo_Credential);
+		$this->assertTrue($credential instanceof Mephex_Db_Sql_Pdo_CredentialDetails);
 		$this->assertEquals('mysql:unix_socket=socket.sock;dbname=dbname4', $credential->getDataSourceName());
 	}
 }  

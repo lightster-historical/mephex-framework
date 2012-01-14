@@ -8,7 +8,7 @@
  * 
  * @author mlight
  */
-class Mephex_Db_Sql_Pdo_Credential
+class Mephex_Db_Sql_Pdo_CredentialDetails
 {
 	/**
 	 * The data source name (DSN) used to connect to the database server.

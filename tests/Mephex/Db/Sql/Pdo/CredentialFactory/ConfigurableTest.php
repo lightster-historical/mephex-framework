@@ -94,7 +94,7 @@ extends Mephex_Test_TestCase
 		$this->assertTrue(
 			$credential
 			instanceof
-			Mephex_Db_Sql_Pdo_Credential
+			Mephex_Db_Sql_Pdo_CredentialDetails
 		);
 	}
 

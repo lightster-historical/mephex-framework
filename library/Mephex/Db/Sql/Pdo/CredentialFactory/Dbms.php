@@ -22,7 +22,7 @@ abstract class Mephex_Db_Sql_Pdo_CredentialFactory_Dbms
 	 * @param Mephex_Config_OptionSet $config
 	 * @param string $group
 	 * @param string $connection_name
-	 * @return Mephex_Db_Sql_Pdo_Credential
+	 * @return Mephex_Db_Sql_Pdo_CredentialDetails
 	 */
 	public abstract function loadFromConfig(
 		Mephex_Config_OptionSet $config, $group, $connection_name

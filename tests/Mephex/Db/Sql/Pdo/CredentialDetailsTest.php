@@ -27,7 +27,7 @@ extends Mephex_Test_TestCase
 			'other_option'	=> 'other_value'
 		);
 		
-		$this->_credential	= new Mephex_Db_Sql_Pdo_Credential(
+		$this->_credential	= new Mephex_Db_Sql_Pdo_CredentialDetails(
 			$this->_dsn,
 			$this->_username,
 			$this->_password,

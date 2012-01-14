@@ -39,7 +39,7 @@ extends Mephex_Test_TestCase
 		$credential	= 
 			$this->_credential_factory->loadFromConfig($this->_config, 'group4', 'conn4');
 			
-		$this->assertTrue($credential instanceof Mephex_Db_Sql_Pdo_Credential);
+		$this->assertTrue($credential instanceof Mephex_Db_Sql_Pdo_CredentialDetails);
 		$this->assertEquals('the://dsn/string', $credential->getDataSourceName());
 	}
 	
@@ -56,7 +56,7 @@ extends Mephex_Test_TestCase
 		$credential	= 
 			$this->_credential_factory->loadFromConfig($this->_config, 'group4', 'conn4');
 			
-		$this->assertTrue($credential instanceof Mephex_Db_Sql_Pdo_Credential);
+		$this->assertTrue($credential instanceof Mephex_Db_Sql_Pdo_CredentialDetails);
 		$this->assertEquals('username4', $credential->getUsername());
 	}
 	
@@ -73,7 +73,7 @@ extends Mephex_Test_TestCase
 		$credential	= 
 			$this->_credential_factory->loadFromConfig($this->_config, 'group4', 'conn4');
 			
-		$this->assertTrue($credential instanceof Mephex_Db_Sql_Pdo_Credential);
+		$this->assertTrue($credential instanceof Mephex_Db_Sql_Pdo_CredentialDetails);
 		$this->assertEquals('password4', $credential->getPassword());
 	}
 }

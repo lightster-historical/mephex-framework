@@ -37,7 +37,7 @@ implements Mephex_Db_Sql_Base_ConnectionFactory
 	 * @param Mephex_Config_OptionSet $config
 	 * @param string $group
 	 * @param string $connection_name
-	 * @return Mephex_Db_Sql_Pdo_Credential
+	 * @return Mephex_Db_Sql_Pdo_CredentialDetails
 	 */
 	public function connectUsingConfig(
 		Mephex_Config_OptionSet $config, $group, $connection_name
@@ -104,14 +104,14 @@ implements Mephex_Db_Sql_Base_ConnectionFactory
 	 * 
 	 * @param Mephex_Db_Sql_Quoter $quoter - the quoter used for escaping SQL
 	 *		query values, fields, and table names
-	 * @param Mephex_Db_Sql_Pdo_Credential $write_credential
-	 * @param Mephex_Db_Sql_Pdo_Credential $read_credential
+	 * @param Mephex_Db_Sql_Pdo_CredentialDetails $write_credential
+	 * @param Mephex_Db_Sql_Pdo_CredentialDetails $read_credential
 	 * @return Mephex_Db_Sql_Pdo_Connection
 	 */
 	protected function connectUsingCredentials(
 		Mephex_Db_Sql_Quoter $quoter,
-		Mephex_Db_Sql_Pdo_Credential $write_credential,
-		Mephex_Db_Sql_Pdo_Credential $read_credential = null
+		Mephex_Db_Sql_Pdo_CredentialDetails $write_credential,
+		Mephex_Db_Sql_Pdo_CredentialDetails $read_credential = null
 	)
 	{
 		return new Mephex_Db_Sql_Pdo_Connection(

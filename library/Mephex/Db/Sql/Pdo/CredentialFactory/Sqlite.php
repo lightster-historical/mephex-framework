@@ -24,7 +24,7 @@ extends Mephex_Db_Sql_Pdo_CredentialFactory_Dbms
 	 * @param Mephex_Config_OptionSet $config
 	 * @param string $group
 	 * @param string $connection_name
-	 * @return Mephex_Db_Sql_Pdo_Credential
+	 * @return Mephex_Db_Sql_Pdo_CredentialDetails
 	 */
 	public function loadFromConfig(
 		Mephex_Config_OptionSet $config, $group, $connection_name
@@ -32,6 +32,6 @@ extends Mephex_Db_Sql_Pdo_CredentialFactory_Dbms
 	{
 		$database	= $config->get($group, "{$connection_name}.database");
 		
-		return new Mephex_Db_Sql_Pdo_Credential("sqlite:{$database}", null, null, array(PDO::ATTR_TIMEOUT => 1.0));
+		return new Mephex_Db_Sql_Pdo_CredentialDetails("sqlite:{$database}", null, null, array(PDO::ATTR_TIMEOUT => 1.0));
 	}
 }

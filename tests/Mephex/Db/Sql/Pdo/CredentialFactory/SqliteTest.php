@@ -36,7 +36,7 @@ extends Mephex_Test_TestCase
 			$this->_config, 'group3', 'conn3'
 		);
 		
-		$this->assertTrue($credential instanceof Mephex_Db_Sql_Pdo_Credential);
+		$this->assertTrue($credential instanceof Mephex_Db_Sql_Pdo_CredentialDetails);
 		$this->assertEquals('sqlite:some/path/to/db.sqlite3', $credential->getDataSourceName());
 	}
 }  

@@ -57,7 +57,7 @@ implements Mephex_Db_CredentialFactory
 	 * Get the credential with the given name.
 	 *
 	 * @param string $name - the name of the credential/connection
-	 * @return Mephex_Db_Sql_Pdo_Credential
+	 * @return Mephex_Db_Sql_Pdo_CredentialDetails
 	 * @see Mephex_Db_CredentialFactory#getCredential
 	 */
 	public function getCredential($name)
