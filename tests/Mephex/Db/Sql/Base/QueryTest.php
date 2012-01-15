@@ -12,7 +12,9 @@ extends Mephex_Test_TestCase
 	public function setUp()
 	{	
 		$this->_connection	= new Stub_Mephex_Db_Sql_Base_Connection(
-			new Mephex_Db_Sql_Base_Quoter_Mysql()
+			new Stub_Mephex_Db_Sql_Base_Credential(
+				new Mephex_Db_Sql_Base_Quoter_Mysql()
+			)
 		);
 	}
 	

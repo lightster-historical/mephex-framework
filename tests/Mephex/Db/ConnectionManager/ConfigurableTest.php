@@ -26,11 +26,12 @@ extends Mephex_Test_TestCase
 		$this->_config->set('custom', 'database.bad-list', null);
 
 		$quoter		= new Mephex_Db_Sql_Base_Quoter_Mysql();
+		$credential	= new Stub_Mephex_Db_Sql_Base_Credential($quoter);
 
 		$this->_connections		= array(
-			'a'	=> new Stub_Mephex_Db_Sql_Base_Connection($quoter),
-			'b'	=> new Stub_Mephex_Db_Sql_Base_Connection($quoter),
-			'c'	=> new Stub_Mephex_Db_Sql_Base_Connection($quoter),
+			'a'	=> new Stub_Mephex_Db_Sql_Base_Connection($credential),
+			'b'	=> new Stub_Mephex_Db_Sql_Base_Connection($credential),
+			'c'	=> new Stub_Mephex_Db_Sql_Base_Connection($credential),
 		);
 		$this->_connection_factory	= new Stub_Mephex_Db_Sql_ConnectionFactory(
 			$this->_connections

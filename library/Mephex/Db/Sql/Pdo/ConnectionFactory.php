@@ -67,7 +67,7 @@ implements Mephex_Db_Sql_Base_ConnectionFactory
 				// if a 'read' credential could not be loaded, we use
 				// a null credential (which causes the 'write' connection to be 
 				// used)
-				$read_credential	= null;
+				$read_credential	= $write_credential;
 			}
 		}
 		catch(Mephex_Config_OptionSet_Exception_UnknownKey $write_ex)
@@ -80,7 +80,7 @@ implements Mephex_Db_Sql_Base_ConnectionFactory
 				$write_credential	= $credential_factory->getCredential(
 					"{$name}"
 				);
-				$read_credential	= null;
+				$read_credential	= $write_credential;
 			}
 			catch(Mephex_Config_OptionSet_Exception_UnknownKey $general_ex)
 			{
@@ -90,10 +90,12 @@ implements Mephex_Db_Sql_Base_ConnectionFactory
 			}
 		}
 		
-		return $this->connectUsingCredentials(
-			new Mephex_Db_Sql_Base_Quoter_Mysql(),
-			$write_credential,
-			$read_credential
+		return $this->connectUsingCredential(
+			new Mephex_Db_Sql_Pdo_Credential(
+				new Mephex_Db_Sql_Base_Quoter_Mysql(),
+				$write_credential,
+				$read_credential
+			)
 		);
 	}
 	
@@ -103,22 +105,14 @@ implements Mephex_Db_Sql_Base_ConnectionFactory
 	/**
 	 * Generates a connection using the given credentials.
 	 * 
-	 * @param Mephex_Db_Sql_Quoter $quoter - the quoter used for escaping SQL
-	 *		query values, fields, and table names
-	 * @param Mephex_Db_Sql_Pdo_CredentialDetails $write_credential
-	 * @param Mephex_Db_Sql_Pdo_CredentialDetails $read_credential
+	 * @param Mephex_Db_Sql_Pdo_Credential $credential - the credential to use
+	 *		for making the DB connection
 	 * @return Mephex_Db_Sql_Pdo_Connection
 	 */
-	protected function connectUsingCredentials(
-		Mephex_Db_Sql_Quoter $quoter,
-		Mephex_Db_Sql_Pdo_CredentialDetails $write_credential,
-		Mephex_Db_Sql_Pdo_CredentialDetails $read_credential = null
+	protected function connectUsingCredential(
+		Mephex_Db_Sql_Pdo_Credential $credential
 	)
 	{
-		return new Mephex_Db_Sql_Pdo_Connection(
-			$quoter,
-			$write_credential,
-			$read_credential
-		);
+		return new Mephex_Db_Sql_Pdo_Connection($credential);
 	}
 }

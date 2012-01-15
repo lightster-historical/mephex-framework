@@ -6,6 +6,7 @@ class Mephex_Db_Sql_Base_ConnectionTest
 extends Mephex_Test_TestCase
 {
 	protected $_quoter		= null;
+	protected $_credential	= null;
 	protected $_connection	= null;
 	
 	
@@ -13,18 +14,29 @@ extends Mephex_Test_TestCase
 	public function setUp()
 	{
 		$this->_quoter		= new Mephex_Db_Sql_Base_Quoter_Mysql();
-		$this->_connection	= new Stub_Mephex_Db_Sql_Base_Connection(
+		$this->_credential	= new Stub_Mephex_Db_Sql_Base_Credential(
 			$this->_quoter
+		);
+		$this->_connection	= new Stub_Mephex_Db_Sql_Base_Connection(
+			$this->_credential
 		);
 	}
 
 
 
+	public function testCredentialReturnedByConnectionIsCredentialPassedToConstructor()
+	{
+		$this->assertSame(
+			$this->_credential,
+			$this->_connection->getCredential()
+		);
+	}
+
+
 	public function testQuoterReturnedByConnectionIsQuoterPassedToConstructor()
 	{
-		$this->assertTrue(
-			$this->_quoter
-			===
+		$this->assertSame(
+			$this->_quoter,
 			$this->_connection->getQuoter()
 		);
 	}

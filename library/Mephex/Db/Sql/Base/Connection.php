@@ -19,6 +19,13 @@ abstract class Mephex_Db_Sql_Base_Connection
 	 * @var int (Mephex_Db_Sql_Base_Query::PREPARE_*)
 	 */
 	protected $_prepared	= Mephex_Db_Sql_Base_Query::PREPARE_NATIVE;
+
+	/**
+	 * The credential to use for making the connection.
+	 *
+	 * @var Mephex_Db_Sql_Base_Credential
+	 */
+	protected $_credential	= null;
 	
 	/**
 	 * The quoter responsible for quoting table names, column names, and
@@ -31,12 +38,13 @@ abstract class Mephex_Db_Sql_Base_Connection
 	
 	
 	/**
-	 * @param Mephex_Db_Sql_Quoter $quoter - the quoter used for escaping SQL
-	 *		query values, fields, and table names
+	 * @param Mephex_Db_Sql_Base_Credential $credential - the credential
+	 *		to be used for making the connection
 	 */
-	public function __construct(Mephex_Db_Sql_Quoter $quoter)
+	public function __construct(Mephex_Db_Sql_Base_Credential $credential)
 	{
-		$this->_quoter	= $quoter;
+		$this->_credential	= $credential;
+		$this->_quoter		= $credential->getQuoter();
 	}
 	
 	
@@ -90,6 +98,18 @@ abstract class Mephex_Db_Sql_Base_Connection
 	public function setPreparedSetting($prepared)
 	{
 		$this->_prepared	= (int)$prepared;
+	}
+
+
+
+	/**
+	 * Getter for credential.
+	 *
+	 * @return Mephex_Db_Sql_Base_Credential
+	 */
+	public function getCredential()
+	{
+		return $this->_credential;
 	}
 	
 	

@@ -105,12 +105,14 @@ extends PHPUnit_Framework_TestCase
 		$read_db	= ($read_db ? $this->getTmpCopier()->copy($read_db) : null);
 		
 		$write_credential	= $this->getSqliteCredential($write_db);
-		$read_credential	= ($read_db ? $this->getSqliteCredential($read_db) : null);
+		$read_credential	= ($read_db ? $this->getSqliteCredential($read_db) : $write_credential);
 		
 		return new Mephex_Db_Sql_Pdo_Connection(
-			new Mephex_Db_Sql_Base_Quoter_Sqlite(),
-			$write_credential,
-			$read_credential
+			new Mephex_Db_Sql_Pdo_Credential(
+				new Mephex_Db_Sql_Base_Quoter_Sqlite(),
+				$write_credential,
+				$read_credential
+			)
 		);
 	}
 	

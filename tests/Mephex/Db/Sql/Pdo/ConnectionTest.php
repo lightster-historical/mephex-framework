@@ -46,8 +46,11 @@ extends Mephex_Test_TestCase
 	{
 		$credential	= $this->getSqliteCredential(PATH_TEST_ROOT . DIRECTORY_SEPARATOR . 'readonly' . DIRECTORY_SEPARATOR . 'does_not_exist.sqlite3');
 		$conn		= new Mephex_Db_Sql_Pdo_Connection(
-			new Mephex_Db_Sql_Base_Quoter_Sqlite(),
-			$credential
+			new Mephex_Db_Sql_Pdo_Credential(
+				new Mephex_Db_Sql_Base_Quoter_Sqlite(),
+				$credential,
+				$credential
+			)
 		);
 		$conn->getReadConnection();
 		

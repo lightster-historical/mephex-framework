@@ -5,16 +5,10 @@
 class Stub_Mephex_Db_Sql_Pdo_ConnectionFactory
 extends Mephex_Db_Sql_Pdo_ConnectionFactory
 {
-	protected function connectUsingCredentials(
-		Mephex_Db_Sql_Quoter $quoter,
-		Mephex_Db_Sql_Pdo_CredentialDetails $write_credential,
-		Mephex_Db_Sql_Pdo_CredentialDetails $read_credential = null
+	protected function connectUsingCredential(
+		Mephex_Db_Sql_Pdo_Credential $credential
 	)
 	{
-		return new Stub_Mephex_Db_Sql_Pdo_Connection(
-			$quoter,
-			$write_credential,
-			$read_credential
-		);
+		return new Stub_Mephex_Db_Sql_Pdo_Connection($credential);
 	}
 }
