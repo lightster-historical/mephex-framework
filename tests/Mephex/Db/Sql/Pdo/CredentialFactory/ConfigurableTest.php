@@ -7,7 +7,6 @@ extends Mephex_Test_TestCase
 {
 	protected $_config;
 	protected $_group;
-	protected $_conn_name;
 
 	protected $_credential_factory;
 
@@ -19,19 +18,7 @@ extends Mephex_Test_TestCase
 		parent::setUp();
 		
 		$this->_group		= 'some_group';
-		$this->_conn_name	= 'conn_name';
-
-		$this->_config	= new Mephex_Config_OptionSet();
-		$this->_config->set(
-			$this->_group,
-			"{$this->_conn_name}.dbms",
-			'CustomDsn'
-		);
-		$this->_config->set(
-			$this->_group,
-			"{$this->_conn_name}.dsn",
-			'custom://dsn/db'
-		);
+		$this->_config		= new Mephex_Config_OptionSet();
 
 		$this->_credential_factory	= new Stub_Mephex_Db_Sql_Pdo_CredentialFactory_Configurable(
 			$this->_config,
@@ -45,7 +32,7 @@ extends Mephex_Test_TestCase
 	 * @covers Mephex_Db_Sql_Pdo_CredentialFactory_Configurable::__construct
 	 * @covers Mephex_Db_Sql_Pdo_CredentialFactory_Configurable::getCredentialFactoryClassNames
 	 */
-	public function testCredentialFactoryClassNamesAreExpected()
+	public function testCredentialFactoryClassNamesAreAsExpected()
 	{
 		$this->assertEquals(
 			array(
@@ -90,26 +77,200 @@ extends Mephex_Test_TestCase
 	 */
 	public function testCredentialIsGenerated()
 	{
-		$credential	= $this->_credential_factory->getCredential($this->_conn_name);
-		$this->assertTrue(
-			$credential
-			instanceof
-			Mephex_Db_Sql_Pdo_CredentialDetails
+		$this->_config->set(
+			$this->_group,
+			"conn_name.dbms",
+			'CustomDsn'
+		);
+		$this->_config->set(
+			$this->_group,
+			"conn_name.dsn",
+			'custom://dsn/db_generic'
+		);
+
+		$credential	= $this->_credential_factory->getCredential('conn_name');
+		$this->assertInstanceOf('Mephex_Db_Sql_Pdo_Credential', $credential);
+	}
+
+
+
+	/**
+	 * @depends Mephex_Db_Sql_Pdo_CredentialFactory_ConfigurableTest::testCredentialIsGenerated
+	 * @covers Mephex_Db_Sql_Pdo_CredentialFactory_Configurable::__construct
+	 * @covers Mephex_Db_Sql_Pdo_CredentialFactory_Configurable::getCredential
+	 */
+	public function testWriteCredentialIsGeneratedWithReadWriteSetting()
+	{
+		$this->_config->set(
+			$this->_group,
+			"conn_name.write.dbms",
+			'CustomDsn'
+		);
+		$this->_config->set(
+			$this->_group,
+			"conn_name.read.dbms",
+			'CustomDsn'
+		);
+		$this->_config->set(
+			$this->_group,
+			"conn_name.write.dsn",
+			'custom://dsn/db_write'
+		);
+		$this->_config->set(
+			$this->_group,
+			"conn_name.read.dsn",
+			'custom://dsn/db_read'
+		);
+
+		$credential	= $this->_credential_factory->getCredential('conn_name');
+		$this->assertEquals(
+			'custom://dsn/db_write',
+			$credential->getWriteCredential()->getDataSourceName()
 		);
 	}
 
 
 
 	/**
+	 * @depends Mephex_Db_Sql_Pdo_CredentialFactory_ConfigurableTest::testCredentialIsGenerated
 	 * @covers Mephex_Db_Sql_Pdo_CredentialFactory_Configurable::__construct
 	 * @covers Mephex_Db_Sql_Pdo_CredentialFactory_Configurable::getCredential
 	 */
-	public function testCredentialIsGeneratedUsingCorrectFactory()
+	public function testReadCredentialIsGeneratedWithReadWriteSetting()
 	{
-		$credential	= $this->_credential_factory->getCredential($this->_conn_name);
+		$this->_config->set(
+			$this->_group,
+			"conn_name.write.dbms",
+			'CustomDsn'
+		);
+		$this->_config->set(
+			$this->_group,
+			"conn_name.read.dbms",
+			'CustomDsn'
+		);
+		$this->_config->set(
+			$this->_group,
+			"conn_name.write.dsn",
+			'custom://dsn/db_write'
+		);
+		$this->_config->set(
+			$this->_group,
+			"conn_name.read.dsn",
+			'custom://dsn/db_read'
+		);
+
+		$credential	= $this->_credential_factory->getCredential('conn_name');
 		$this->assertEquals(
-			'custom://dsn/db',
-			$credential->getDataSourceName()
+			'custom://dsn/db_read',
+			$credential->getReadCredential()->getDataSourceName()
+		);
+	}
+
+
+
+	/**
+	 * @depends Mephex_Db_Sql_Pdo_CredentialFactory_ConfigurableTest::testCredentialIsGenerated
+	 * @covers Mephex_Db_Sql_Pdo_CredentialFactory_Configurable::__construct
+	 * @covers Mephex_Db_Sql_Pdo_CredentialFactory_Configurable::getCredential
+	 */
+	public function testWriteCredentialIsGeneratedWithOnlyWriteSetting()
+	{
+		$this->_config->set(
+			$this->_group,
+			"conn_name.write.dbms",
+			'CustomDsn'
+		);
+		$this->_config->set(
+			$this->_group,
+			"conn_name.write.dsn",
+			'custom://dsn/db_write'
+		);
+
+		$credential	= $this->_credential_factory->getCredential('conn_name');
+		$this->assertEquals(
+			'custom://dsn/db_write',
+			$credential->getWriteCredential()->getDataSourceName()
+		);
+	}
+
+
+
+	/**
+	 * @depends Mephex_Db_Sql_Pdo_CredentialFactory_ConfigurableTest::testCredentialIsGenerated
+	 * @covers Mephex_Db_Sql_Pdo_CredentialFactory_Configurable::__construct
+	 * @covers Mephex_Db_Sql_Pdo_CredentialFactory_Configurable::getCredential
+	 */
+	public function testReadCredentialIsSameAsWriteCredentialWhenOnlyWriteSettingExists()
+	{
+		$this->_config->set(
+			$this->_group,
+			"conn_name.write.dbms",
+			'CustomDsn'
+		);
+		$this->_config->set(
+			$this->_group,
+			"conn_name.write.dsn",
+			'custom://dsn/db_write'
+		);
+
+		$credential	= $this->_credential_factory->getCredential('conn_name');
+		$this->assertSame(
+			$credential->getWriteCredential(),
+			$credential->getReadCredential()
+		);
+	}
+
+
+
+	/**
+	 * @depends Mephex_Db_Sql_Pdo_CredentialFactory_ConfigurableTest::testCredentialIsGenerated
+	 * @covers Mephex_Db_Sql_Pdo_CredentialFactory_Configurable::__construct
+	 * @covers Mephex_Db_Sql_Pdo_CredentialFactory_Configurable::getCredential
+	 */
+	public function testWriteCredentialIsGeneratedWithOnlyGenericConfigOption()
+	{
+		$this->_config->set(
+			$this->_group,
+			"conn_name.dbms",
+			'CustomDsn'
+		);
+		$this->_config->set(
+			$this->_group,
+			"conn_name.dsn",
+			'custom://dsn/db_generic'
+		);
+
+		$credential	= $this->_credential_factory->getCredential('conn_name');
+		$this->assertEquals(
+			'custom://dsn/db_generic',
+			$credential->getWriteCredential()->getDataSourceName()
+		);
+	}
+
+
+
+	/**
+	 * @depends Mephex_Db_Sql_Pdo_CredentialFactory_ConfigurableTest::testCredentialIsGenerated
+	 * @covers Mephex_Db_Sql_Pdo_CredentialFactory_Configurable::__construct
+	 * @covers Mephex_Db_Sql_Pdo_CredentialFactory_Configurable::getCredential
+	 */
+	public function testReadCredentialIsSameAsWriteCredentialWithGnericConfigOption()
+	{
+		$this->_config->set(
+			$this->_group,
+			"conn_name.dbms",
+			'CustomDsn'
+		);
+		$this->_config->set(
+			$this->_group,
+			"conn_name.dsn",
+			'custom://dsn/db_generic'
+		);
+
+		$credential	= $this->_credential_factory->getCredential('conn_name');
+		$this->assertSame(
+			$credential->getWriteCredential(),
+			$credential->getReadCredential()
 		);
 	}
 }
