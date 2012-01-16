@@ -20,7 +20,7 @@ extends Mephex_Test_TestCase
 		$this->_group	= 'db_group';
 
 		$this->_details_factory	= $this->getMock(
-			'Mephex_Db_Sql_Pdo_CredentialDetailsFactory_Configurable_Mysql',
+			'Mephex_Db_Sql_Pdo_CredentialDetailsFactory_Configurable',
 			array(
 				'getCredentialDetails',
 				'getQuoter'
