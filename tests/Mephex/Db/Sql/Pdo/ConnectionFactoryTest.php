@@ -7,7 +7,6 @@ extends Mephex_Test_TestCase
 {
 	protected $_credential_factory;
 	protected $_connection_factory;
-	protected $_config;
 	
 	
 	
@@ -15,126 +14,52 @@ extends Mephex_Test_TestCase
 	{	
 		parent::setUp();
 		
-		$this->_config	= new Mephex_Config_OptionSet();
-		$this->_credential_factory	= new Mephex_Db_Sql_Pdo_CredentialFactory_Configurable(
-			$this->_config,
-			'group123'
+		$this->_credential_factory	= $this->getMock(
+			'Mephex_Db_Sql_Base_CredentialFactory'
 		);
-		$this->_connection_factory	= new Stub_Mephex_Db_Sql_Pdo_ConnectionFactory(
-			$this->_credential_factory
-		);
-	}
-	
-	
-	
-	/**
-	 * @expectedException Mephex_Exception
-	 */
-	public function testAnExceptionIsThrownIfNoMatchingCredentialsAreFound()
-	{
-		$this->_connection_factory->getConnection('conn1');
-	}
-	
-	
-	
-	public function testAConnectionCanBeGeneratedUsingADualCredential()
-	{
-		$this->_config->set(
-			'group123',
-			'conn2.dbms',
-			'Stub_Mephex_Db_Sql_Pdo_CredentialFactory_Dummy'
-		);
-		$this->_config->set(
-			'group123',
-			"conn2.enable_dual",
-			true
-		);
-		$this->_config->set(
-			'group123',
-			'conn2.write.dsn',
-			'custom://dsn/db_write'
-		);
-		$this->_config->set(
-			'group123',
-			'conn2.read.dsn',
-			'custom://dsn/db_read'
-		);
-		
-		$connection	= $this->_connection_factory->getConnection('conn2');
-		
-		$this->assertTrue($connection instanceof Mephex_Db_Sql_Pdo_Connection);
-		
-		$this->assertEquals(
-			'group123',
-			$connection->getWriteCredential()->getUsername()
-		);
-		$this->assertEquals(
-			'conn2.write',
-			$connection->getWriteCredential()->getPassword()
-		);
-		
-		$this->assertEquals(
-			'group123',
-			$connection->getReadCredential()->getUsername()
-		);
-		$this->assertEquals(
-			'conn2.read',
-			$connection->getReadCredential()->getPassword()
-		);
-	}
-	
-	
-	
-	public function testAConnectionCanBeGeneratedUsingASingularCredential()
-	{
-		$this->_config->set(
-			'group123',
-			'conn4.dbms',
-			'Stub_Mephex_Db_Sql_Pdo_CredentialFactory_Dummy'
-		);
-		$this->_config->set(
-			'group123',
-			'conn4.dsn',
-			'custom://dsn/db'
-		);
-		
-		$connection	= $this->_connection_factory->getConnection('conn4');
-		
-		$this->assertTrue($connection instanceof Mephex_Db_Sql_Pdo_Connection);
-		
-		$this->assertEquals(
-			'group123',
-			$connection->getWriteCredential()->getUsername()
-		);
-		$this->assertEquals(
-			'conn4',
-			$connection->getWriteCredential()->getPassword()
-		);
-		
-		$this->assertNull($connection->getReadCredential());
-	}
-	
-	
-	
-	public function testAConnectionCanBeGeneratedUsingAConnectionName()
-	{
 		$this->_connection_factory	= new Mephex_Db_Sql_Pdo_ConnectionFactory(
 			$this->_credential_factory
 		);
-		
-		$this->_config->set(
-			'group123',
-			'conn0.dbms',
-			'Stub_Mephex_Db_Sql_Pdo_CredentialFactory_Dummy'
+	}
+
+
+
+	/**
+	 * @covers Mephex_Db_Sql_Pdo_ConnectionFactory::__construct
+	 */
+	public function testCredentialFactoryIsSameAsPassedToConstructor()
+	{
+		$this->assertAttributeSame(
+			$this->_credential_factory,
+			'_credential_factory',
+			$this->_connection_factory
 		);
-		$this->_config->set(
-			'group123',
-			'conn0.dsn',
-			'custom://dsn/db'
+	}
+
+
+
+	/**
+	 * @covers Mephex_Db_Sql_Pdo_ConnectionFactory::getConnection
+	 */
+	public function testAConnectionCanBeGenerated()
+	{
+		$credential	= new Mephex_Db_Sql_Pdo_Credential(
+			new Mephex_Db_Sql_Base_Quoter_Mysql(),
+			new Mephex_Db_Sql_Pdo_CredentialDetails('custom://dsn/db_write'),
+			new Mephex_Db_Sql_Pdo_CredentialDetails('custom://dsn/db_read')
 		);
-		
-		$connection	= $this->_connection_factory->getConnection('conn0');
-		
-		$this->assertTrue($connection instanceof Mephex_Db_Sql_Pdo_Connection);
+
+		$this
+			->_credential_factory
+			->expects($this->any())
+			->method('getCredential')
+			->with($this->equalTo('conn_name'))
+			->will($this->returnValue($credential))
+		;
+
+		$this->assertInstanceOf(
+			'Mephex_Db_Sql_Pdo_Connection',
+			$this->_connection_factory->getConnection('conn_name')
+		);
 	}
 }  
