@@ -74,8 +74,9 @@ extends Mephex_Test_TestCase
 	/**
 	 * @covers Mephex_Db_Sql_Pdo_CredentialFactory_Configurable::__construct
 	 * @covers Mephex_Db_Sql_Pdo_CredentialFactory_Configurable::getCredential
+	 * @covers Mephex_Db_Sql_Pdo_CredentialFactory_Configurable::getDualCredential
 	 */
-	public function testCredentialIsGenerated()
+	public function testDualCredentialIsGenerated()
 	{
 		$this->_config->set(
 			$this->_group,
@@ -84,7 +85,17 @@ extends Mephex_Test_TestCase
 		);
 		$this->_config->set(
 			$this->_group,
-			"conn_name.dsn",
+			"conn_name.enable_dual",
+			true
+		);
+		$this->_config->set(
+			$this->_group,
+			"conn_name.write.dsn",
+			'custom://dsn/db_generic'
+		);
+		$this->_config->set(
+			$this->_group,
+			"conn_name.read.dsn",
 			'custom://dsn/db_generic'
 		);
 
@@ -95,16 +106,21 @@ extends Mephex_Test_TestCase
 
 
 	/**
-	 * @depends Mephex_Db_Sql_Pdo_CredentialFactory_ConfigurableTest::testCredentialIsGenerated
+	 * @depends Mephex_Db_Sql_Pdo_CredentialFactory_ConfigurableTest::testDualCredentialIsGenerated
 	 * @covers Mephex_Db_Sql_Pdo_CredentialFactory_Configurable::__construct
-	 * @covers Mephex_Db_Sql_Pdo_CredentialFactory_Configurable::getCredential
+	 * @covers Mephex_Db_Sql_Pdo_CredentialFactory_Configurable::getDualCredential
 	 */
-	public function testWriteCredentialIsGeneratedWithReadWriteSetting()
+	public function testWriteCredentialIsGeneratedWithDualCredentialEnabled()
 	{
 		$this->_config->set(
 			$this->_group,
 			"conn_name.dbms",
 			'CustomDsn'
+		);
+		$this->_config->set(
+			$this->_group,
+			"conn_name.enable_dual",
+			true
 		);
 		$this->_config->set(
 			$this->_group,
@@ -127,16 +143,21 @@ extends Mephex_Test_TestCase
 
 
 	/**
-	 * @depends Mephex_Db_Sql_Pdo_CredentialFactory_ConfigurableTest::testCredentialIsGenerated
+	 * @depends Mephex_Db_Sql_Pdo_CredentialFactory_ConfigurableTest::testDualCredentialIsGenerated
 	 * @covers Mephex_Db_Sql_Pdo_CredentialFactory_Configurable::__construct
-	 * @covers Mephex_Db_Sql_Pdo_CredentialFactory_Configurable::getCredential
+	 * @covers Mephex_Db_Sql_Pdo_CredentialFactory_Configurable::getDualCredential
 	 */
-	public function testReadCredentialIsGeneratedWithReadWriteSetting()
+	public function testReadCredentialIsGeneratedWithDualCredentialEnabled()
 	{
 		$this->_config->set(
 			$this->_group,
 			"conn_name.dbms",
 			'CustomDsn'
+		);
+		$this->_config->set(
+			$this->_group,
+			"conn_name.enable_dual",
+			true
 		);
 		$this->_config->set(
 			$this->_group,
@@ -159,11 +180,12 @@ extends Mephex_Test_TestCase
 
 
 	/**
-	 * @depends Mephex_Db_Sql_Pdo_CredentialFactory_ConfigurableTest::testCredentialIsGenerated
+	 * @depends Mephex_Db_Sql_Pdo_CredentialFactory_ConfigurableTest::testDualCredentialIsGenerated
 	 * @covers Mephex_Db_Sql_Pdo_CredentialFactory_Configurable::__construct
-	 * @covers Mephex_Db_Sql_Pdo_CredentialFactory_Configurable::getCredential
+	 * @covers Mephex_Db_Sql_Pdo_CredentialFactory_Configurable::getDualCredential
+	 * @expectedException Mephex_Config_OptionSet_Exception_UnknownKey
 	 */
-	public function testWriteCredentialIsGeneratedWithOnlyWriteSetting()
+	public function testExceptionIsThrownIfDualCredentialIsEnabledButReadCredentialIsMissing()
 	{
 		$this->_config->set(
 			$this->_group,
@@ -172,25 +194,27 @@ extends Mephex_Test_TestCase
 		);
 		$this->_config->set(
 			$this->_group,
+			"conn_name.enable_dual",
+			true
+		);
+		$this->_config->set(
+			$this->_group,
 			"conn_name.write.dsn",
 			'custom://dsn/db_write'
 		);
 
 		$credential	= $this->_credential_factory->getCredential('conn_name');
-		$this->assertEquals(
-			'custom://dsn/db_write',
-			$credential->getWriteCredential()->getDataSourceName()
-		);
 	}
 
 
 
 	/**
-	 * @depends Mephex_Db_Sql_Pdo_CredentialFactory_ConfigurableTest::testCredentialIsGenerated
+	 * @depends Mephex_Db_Sql_Pdo_CredentialFactory_ConfigurableTest::testDualCredentialIsGenerated
 	 * @covers Mephex_Db_Sql_Pdo_CredentialFactory_Configurable::__construct
-	 * @covers Mephex_Db_Sql_Pdo_CredentialFactory_Configurable::getCredential
+	 * @covers Mephex_Db_Sql_Pdo_CredentialFactory_Configurable::getDualCredential
+	 * @expectedException Mephex_Config_OptionSet_Exception_UnknownKey
 	 */
-	public function testReadCredentialIsSameAsWriteCredentialWhenOnlyWriteSettingExists()
+	public function testExceptionIsThrownIfDualCredentialIsEnabledButWriteCredentialIsMissing()
 	{
 		$this->_config->set(
 			$this->_group,
@@ -199,25 +223,50 @@ extends Mephex_Test_TestCase
 		);
 		$this->_config->set(
 			$this->_group,
-			"conn_name.write.dsn",
+			"conn_name.enable_dual",
+			true
+		);
+		$this->_config->set(
+			$this->_group,
+			"conn_name.read.dsn",
 			'custom://dsn/db_write'
 		);
 
 		$credential	= $this->_credential_factory->getCredential('conn_name');
-		$this->assertSame(
-			$credential->getWriteCredential(),
-			$credential->getReadCredential()
-		);
 	}
 
 
 
 	/**
-	 * @depends Mephex_Db_Sql_Pdo_CredentialFactory_ConfigurableTest::testCredentialIsGenerated
 	 * @covers Mephex_Db_Sql_Pdo_CredentialFactory_Configurable::__construct
 	 * @covers Mephex_Db_Sql_Pdo_CredentialFactory_Configurable::getCredential
+	 * @covers Mephex_Db_Sql_Pdo_CredentialFactory_Configurable::getSingularCredential
 	 */
-	public function testWriteCredentialIsGeneratedWithOnlyGenericConfigOption()
+	public function testSingularCredentialIsGenerated()
+	{
+		$this->_config->set(
+			$this->_group,
+			"conn_name.dbms",
+			'CustomDsn'
+		);
+		$this->_config->set(
+			$this->_group,
+			"conn_name.dsn",
+			'custom://dsn/db_generic'
+		);
+
+		$credential	= $this->_credential_factory->getCredential('conn_name');
+		$this->assertInstanceOf('Mephex_Db_Sql_Pdo_Credential', $credential);
+	}
+
+
+
+	/**
+	 * @depends Mephex_Db_Sql_Pdo_CredentialFactory_ConfigurableTest::testSingularCredentialIsGenerated
+	 * @covers Mephex_Db_Sql_Pdo_CredentialFactory_Configurable::__construct
+	 * @covers Mephex_Db_Sql_Pdo_CredentialFactory_Configurable::getSingularCredential
+	 */
+	public function testWriteCredentialIsGeneratedWithSingularCredential()
 	{
 		$this->_config->set(
 			$this->_group,
@@ -240,11 +289,11 @@ extends Mephex_Test_TestCase
 
 
 	/**
-	 * @depends Mephex_Db_Sql_Pdo_CredentialFactory_ConfigurableTest::testCredentialIsGenerated
+	 * @depends Mephex_Db_Sql_Pdo_CredentialFactory_ConfigurableTest::testSingularCredentialIsGenerated
 	 * @covers Mephex_Db_Sql_Pdo_CredentialFactory_Configurable::__construct
-	 * @covers Mephex_Db_Sql_Pdo_CredentialFactory_Configurable::getCredential
+	 * @covers Mephex_Db_Sql_Pdo_CredentialFactory_Configurable::getSingularCredential
 	 */
-	public function testReadCredentialIsSameAsWriteCredentialWithGnericConfigOption()
+	public function testReadCredentialIsSameAsWriteCredentialWithSingularCredential()
 	{
 		$this->_config->set(
 			$this->_group,

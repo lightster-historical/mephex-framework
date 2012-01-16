@@ -37,12 +37,17 @@ extends Mephex_Test_TestCase
 	
 	
 	
-	public function testAConnectionCanBeGeneratedUsingSeparateReadAndWriteCredentials()
+	public function testAConnectionCanBeGeneratedUsingADualCredential()
 	{
 		$this->_config->set(
 			'group123',
 			'conn2.dbms',
 			'Stub_Mephex_Db_Sql_Pdo_CredentialFactory_Dummy'
+		);
+		$this->_config->set(
+			'group123',
+			"conn2.enable_dual",
+			true
 		);
 		$this->_config->set(
 			'group123',
@@ -80,38 +85,7 @@ extends Mephex_Test_TestCase
 	
 	
 	
-	public function testAConnectionCanBeGeneratedUsingOnlyAWriteCredential()
-	{
-		$this->_config->set(
-			'group123',
-			'conn3.dbms',
-			'Stub_Mephex_Db_Sql_Pdo_CredentialFactory_Dummy'
-		);
-		$this->_config->set(
-			'group123',
-			'conn3.write.dsn',
-			'custom://dsn/db'
-		);
-		
-		$connection	= $this->_connection_factory->getConnection('conn3');
-		
-		$this->assertTrue($connection instanceof Mephex_Db_Sql_Pdo_Connection);
-		
-		$this->assertEquals(
-			'group123',
-			$connection->getWriteCredential()->getUsername()
-		);
-		$this->assertEquals(
-			'conn3.write',
-			$connection->getWriteCredential()->getPassword()
-		);
-		
-		$this->assertNull($connection->getReadCredential());
-	}
-	
-	
-	
-	public function testAConnectionCanBeGeneratedUsingAGeneralCredential()
+	public function testAConnectionCanBeGeneratedUsingASingularCredential()
 	{
 		$this->_config->set(
 			'group123',
