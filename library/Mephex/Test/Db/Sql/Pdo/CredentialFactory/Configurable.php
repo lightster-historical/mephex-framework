@@ -21,7 +21,7 @@ extends Mephex_Db_Sql_Pdo_CredentialFactory_Configurable
 	protected function getCredentialFactoryClassNames($dbms)
 	{ 
 		$classes	= parent::getCredentialFactoryClassNames($dbms);
-		array_unshift($classes, "Mephex_Test_Db_Sql_Pdo_CredentialFactory_{$dbms}");
+		array_unshift($classes, "Mephex_Test_Db_Sql_Pdo_CredentialDetailsFactory_Configurable_{$dbms}");
 		
 		return $classes;
 	}

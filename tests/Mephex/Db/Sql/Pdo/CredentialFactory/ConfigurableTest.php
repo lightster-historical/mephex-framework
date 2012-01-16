@@ -36,7 +36,7 @@ extends Mephex_Test_TestCase
 	{
 		$this->assertEquals(
 			array(
-				'Mephex_Db_Sql_Pdo_CredentialFactory_SomeDbms',
+				'Mephex_Db_Sql_Pdo_CredentialDetailsFactory_Configurable_SomeDbms',
 				'SomeDbms',
 			),
 			$this->_credential_factory->getCredentialFactoryClassNames('SomeDbms')
@@ -52,7 +52,7 @@ extends Mephex_Test_TestCase
 	public function testCredentialFactoryClassNameCanBeDetermined()
 	{
 		$this->assertEquals(
-			'Mephex_Db_Sql_Pdo_CredentialFactory_Mysql',
+			'Mephex_Db_Sql_Pdo_CredentialDetailsFactory_Configurable_Mysql',
 			$this->_credential_factory->getCredentialFactoryClassName('Mysql')
 		);
 	}
@@ -81,7 +81,12 @@ extends Mephex_Test_TestCase
 		$this->_config->set(
 			$this->_group,
 			"conn_name.dbms",
-			'CustomDsn'
+			'Custom'
+		);
+		$this->_config->set(
+			$this->_group,
+			"conn_name.quoter",
+			'Mysql'
 		);
 		$this->_config->set(
 			$this->_group,
@@ -115,7 +120,12 @@ extends Mephex_Test_TestCase
 		$this->_config->set(
 			$this->_group,
 			"conn_name.dbms",
-			'CustomDsn'
+			'Custom'
+		);
+		$this->_config->set(
+			$this->_group,
+			"conn_name.quoter",
+			'Mysql'
 		);
 		$this->_config->set(
 			$this->_group,
@@ -152,7 +162,12 @@ extends Mephex_Test_TestCase
 		$this->_config->set(
 			$this->_group,
 			"conn_name.dbms",
-			'CustomDsn'
+			'Custom'
+		);
+		$this->_config->set(
+			$this->_group,
+			"conn_name.quoter",
+			'Mysql'
 		);
 		$this->_config->set(
 			$this->_group,
@@ -190,7 +205,12 @@ extends Mephex_Test_TestCase
 		$this->_config->set(
 			$this->_group,
 			"conn_name.dbms",
-			'CustomDsn'
+			'Custom'
+		);
+		$this->_config->set(
+			$this->_group,
+			"conn_name.quoter",
+			'Mysql'
 		);
 		$this->_config->set(
 			$this->_group,
@@ -219,7 +239,12 @@ extends Mephex_Test_TestCase
 		$this->_config->set(
 			$this->_group,
 			"conn_name.dbms",
-			'CustomDsn'
+			'Custom'
+		);
+		$this->_config->set(
+			$this->_group,
+			"conn_name.quoter",
+			'Mysql'
 		);
 		$this->_config->set(
 			$this->_group,
@@ -247,7 +272,12 @@ extends Mephex_Test_TestCase
 		$this->_config->set(
 			$this->_group,
 			"conn_name.dbms",
-			'CustomDsn'
+			'Custom'
+		);
+		$this->_config->set(
+			$this->_group,
+			"conn_name.quoter",
+			'Mysql'
 		);
 		$this->_config->set(
 			$this->_group,
@@ -271,7 +301,12 @@ extends Mephex_Test_TestCase
 		$this->_config->set(
 			$this->_group,
 			"conn_name.dbms",
-			'CustomDsn'
+			'Custom'
+		);
+		$this->_config->set(
+			$this->_group,
+			"conn_name.quoter",
+			'Mysql'
 		);
 		$this->_config->set(
 			$this->_group,
@@ -298,7 +333,12 @@ extends Mephex_Test_TestCase
 		$this->_config->set(
 			$this->_group,
 			"conn_name.dbms",
-			'CustomDsn'
+			'Custom'
+		);
+		$this->_config->set(
+			$this->_group,
+			"conn_name.quoter",
+			'Mysql'
 		);
 		$this->_config->set(
 			$this->_group,

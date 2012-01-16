@@ -26,7 +26,7 @@ implements Mephex_Db_Sql_Base_CredentialFactory
 
 
 	/**
-	 * Reflection class for Mephex_Db_Sql_Pdo_CredentialFactory_Dbms.
+	 * Reflection class for Mephex_Db_Sql_Pdo_CredentialDetailsFactory_Configurable.
 	 *
 	 * @var Mephex_Reflection_Class
 	 */
@@ -46,7 +46,7 @@ implements Mephex_Db_Sql_Base_CredentialFactory
 		$this->_group	= $group;
 
 		$this->_credential_reflection_class	= new Mephex_Reflection_Class(
-			'Mephex_Db_Sql_Pdo_CredentialFactory_Dbms'
+			'Mephex_Db_Sql_Pdo_CredentialDetailsFactory_Configurable'
 		);
 	}
 
@@ -64,8 +64,8 @@ implements Mephex_Db_Sql_Base_CredentialFactory
 	{
 		$dbms			= $this->_config->get($this->_group, "{$name}.dbms");
 		$factory_class	= $this->getCredentialFactoryClassName($dbms);
-		$factory		= new $factory_class();
-		$quoter			= new Mephex_Db_Sql_Base_Quoter_Mysql();
+		$factory		= new $factory_class($this->_config, $this->_group);
+		$quoter			= $factory->getQuoter($name);
 
 		if($this->_config->get($this->_group, "{$name}.enable_dual", false))
 		{
@@ -91,29 +91,21 @@ implements Mephex_Db_Sql_Base_CredentialFactory
 	 * Generates a dual credential (i.e. a credential with read and write
 	 * credentials that are different.)
 	 *
-	 * @param Mephex_Db_Sql_Pdo_CredentialFactory_Dbms $factory - the factory
-	 *		to use for generating the credential details
+	 * @param Mephex_Db_Sql_Pdo_CredentialDetailsFactory_Configurable $factory 
+	 *		- the factory to use for generating the credential details
 	 * @param Mephex_Db_Sql_Quoter $quoter - the quoter to use when constructing
 	 *		the credential
 	 * @param string $name - the name of the credential/connection
 	 * @return Mephex_Db_Sql_Pdo_Credential
 	 */
 	protected function getDualCredential(
-		Mephex_Db_Sql_Pdo_CredentialFactory_Dbms $factory,
+		Mephex_Db_Sql_Pdo_CredentialDetailsFactory_Configurable $factory,
 		Mephex_Db_Sql_Quoter $quoter,
 		$name
 	)
 	{
-		$write_credential	= $factory->loadFromConfig(
-			$this->_config,
-			$this->_group,
-			"{$name}.write"
-		);
-		$read_credential	= $factory->loadFromConfig(
-			$this->_config,
-			$this->_group,
-			"{$name}.read"
-		);
+		$write_credential	= $factory->getCredentialDetails("{$name}.write");
+		$read_credential	= $factory->getCredentialDetails("{$name}.read");
 
 		return new Mephex_Db_Sql_Pdo_Credential(
 			$quoter,
@@ -128,24 +120,20 @@ implements Mephex_Db_Sql_Base_CredentialFactory
 	 * Generates a singular credential (i.e. a credential with read and write
 	 * credentials that are the same.)
 	 *
-	 * @param Mephex_Db_Sql_Pdo_CredentialFactory_Dbms $factory - the factory
-	 *		to use for generating the credential details
+	 * @param Mephex_Db_Sql_Pdo_CredentialDetailsFactory_Configurable $factory
+	 *		- the factory to use for generating the credential details
 	 * @param Mephex_Db_Sql_Quoter $quoter - the quoter to use when constructing
 	 *		the credential
 	 * @param string $name - the name of the credential/connection
 	 * @return Mephex_Db_Sql_Pdo_Credential
 	 */
 	protected function getSingularCredential(
-		Mephex_Db_Sql_Pdo_CredentialFactory_Dbms $factory,
+		Mephex_Db_Sql_Pdo_CredentialDetailsFactory_Configurable $factory,
 		Mephex_Db_Sql_Quoter $quoter,
 		$name
 	)
 	{
-		$credential	= $factory->loadFromConfig(
-			$this->_config,
-			$this->_group,
-			$name
-		);
+		$credential	= $factory->getCredentialDetails($name);
 
 		return new Mephex_Db_Sql_Pdo_Credential(
 			$quoter,
@@ -157,8 +145,8 @@ implements Mephex_Db_Sql_Base_CredentialFactory
 	
 	
 	/**
-	 * Generates a list of possible credential factory class names based or
-	 * the DBMS name.
+	 * Generates a list of possible credential details factory class names based
+	 * for the DBMS name.
 	 * 
 	 * @param string $dbms - the DBMS name (e.g. mysql or sqlite)
 	 * @return array
@@ -167,7 +155,7 @@ implements Mephex_Db_Sql_Base_CredentialFactory
 	{
 		return array
 		(
-			"Mephex_Db_Sql_Pdo_CredentialFactory_{$dbms}",
+			"Mephex_Db_Sql_Pdo_CredentialDetailsFactory_Configurable_{$dbms}",
 			$dbms
 		);
 	}
@@ -175,9 +163,9 @@ implements Mephex_Db_Sql_Base_CredentialFactory
 
 
 	/**
-	 * Determines the credential factory class name for the given DBMS.
+	 * Determines the credential detials factory class name for the given DBMS.
 	 * 
-	 * @param string $dbms - the DBMS name (e.g. mysql or sqlite)
+	 * @param string $dbms - the DBMS name (e.g. Mysql or Sqlite)
 	 * @return string
 	 */
 	protected function getCredentialFactoryClassName($dbms)
