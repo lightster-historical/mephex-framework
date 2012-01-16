@@ -103,12 +103,7 @@ extends Mephex_Test_TestCase
 	{
 		$this->_config->set(
 			$this->_group,
-			"conn_name.write.dbms",
-			'CustomDsn'
-		);
-		$this->_config->set(
-			$this->_group,
-			"conn_name.read.dbms",
+			"conn_name.dbms",
 			'CustomDsn'
 		);
 		$this->_config->set(
@@ -140,12 +135,7 @@ extends Mephex_Test_TestCase
 	{
 		$this->_config->set(
 			$this->_group,
-			"conn_name.write.dbms",
-			'CustomDsn'
-		);
-		$this->_config->set(
-			$this->_group,
-			"conn_name.read.dbms",
+			"conn_name.dbms",
 			'CustomDsn'
 		);
 		$this->_config->set(
@@ -177,7 +167,7 @@ extends Mephex_Test_TestCase
 	{
 		$this->_config->set(
 			$this->_group,
-			"conn_name.write.dbms",
+			"conn_name.dbms",
 			'CustomDsn'
 		);
 		$this->_config->set(
@@ -204,7 +194,7 @@ extends Mephex_Test_TestCase
 	{
 		$this->_config->set(
 			$this->_group,
-			"conn_name.write.dbms",
+			"conn_name.dbms",
 			'CustomDsn'
 		);
 		$this->_config->set(

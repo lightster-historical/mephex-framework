@@ -62,14 +62,15 @@ implements Mephex_Db_Sql_Base_CredentialFactory
 	 */
 	public function getCredential($name)
 	{
+		$dbms			= $this->_config->get($this->_group, "{$name}.dbms");
+		$factory_class	= $this->getCredentialFactoryClassName($dbms);
+		$factory		= new $factory_class();
+
 		try
 		{
-			$write_dbms		= $this->_config->get($this->_group, "{$name}.write.dbms");
-			$write_class	= $this->getCredentialFactoryClassName($write_dbms);
-			$write_factory	= new $write_class();
 			// try to get a 'write' credential (which can be used for
 			// writing and reading)
-			$write_credential	= $write_factory->loadFromConfig(
+			$write_credential	= $factory->loadFromConfig(
 				$this->_config,
 				$this->_group,
 				"{$name}.write"
@@ -77,12 +78,9 @@ implements Mephex_Db_Sql_Base_CredentialFactory
 			
 			try
 			{
-				$read_dbms		= $this->_config->get($this->_group, "{$name}.read.dbms");
-				$read_class		= $this->getCredentialFactoryClassName($read_dbms);
-				$read_factory	= new $read_class();
 				// try to get a 'read' credential (which can only be used for
 				// reading)
-				$read_credential	= $read_factory->loadFromConfig(
+				$read_credential	= $factory->loadFromConfig(
 					$this->_config,
 					$this->_group,
 					"{$name}.read"
@@ -100,9 +98,6 @@ implements Mephex_Db_Sql_Base_CredentialFactory
 		{
 			try
 			{
-				$dbms		= $this->_config->get($this->_group, "{$name}.dbms");
-				$class		= $this->getCredentialFactoryClassName($dbms);
-				$factory	= new $class();
 				// if a 'write' credential could not be loaded (which also means
 				// a 'read' credential was not loaded), attempt to load a general
 				// credential
