@@ -60,7 +60,7 @@ extends Mephex_Test_TestCase
 		$quoter	= new Mephex_Db_Sql_Base_Quoter_Mysql();
 		$insert	= $this->getUpdate('test', array('abc', 'def'), array('xyz'), $quoter);
 		
-		$this->assertTrue($insert->getQuoter() instanceof Mephex_Db_Sql_Quoter);
+		$this->assertTrue($insert->getQuoter() instanceof Mephex_Db_Sql_Base_Quoter);
 		$this->assertTrue($insert->getQuoter() === $quoter);
 	}
 	

@@ -9,7 +9,7 @@
  * @author lightster
  */
 class Mephex_Db_Sql_Base_Quoter_Mysql
-extends Mephex_Db_Sql_Quoter
+extends Mephex_Db_Sql_Base_Quoter
 {
 	/**
 	 * Quotes a table name.

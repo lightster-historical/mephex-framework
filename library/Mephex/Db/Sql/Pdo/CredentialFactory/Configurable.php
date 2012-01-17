@@ -93,14 +93,14 @@ implements Mephex_Db_Sql_Base_CredentialFactory
 	 *
 	 * @param Mephex_Db_Sql_Pdo_CredentialDetailsFactory_Configurable $factory 
 	 *		- the factory to use for generating the credential details
-	 * @param Mephex_Db_Sql_Quoter $quoter - the quoter to use when constructing
+	 * @param Mephex_Db_Sql_Base_Quoter $quoter - the quoter to use when constructing
 	 *		the credential
 	 * @param string $name - the name of the credential/connection
 	 * @return Mephex_Db_Sql_Pdo_Credential
 	 */
 	protected function getDualCredential(
 		Mephex_Db_Sql_Pdo_CredentialDetailsFactory_Configurable $factory,
-		Mephex_Db_Sql_Quoter $quoter,
+		Mephex_Db_Sql_Base_Quoter $quoter,
 		$name
 	)
 	{
@@ -122,14 +122,14 @@ implements Mephex_Db_Sql_Base_CredentialFactory
 	 *
 	 * @param Mephex_Db_Sql_Pdo_CredentialDetailsFactory_Configurable $factory
 	 *		- the factory to use for generating the credential details
-	 * @param Mephex_Db_Sql_Quoter $quoter - the quoter to use when constructing
+	 * @param Mephex_Db_Sql_Base_Quoter $quoter - the quoter to use when constructing
 	 *		the credential
 	 * @param string $name - the name of the credential/connection
 	 * @return Mephex_Db_Sql_Pdo_Credential
 	 */
 	protected function getSingularCredential(
 		Mephex_Db_Sql_Pdo_CredentialDetailsFactory_Configurable $factory,
-		Mephex_Db_Sql_Quoter $quoter,
+		Mephex_Db_Sql_Base_Quoter $quoter,
 		$name
 	)
 	{

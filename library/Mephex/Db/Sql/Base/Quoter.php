@@ -8,7 +8,7 @@
  * 
  * @author lightster
  */
-abstract class Mephex_Db_Sql_Quoter
+abstract class Mephex_Db_Sql_Base_Quoter
 {
 	/**
 	 * Quotes a table name.

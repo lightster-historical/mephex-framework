@@ -9,7 +9,7 @@ implements Mephex_Db_Sql_Base_Credential
 
 
 
-	public function __construct(Mephex_Db_Sql_Quoter $quoter)
+	public function __construct(Mephex_Db_Sql_Base_Quoter $quoter)
 	{
 		$this->_quoter	= $quoter;
 	}

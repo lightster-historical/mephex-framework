@@ -12,17 +12,17 @@ abstract class Mephex_Db_Sql_Base_Generator
 	/**
 	 * The quoter to use for quoting table names, column names, and values
 	 * 
-	 * @var Mephex_Db_Sql_Quoter
+	 * @var Mephex_Db_Sql_Base_Quoter
 	 */
 	protected $_quoter;
 	
 	
 	
 	/**
-	 * @param Mephex_Db_Sql_Quoter $quoter - the quoter responsible for
+	 * @param Mephex_Db_Sql_Base_Quoter $quoter - the quoter responsible for
 	 * 		quoting table names, column names, and values
 	 */
-	public function __construct(Mephex_Db_Sql_Quoter $quoter)
+	public function __construct(Mephex_Db_Sql_Base_Quoter $quoter)
 	{
 		$this->_quoter	= $quoter;
 	}

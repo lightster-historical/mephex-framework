@@ -11,7 +11,7 @@ class Mephex_Db_Sql_Pdo_CredentialDetailsFactory_Configurable_Custom
 extends Mephex_Db_Sql_Pdo_CredentialDetailsFactory_Configurable
 {
 	/**
-	 * Reflection class for Mephex_Db_Sql_Quoter
+	 * Reflection class for Mephex_Db_Sql_Base_Quoter
 	 *
 	 * @var Mephex_Reflection_Class
 	 */
@@ -30,7 +30,7 @@ extends Mephex_Db_Sql_Pdo_CredentialDetailsFactory_Configurable
 		parent::__construct($config, $group);
 
 		$this->_quoter_reflection_class	= new Mephex_Reflection_Class(
-			'Mephex_Db_Sql_Quoter'
+			'Mephex_Db_Sql_Base_Quoter'
 		);
 	}
 
@@ -63,7 +63,7 @@ extends Mephex_Db_Sql_Pdo_CredentialDetailsFactory_Configurable
 	 *
 	 * @param string $name - the name of the credential/connection to generate
 	 *		the quoter for
-	 * @return Mephex_Db_Sql_Quoter
+	 * @return Mephex_Db_Sql_Base_Quoter
 	 * @see Mephex_Db_Sql_Pdo_CredentialDetailsFactory#getQuoter
 	 */
 	public function getQuoter($name)

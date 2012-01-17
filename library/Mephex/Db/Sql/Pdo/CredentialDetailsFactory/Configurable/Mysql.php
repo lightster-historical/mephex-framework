@@ -75,7 +75,7 @@ extends Mephex_Db_Sql_Pdo_CredentialDetailsFactory_Configurable
 	 *
 	 * @param string $name - the name of the credential/connection to generate
 	 *		the quoter for
-	 * @return Mephex_Db_Sql_Quoter
+	 * @return Mephex_Db_Sql_Base_Quoter
 	 * @see Mephex_Db_Sql_Pdo_CredentialDetailsFactory#getQuoter
 	 */
 	public function getQuoter($name)
