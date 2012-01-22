@@ -62,9 +62,7 @@ implements Mephex_Db_Sql_Base_CredentialFactory
 	 */
 	public function getCredential($name)
 	{
-		$dbms			= $this->_config->get($this->_group, "{$name}.dbms");
-		$factory_class	= $this->getCredentialFactoryClassName($dbms);
-		$factory		= new $factory_class($this->_config, $this->_group);
+		$factory		= $this->getDetailsFactory($name);
 		$quoter			= $factory->getQuoter($name);
 
 		if($this->_config->get($this->_group, "{$name}.enable_dual", false))
@@ -83,6 +81,21 @@ implements Mephex_Db_Sql_Base_CredentialFactory
 				$name
 			);
 		}
+	}
+
+
+
+	/**
+	 * Get the factory for the given credential name
+	 *
+	 * @param string $name - the name of the credential/connection
+	 * @return Mephex_Db_Sql_Pdo_CredentialDetailsFactory
+	 */
+	protected function getDetailsFactory($name)
+	{
+		$dbms			= $this->_config->get($this->_group, "{$name}.dbms");
+		$factory_class	= $this->getCredentialFactoryClassName($dbms);
+		return new $factory_class($this->_config, $this->_group);
 	}
 
 

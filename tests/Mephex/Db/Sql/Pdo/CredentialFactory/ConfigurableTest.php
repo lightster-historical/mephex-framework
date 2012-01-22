@@ -73,6 +73,89 @@ extends Mephex_Test_TestCase
 
 	/**
 	 * @covers Mephex_Db_Sql_Pdo_CredentialFactory_Configurable::__construct
+	 * @covers Mephex_Db_Sql_Pdo_CredentialFactory_Configurable::getDetailsFactory
+	 * @dataProvider providerDbmsTypes
+	 */
+	public function testDetailsFactoryCanBeGeneratedBasedOnConfigOption(
+		$dbms, $class_name
+	)
+	{
+		$this->_config->set(
+			$this->_group,
+			"conn_name.dbms",
+			$dbms
+		);
+		$this->assertInstanceOf(
+			$class_name,
+			$this->_credential_factory->getDetailsFactory('conn_name')
+		);
+	}
+
+
+
+	public function providerDbmsTypes()
+	{
+		return array(
+			array(
+				'Custom',
+				'Mephex_Db_Sql_Pdo_CredentialDetailsFactory_Configurable_Custom'
+			),
+			array(
+				'Sqlite',
+				'Mephex_Db_Sql_Pdo_CredentialDetailsFactory_Configurable_Sqlite'
+			),
+			array(
+				'Mysql',
+				'Mephex_Db_Sql_Pdo_CredentialDetailsFactory_Configurable_Mysql'
+			),
+		);
+	}
+
+
+
+	/**
+	 * @covers Mephex_Db_Sql_Pdo_CredentialFactory_Configurable::__construct
+	 * @covers Mephex_Db_Sql_Pdo_CredentialFactory_Configurable::getDetailsFactory
+	 */
+	public function testDetailsFactoryIsPassedConfigOptionSet()
+	{
+		$this->_config->set(
+			$this->_group,
+			"conn_name.dbms",
+			'Custom'
+		);
+
+		$this->assertAttributeSame(
+			$this->_config,
+			'_config',
+			$this->_credential_factory->getDetailsFactory('conn_name')
+		);
+	}
+
+
+
+	/**
+	 * @covers Mephex_Db_Sql_Pdo_CredentialFactory_Configurable::__construct
+	 * @covers Mephex_Db_Sql_Pdo_CredentialFactory_Configurable::getDetailsFactory
+	 */
+	public function testDetailsFactoryIsPassedConfigGroup()
+	{
+		$this->_config->set(
+			$this->_group,
+			"conn_name.dbms",
+			'Custom'
+		);
+		$this->assertAttributeEquals(
+			$this->_group,
+			'_group',
+			$this->_credential_factory->getDetailsFactory('conn_name')
+		);
+	}
+
+
+
+	/**
+	 * @covers Mephex_Db_Sql_Pdo_CredentialFactory_Configurable::__construct
 	 * @covers Mephex_Db_Sql_Pdo_CredentialFactory_Configurable::getCredential
 	 * @covers Mephex_Db_Sql_Pdo_CredentialFactory_Configurable::getDualCredential
 	 */
