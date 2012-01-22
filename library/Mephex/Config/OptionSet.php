@@ -9,7 +9,6 @@
  * @author mlight
  */
 class Mephex_Config_OptionSet
-implements Mephex_App_Resource
 {
 	/**
 	 * Multi-dimensional associative array of options.
