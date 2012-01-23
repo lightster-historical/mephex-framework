@@ -49,11 +49,7 @@ extends Mephex_Db_Sql_Base_Connection
 		parent::__construct($credential);
 		
 		$this->_write_credential	= $credential->getWriteCredential();
-		$this->_read_credential		= (
-			$credential->getReadCredential() !== $this->_write_credential
-				? $credential->getReadCredential()
-				: null
-		);
+		$this->_read_credential		= $credential->getReadCredential();
 	}
 	
 	
@@ -95,15 +91,15 @@ extends Mephex_Db_Sql_Base_Connection
 	{
 		if(null === $this->_read_connection)
 		{
-			if(null !== $this->_read_credential)
+			if($this->_write_credential === $this->_read_credential)
+			{
+				$this->_read_connection	= $this->getWriteConnection();
+			}
+			else
 			{
 				$this->_read_connection	= $this->getConnectionUsingCredential(
 					$this->_read_credential
 				);
-			}
-			else
-			{
-				$this->_read_connection	= $this->getWriteConnection();
 			}
 		}
 		
