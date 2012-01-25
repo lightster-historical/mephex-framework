@@ -76,7 +76,7 @@ extends Mephex_Db_Sql_Base_Connection
 		}
 		catch(PDOException $ex)
 		{
-			throw new Mephex_Db_Exception("Database connection error (SQLSTATE {$ex->getCode()}): {$ex->getMessage()}");
+			throw new Mephex_Db_Sql_Pdo_Exception_PdoWrapper_Connection($this, $ex);
 		}
 	}
 	

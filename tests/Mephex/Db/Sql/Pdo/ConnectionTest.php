@@ -100,7 +100,7 @@ extends Mephex_Test_TestCase
 
 	/**
 	 * @covers Mephex_Db_Sql_Pdo_Connection::getConnectionUsingCredential
-	 * @expectedException Mephex_Db_Sql_Pdo_Exception_PdoWrapper
+	 * @expectedException Mephex_Db_Sql_Pdo_Exception_PdoWrapper_Connection
 	 */
 	public function testAnExceptionIsThrownWhenAConnectionCannotBeMade()
 	{
