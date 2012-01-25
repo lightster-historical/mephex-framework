@@ -4,13 +4,237 @@
 
 class Mephex_Db_Sql_Pdo_ConnectionTest
 extends Mephex_Test_TestCase
-{	
-	public function testConnectionCanBeMade()
+{
+	protected $_write_details;
+	protected $_read_details;
+	protected $_credential;
+	protected $_connection;
+
+
+
+	public function setUp()
 	{
-		$db_rw	= $this->getSqliteDatabase('Mephex_Db_Sql_Pdo', 'basic');
-		$conn	= $this->getSqliteConnection($db_rw);
-		$pdo	= $conn->getReadConnection();
-		
+		parent::setUp();
+
+		$db_rw		= $this->getSqliteDatabase('Mephex_Db_Sql_Pdo', 'basic');
+		$this->_write_details	= new Mephex_Db_Sql_Pdo_CredentialDetails("sqlite:{$db_rw}");
+		$this->_read_details	= new Mephex_Db_Sql_Pdo_CredentialDetails("sqlite:{$db_rw}");
+		$this->_credential		= new Mephex_Db_Sql_Pdo_Credential(
+			new Mephex_Db_Sql_Base_Quoter_Sqlite(),
+			$this->_write_details,
+			$this->_read_details
+		);
+		$this->_connection		= new Stub_Mephex_Db_Sql_Pdo_Connection($this->_credential);
+	}
+
+
+
+	/**
+	 * @covers Mephex_Db_Sql_Pdo_Connection::__construct
+	 */
+	public function testConnectionIsInstantiable()
+	{
+		$this->assertInstanceOf(
+			'Mephex_Db_Sql_Pdo_Connection',
+			$this->_connection
+		);
+	}
+
+
+
+	/**
+	 * @covers Mephex_Db_Sql_Pdo_Connection::__construct
+	 */
+	public function testCredentialIsPassedToParentClass()
+	{
+
+		$this->assertAttributeSame(
+			$this->_credential,
+			'_credential',
+			$this->_connection
+		);
+	}
+
+
+
+	/**
+	 * @covers Mephex_Db_Sql_Pdo_Connection::__construct
+	 */
+	public function testWriteCredentialIsProperlyPulledFromCredential()
+	{
+		$this->assertAttributeSame(
+			$this->_write_details,
+			'_write_credential',
+			$this->_connection
+		);
+	}
+
+
+
+	/**
+	 * @covers Mephex_Db_Sql_Pdo_Connection::__construct
+	 */
+	public function testReadCredentialIsProperlyPulledFromCredential()
+	{
+		$this->assertAttributeSame(
+			$this->_read_details,
+			'_read_credential',
+			$this->_connection
+		);
+	}
+
+
+
+	/**
+	 * @covers Mephex_Db_Sql_Pdo_Connection::getConnectionUsingCredential
+	 */
+	public function testPdoConnectionCanBeMadeUsingCredential()
+	{
+		$this->assertInstanceOf(
+			'Pdo',
+			$this->_connection->getConnectionUsingCredential($this->_read_details)
+		);
+	}
+
+
+
+	/**
+	 * @covers Mephex_Db_Sql_Pdo_Connection::getConnectionUsingCredential
+	 * @expectedException Mephex_Db_Sql_Pdo_Exception_PdoWrapper
+	 */
+	public function testAnExceptionIsThrownWhenAConnectionCannotBeMade()
+	{
+		$details	= new Mephex_Db_Sql_Pdo_CredentialDetails('unknown:dbms');
+		$this->_connection->getConnectionUsingCredential($details);
+	}
+
+
+
+	/**
+	 * @covers Mephex_Db_Sql_Pdo_Connection::getWriteConnection
+	 */
+	public function testWriteConnectionCanBeRetrieved()
+	{
+		$this->assertInstanceOf(
+			'Pdo',
+			$this->_connection->getWriteConnection()
+		);
+	}
+
+
+
+	/**
+	 * @covers Mephex_Db_Sql_Pdo_Connection::getWriteConnection
+	 */
+	public function testWriteConnectionIsLazyLoaded()
+	{
+		$pdo_conn	= $this->_connection->getWriteConnection();
+		$this->assertSame(
+			$pdo_conn,
+			$this->_connection->getWriteConnection()
+		);
+	}
+	
+
+
+	/**
+	 * @covers Mephex_Db_Sql_Pdo_Connection::getReadConnection
+	 */
+	public function testReadConnectionCanBeRetrieved()
+	{
+		$this->assertInstanceOf(
+			'Pdo',
+			$this->_connection->getReadConnection()
+		);
+	}
+
+
+
+	/**
+	 * @covers Mephex_Db_Sql_Pdo_Connection::getReadConnection
+	 */
+	public function testReadConnectionIsLazyLoaded()
+	{
+		$pdo_conn	= $this->_connection->getReadConnection();
+		$this->assertSame(
+			$pdo_conn,
+			$this->_connection->getReadConnection()
+		);
+	}
+
+
+
+	/**
+	 * @covers Mephex_Db_Sql_Pdo_Connection::getReadConnection
+	 */
+	public function testWriteConnectionIsUsedForReadConnectionIfReadCredentialIsSameAsWriteCredential()
+	{
+		$db_rw			= $this->getSqliteDatabase('Mephex_Db_Sql_Pdo', 'basic');
+		$details		= new Mephex_Db_Sql_Pdo_CredentialDetails("sqlite:{$db_rw}");
+		$connection		= new Stub_Mephex_Db_Sql_Pdo_Connection(
+			new Mephex_Db_Sql_Pdo_Credential(
+				new Mephex_Db_Sql_Base_Quoter_Sqlite(),
+				$details,
+				$details
+			)
+		);
+
+		$this->assertSame(
+			$connection->getWriteConnection(),
+			$connection->getReadConnection()
+		);
+	}
+	
+	
+	
+	/**
+	 * @covers Mephex_Db_Sql_Pdo_Connection::write
+	 */
+	public function testWriteReturnsWriteQuery()
+	{
+		$query	= $this->_connection->write('INSERT ...');
+		$this->assertTrue($query instanceof Mephex_Db_Sql_Pdo_Query_Write);
+	}
+	
+	
+	
+	/**
+	 * @covers Mephex_Db_Sql_Pdo_Connection::read
+	 */
+	public function testReadReturnsReadQuery()
+	{
+		$query	= $this->_connection->read('SELECT ...');
+		$this->assertTrue($query instanceof Mephex_Db_Sql_Pdo_Query_Read);
+	}
+
+
+
+	/**
+	 * @covers Mephex_Db_Sql_Pdo_Connection::__destruct
+	 */
+	public function testConnectionCanBeDestroyed()
+	{
+		$this->_connection->__destruct();
+
+		$this->assertAttributeSame(
+			null,
+			'_write_connection',
+			$this->_connection
+		);
+		$this->assertAttributeSame(
+			null,
+			'_read_connection',
+			$this->_connection
+		);
+	}
+
+
+
+	/**
+	 * @covers Mephex_Db_Sql_Pdo_Connection::read
+	 */
+	public function testQueryCanBeRun()
+	{
 		$known		= array(
 			'lightster'				=> 'Matt Light'
 		);
@@ -18,8 +242,8 @@ extends Mephex_Test_TestCase
 		$this->assertTrue(count($known) > 0);
 		
 		$mismatch	= 0;
-		$developers	= $pdo->query('SELECT * FROM developer');
-		while($developer = $developers->fetch())
+		$developers	= $this->_connection->read('SELECT * FROM developer');
+		foreach($developers->execute() as $developer)
 		{
 			if(!empty($known[$developer['nickname']])
 				&& $known[$developer['nickname']] === $developer['name'])
@@ -31,135 +255,9 @@ extends Mephex_Test_TestCase
 				$mismatch++;
 			}
 		}
-		
+
 		$mismatch	+= count($known);
 		
 		$this->assertEquals(0, $mismatch);
 	}
-	
-	
-
-	/**
-	 * @expectedException Mephex_Db_Exception
-	 */
-	public function testFailingToMakeAConnectionThrowsAnException()
-	{
-		$credential	= $this->getSqliteCredential(PATH_TEST_ROOT . DIRECTORY_SEPARATOR . 'readonly' . DIRECTORY_SEPARATOR . 'does_not_exist.sqlite3');
-		$conn		= new Mephex_Db_Sql_Pdo_Connection(
-			new Mephex_Db_Sql_Pdo_Credential(
-				new Mephex_Db_Sql_Base_Quoter_Sqlite(),
-				$credential,
-				$credential
-			)
-		);
-		$conn->getReadConnection();
-		
-		$this->assertTrue(true);
-	}
-	
-	
-	
-	public function testWriteConnectionIsUsedIfReadCredentialIsNotProvided()
-	{
-		$db_rw	= $this->getSqliteDatabase('Mephex_Db_Sql_Pdo', 'basic');
-		$conn	= $this->getSqliteConnection($db_rw);
-		
-		$this->assertTrue(
-			$conn->getReadConnection() === $conn->getWriteConnection()
-		);
-	}
-	
-	
-	
-	public function testReadAndWriteConnectionsCanBeDifferent()
-	{
-		$db_w	= $this->getSqliteDatabase('Mephex_Db_Sql_Pdo', 'basic');
-		$db_r	= $this->getSqliteDatabase('Mephex_Db_Sql_Pdo', 'basic');
-		$conn	= $this->getSqliteConnection($db_w, $db_w);
-		
-		$this->assertTrue(
-			$conn->getReadConnection() !== $conn->getWriteConnection()
-		);
-	}
-	
-	
-	
-	public function testWritingToTheWriteConnectionDoesNotNecessarilyWriteToTheReadConnection()
-	{
-		$db_w	= $this->getSqliteDatabase('Mephex_Db_Sql_Pdo', 'basic');
-		$db_r	= $this->getSqliteDatabase('Mephex_Db_Sql_Pdo', 'basic');
-		
-		$conn	= $this->getSqliteConnection($db_w, $db_w);
-		$pdo_w	= $conn->getWriteConnection();
-		$pdo_r	= $conn->getReadConnection();
-		
-		$pdo_w->query("INSERT INTO developer (`nickname`) VALUES ('dummy')");
-		
-		$has_devs	= false;
-		$developers	= $pdo_w->query("SELECT * FROM developer WHERE nickname = 'dummy'");
-		while($developer = $developers->fetch())
-		{
-			$this->assertFalse($has_devs);
-			$has_devs	= true;
-		}
-		$this->assertTrue($has_devs);
-		
-		$has_devs	= false;
-		$developers	= $pdo_r->query("SELECT * FROM developer WHERE nickname = 'dummy'");
-		while($developer = $developers->fetch())
-		{
-			$this->assertFalse(true);
-		}
-		$this->assertFalse($has_devs);
-	}
-	
-	
-	
-	public function testWriteThroughConnectionReturnsWriteQuery()
-	{
-		$db		= $this->getSqliteDatabase('Mephex_Db_Sql_Pdo', 'basic');
-		$conn	= $this->getSqliteConnection($db);
-		
-		$query	= $conn->write('INSERT ...');
-		$this->assertTrue($query instanceof Mephex_Db_Sql_Pdo_Query_Write);
-	}
-	
-	
-	
-	public function testReadThroughConnectionReturnsReadQuery()
-	{
-		$db		= $this->getSqliteDatabase('Mephex_Db_Sql_Pdo', 'basic');
-		$conn	= $this->getSqliteConnection($db);
-		
-		$query	= $conn->read('SELECT ...');
-		$this->assertTrue($query instanceof Mephex_Db_Sql_Pdo_Query_Read);
-	}
-	
-	
-	
-//	public function testRunQuery()
-//	{
-//		$conn	= $this->getConnection();
-//		$c		= 0;
-//		for($j = 0; $j < 10; $j++)
-//		{
-//			$race_query	= $conn->read("SELECT * FROM nascarRace", Mephex_Db_Sql_Base_Query::PREPARE_NATIVE);
-//			$query		= $conn->read("SELECT * FROM nascarResult WHERE raceId = ?", Mephex_Db_Sql_Base_Query::PREPARE_EMULATED);
-//				
-//			$races		= $race_query->execute();
-//			foreach($races as $race)
-//			{
-//				$results	= $query->execute($params = array($race['raceId']));
-////		var_dump($results);exit;
-//				foreach($results as $i => $result)
-//				{
-//					var_dump($result);exit;
-//					$c++;
-//				}
-////				var_dump($i);
-//			}
-//		}
-//		
-//		var_dump($c);
-//	}
-}  
+}
