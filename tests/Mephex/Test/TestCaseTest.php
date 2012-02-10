@@ -84,7 +84,7 @@ extends Mephex_Test_TestCase
 	
 	public function testLoadPhpunitXmlDataSetIntoDb()
 	{
-		$conn	= $this->getDbConnection('sqlite', 'database');
+		$conn	= $this->getSqliteConnection('dbs/basic.sqlite3');
 		$this->loadXmlDataSetIntoDb($conn, 'Mephex_Test', 'basic');
 		
 		$results	= $conn->read('SELECT SUM(id) AS sum FROM sum_test')->execute();
