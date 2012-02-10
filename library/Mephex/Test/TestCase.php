@@ -170,6 +170,7 @@ extends PHPUnit_Framework_TestCase
 					$group,
 					$conn_name
 				);
+			//throw new Exception('other whoops!');
 		}
 		
 		return $this->_connections[$group][$conn_name];
