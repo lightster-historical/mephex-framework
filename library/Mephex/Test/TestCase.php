@@ -14,6 +14,14 @@ abstract class Mephex_Test_TestCase
 extends PHPUnit_Framework_TestCase
 {
 	/**
+	 * Connection factory used for generating test SQLite connections.
+	 *
+	 * @var Mephex_Db_Sql_Pdo_ConnectionFactory
+	 */
+	protected $_sqlite_conn_factory	= null;
+
+
+	/**
 	 * Lazy-loaded database connection factory.
 	 * 
 	 * @var Mephex_Db_Sql_ConnectionFactory
@@ -50,6 +58,8 @@ extends PHPUnit_Framework_TestCase
 	 */
 	protected function tearDown()
 	{
+		$this->_sqlite_conn_factory	= null;
+
 		$this->_connection_factory	= null;
 		$this->_connections			= array();
 		
@@ -64,7 +74,7 @@ extends PHPUnit_Framework_TestCase
 	 * @param string $dir - the directory to use to store the temporary files
 	 * @return Mephex_Test_TmpFileCopier
 	 */
-	public function getTmpCopier($dir = 'tmp')
+	protected function getTmpCopier($dir = 'tmp')
 	{
 		if(null === $this->_copier)
 		{ 
@@ -77,37 +87,35 @@ extends PHPUnit_Framework_TestCase
 	
 	
 	/**
-	 * Generates a database credential for the given sqlite3 database.
-	 * 
-	 * @param string $db_name - the name of the database file
-	 * @return Mephex_Db_Sql_Pdo_Credential
+	 * Lazy-loading getter for SQLite connection factory.
+	 *
+	 * @return Mephex_Db_Sql_Pdo_ConnectionFactory
 	 */
-	protected function getSqliteCredential($db_name)
+	private function getSqliteConnectionFactory()
 	{
-		return new Mephex_Db_Sql_Pdo_Credential("sqlite:{$db_name}");
+		if(null === $this->_sqlite_conn_factory)
+		{
+			$this->_sqlite_conn_factory	= new Mephex_Db_Sql_Pdo_ConnectionFactory(
+				new Mephex_Test_Db_Sql_Pdo_CredentialFactory_Sqlite(
+					$this->getTmpCopier()
+				)
+			);
+		}
+
+		return $this->_sqlite_conn_factory;
 	}
 	
 	
 	
 	/**
-	 * Generates a PDO connection using the given credentials.
+	 * Generates a SQLite PDO connection using the path to the SQLite database.
 	 * 
-	 * @param Mephex_Db_Sql_Pdo_Credential $write_db - the database credential
-	 * 		for the write connection
-	 * @param Mephex_Db_Sql_Pdo_Credential $read_db - the database credential
-	 * 		for the read connection; if not provided, the write connection is 
-	 * 		used for reading as well
+	 * @param string $db_path - the path to the SQLite database
 	 * @return Mephex_Db_Sql_Pdo_Connection
 	 */
-	protected function getSqliteConnection($write_db, $read_db = null)
+	protected function getSqliteConnection($db_path)
 	{
-		$write_db	= $this->getTmpCopier()->copy($write_db);
-		$read_db	= ($read_db ? $this->getTmpCopier()->copy($read_db) : null);
-		
-		$write_credential	= $this->getSqliteCredential($write_db);
-		$read_credential	= ($read_db ? $this->getSqliteCredential($read_db) : null);
-		
-		return new Mephex_Db_Sql_Pdo_Connection($write_credential, $read_credential);
+		return $this->getSqliteConnectionFactory()->getConnection($db_path);
 	}
 	
 	
@@ -131,14 +139,20 @@ extends PHPUnit_Framework_TestCase
 	 * 
 	 * @return Mephex_Db_Sql_ConnectionFactory
 	 */
-	protected function getDbConnectionFactory()
+	protected function getDbConnectionFactory($group)
 	{
-		if(null === $this->_connection_factory)
+		if(!isset($this->_connection_factory[$group]))
 		{
-			$this->_connection_factory	= new Mephex_Test_Db_ConnectionFactory($this->getTmpCopier());
+			$this->_connection_factory[$group] =
+				new Mephex_Db_Sql_Pdo_ConnectionFactory(
+					new Mephex_Test_Db_Sql_Pdo_CredentialFactory_Configurable(
+						$this->getConfig(),
+						$group
+					)
+				);
 		}
 		
-		return $this->_connection_factory;
+		return $this->_connection_factory[$group];
 	}
 	
 	
@@ -156,12 +170,7 @@ extends PHPUnit_Framework_TestCase
 		if(!isset($this->_connections[$group][$conn_name]))
 		{
 			$this->_connections[$group][$conn_name] =
-				$this->getDbConnectionFactory()->connectUsingConfig
-				(
-					$this->getConfig(),
-					$group,
-					$conn_name
-				);
+				$this->getDbConnectionFactory($group)->getConnection($conn_name);
 		}
 		
 		return $this->_connections[$group][$conn_name];

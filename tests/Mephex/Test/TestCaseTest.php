@@ -34,8 +34,8 @@ extends Mephex_Test_TestCase
 	
 	public function testDbConnectionFactoryIsReusedWithinATestCase()
 	{
-		$conn_factory_1	= $this->getDbConnectionFactory();
-		$conn_factory_2	= $this->getDbConnectionFactory();
+		$conn_factory_1	= $this->getDbConnectionFactory('group');
+		$conn_factory_2	= $this->getDbConnectionFactory('group');
 		
 		$this->assertTrue($conn_factory_1 === $conn_factory_2);
 	}
@@ -44,11 +44,11 @@ extends Mephex_Test_TestCase
 	
 	public function testNewDbConnectionFactoryIsCreatedForEveryTestCase()
 	{
-		$conn_factory_1	= $this->getDbConnectionFactory();
+		$conn_factory_1	= $this->getDbConnectionFactory('group');
 		$this->tearDown();
 		
 		$this->setUp();
-		$conn_factory_2	= $this->getDbConnectionFactory();
+		$conn_factory_2	= $this->getDbConnectionFactory('group');
 		$this->tearDown();
 		
 		$this->setUp();
@@ -84,7 +84,7 @@ extends Mephex_Test_TestCase
 	
 	public function testLoadPhpunitXmlDataSetIntoDb()
 	{
-		$conn	= $this->getDbConnection('sqlite', 'database');
+		$conn	= $this->getSqliteConnection('dbs/basic.sqlite3');
 		$this->loadXmlDataSetIntoDb($conn, 'Mephex_Test', 'basic');
 		
 		$results	= $conn->read('SELECT SUM(id) AS sum FROM sum_test')->execute();

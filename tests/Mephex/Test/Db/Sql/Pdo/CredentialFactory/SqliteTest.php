@@ -2,114 +2,126 @@
 
 
 
-class Mephex_Test_Db_Sql_Pdo_CredentialFactory_Sqlite_Test
+class Mephex_Test_Db_Sql_Pdo_CredentialFactory_SqliteTest
 extends Mephex_Test_TestCase
 {
-	protected $_credential_factory = null;
-	
-	
-	
-	/**
-	 * Deallocates any resources created by a test case.
-	 */
-	protected function tearDown()
-	{
-		$this->_credential_factory	= null;
-	} 
-	
-	
-	
-	/**
-	 * Lazy-loads the credential factory.
-	 * 
-	 * @return Mephex_Test_Db_Sql_Pdo_CredentialFactory_Sqlite
-	 */
-	public function getCredentialFactory()
-	{
-		if(null === $this->_credential_factory)
-		{ 
-			$this->_credential_factory = new Mephex_Test_Db_Sql_Pdo_CredentialFactory_Sqlite();
-		}
-		
-		return $this->_credential_factory;
-	}
-	
-	
-	
-	public function testOriginalDatabaseIsRememberedAsConfigOption()
-	{
-		$config	= new Mephex_Config_OptionSet();
-		$config->addLoader(
-			new Mephex_Config_Loader_Ini(
-				PATH_TEST_ROOT . DIRECTORY_SEPARATOR . 'config.ini'
-			)
-		);
-		
-		$tmp_path	= PATH_TEST_ROOT . "/tmp";
-		$config->set('database', 'sqlite.tmp_copier', new Mephex_Test_TmpFileCopier($tmp_path));
+	protected $_tmp_path;
+	protected $_tmp_copier;
 
-		$credential	= $this->getCredentialFactory()->loadFromConfig(
-			$config, 
-			'database', 
-			'sqlite'
+	protected $_factory;
+	
+	
+	
+	public function setUp()
+	{
+		parent::setUp();
+
+		$this->_tmp_path	= PATH_TEST_ROOT . "/tmp";
+		$this->_tmp_copier	= new Mephex_Test_TmpFileCopier($this->_tmp_path);
+
+		$this->_factory		= new Stub_Mephex_Test_Db_Sql_Pdo_CredentialFactory_Sqlite(
+			$this->_tmp_copier
 		);
+	}
+
+
+
+	/**
+	 * @covers Mephex_Test_Db_Sql_Pdo_CredentialFactory_Sqlite::__construct
+	 */
+	public function testClassIsInstantiable()
+	{
+		$this->assertInstanceOf(
+			'Mephex_Test_Db_Sql_Pdo_CredentialFactory_Sqlite',
+			$this->_factory
+		);
+	}
+
+
+
+	/**
+	 * @covers Mephex_Test_Db_Sql_Pdo_CredentialFactory_Sqlite::__construct
+	 * @depends testClassIsInstantiable
+	 */
+	public function testTmpCopierIsSetByConstructor()
+	{
+		$this->assertAttributeSame(
+			$this->_tmp_copier,
+			'_tmp_copier',
+			$this->_factory
+		);
+	}
+
+
+
+	/**
+	 * @covers Mephex_Test_Db_Sql_Pdo_CredentialFactory_Sqlite::getCredentialDetails
+	 * @depends testClassIsInstantiable
+	 */
+	public function testNameIsUsedAsFilePathWhenGeneratingCredentialDetails()
+	{
 		$this->assertEquals(
-			PATH_TEST_ROOT . "/dbs/basic.sqlite3",
-			$config->get('database', 'sqlite.original_database')
-		); 
+			'sqlite:some/path/name.sqlite',
+			$this->_factory->getCredentialDetails('some/path/name.sqlite')
+				->getDataSourceName()
+		);
 	}
-	
-	
-	
-	public function testDatabaseConfigOptionIsUpdatedToPathOfCopiedDatabase()
-	{
-		$config	= new Mephex_Config_OptionSet();
-		$config->addLoader(
-			new Mephex_Config_Loader_Ini(
-				PATH_TEST_ROOT . DIRECTORY_SEPARATOR . 'config.ini'
-			)
-		);
-		
-		$tmp_path	= PATH_TEST_ROOT . "/tmp";
-		$config->set('database', 'sqlite.tmp_copier', new Mephex_Test_TmpFileCopier($tmp_path));
 
-		$credential	= $this->getCredentialFactory()->loadFromConfig(
-			$config, 
-			'database', 
-			'sqlite'
+
+
+	/**
+	 * @covers Mephex_Test_Db_Sql_Pdo_CredentialFactory_Sqlite::getCredential
+	 * @depends testClassIsInstantiable
+	 */
+	public function testReadAndWriteCredentialDetailsAreSame()
+	{
+		$credential			= $this->_factory->getCredential(
+			PATH_TEST_ROOT . "/dbs/basic.sqlite3"
 		);
+		$write_credential	= $credential->getWriteCredential();
+		$read_credential	= $credential->getReadCredential();
+
+		$this->assertSame(
+			$read_credential,
+			$write_credential
+		);
+	}
+
+
+
+	/**
+	 * @covers Mephex_Test_Db_Sql_Pdo_CredentialFactory_Sqlite::getCredential
+	 * @depends testClassIsInstantiable
+	 */
+	public function testQuoterIsSqliteQuoter()
+	{
+		$credential	= $this->_factory->getCredential(
+			PATH_TEST_ROOT . "/dbs/basic.sqlite3"
+		);
+		$this->assertInstanceOf(
+			'Mephex_Db_Sql_Base_Quoter_Sqlite',
+			$credential->getQuoter()
+		);
+	}
+
+
+
+	/**
+	 * @covers Mephex_Test_Db_Sql_Pdo_CredentialFactory_Sqlite::getCredential
+	 * @depends testClassIsInstantiable
+	 */
+	public function testPathUsedForDsnIsDifferentThanOriginalPath()
+	{
+		$original_path		= PATH_TEST_ROOT . "/dbs/basic.sqlite3";
+		$credential			= $this->_factory->getCredential(
+			$original_path
+		);
+		$read_credential	= $credential->getReadCredential();
+		$new_path			= substr($read_credential->getDataSourceName(), 7);
+
 		$this->assertNotEquals(
-			PATH_TEST_ROOT . "/dbs/basic.sqlite3",
-			$config->get('database', 'sqlite.database')
-		); 
-		$this->assertEquals(
-			$tmp_path,
-			substr($config->get('database', 'sqlite.database'), 0, strlen($tmp_path))
-		); 
-	}
-	
-	
-	
-	public function testCopyOfDatabaseIsUsed()
-	{
-		$config	= new Mephex_Config_OptionSet();
-		$config->addLoader(
-			new Mephex_Config_Loader_Ini(
-				PATH_TEST_ROOT . DIRECTORY_SEPARATOR . 'config.ini'
-			)
-		);
-		
-		$tmp_path	= PATH_TEST_ROOT . "/tmp";
-		$config->set('database', 'sqlite.tmp_copier', new Mephex_Test_TmpFileCopier($tmp_path));
-
-		$credential	= $this->getCredentialFactory()->loadFromConfig(
-			$config,
-			'database', 
-			'sqlite'
-		);
-		$this->assertEquals(
-			$credential->getDataSourceName(),
-			'sqlite:' . $config->get('database', 'sqlite.database')
+			realpath($original_path),
+			realpath($new_path)
 		);
 	}
-}  
+}

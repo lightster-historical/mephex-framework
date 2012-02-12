@@ -3,102 +3,68 @@
 
 
 /**
- * A database credential that provides enough information to make
- * a PDO connection. 
+ * A database credential set that provides enough information to make
+ * read/write PDO database connections and escape queries.
  * 
  * @author mlight
  */
 class Mephex_Db_Sql_Pdo_Credential
+implements Mephex_Db_Sql_Base_Credential
 {
 	/**
-	 * The data source name (DSN) used to connect to the database server.
-	 * 
-	 * @var string
+	 * @param Mephex_Db_Sql_Base_Quoter $quoter - the quoter used for escaping SQL
+	 *		query values, fields, and table names
+	 * @param Mephex_Db_Sql_Pdo_CredentialDetails $write_credential - the 
+	 *		credential to use for making a write connection
+	 * @param Mephex_Db_Sql_Pdo_CredentialDetails $read_credential - the 
+	 *		credential to use for making a read connection
 	 */
-	protected $_data_source_name;
-	
-	/**
-	 * The username used to authenticate with the database server.
-	 * 
-	 * @var string
-	 */
-	protected $_username;
-	
-	/**
-	 * The password used to authenticate with the database server.
-	 * 
-	 * @var string
-	 */
-	protected $_password;
-	
-	/**
-	 * Any options to be used when connecting to the database server.
-	 * 
-	 * @var array
-	 */
-	protected $_driver_options;
-	
-	
-	
-	/**
-	 * @param string $dsn
-	 * @param string $username
-	 * @param string $password
-	 * @param array $driver_options
-	 */
-	public function __construct($dsn, $username = null, $password = null, array $driver_options = array())
+	public function __construct(
+		Mephex_Db_Sql_Base_Quoter $quoter,
+		Mephex_Db_Sql_Pdo_CredentialDetails $write_credential,
+		Mephex_Db_Sql_Pdo_CredentialDetails $read_credential
+	)
 	{
-		$this->_data_source_name	= $dsn;
-		$this->_username			= $username;
-		$this->_password			= $password;
-		$this->_driver_options		= $driver_options;
+		$this->_quoter				= $quoter;
+		$this->_write_credential	= $write_credential;
+		$this->_read_credential		= $read_credential;
 	}
-	
-	
-	
+
+
+
 	/**
-	 * Getter for DSN
-	 * 
-	 * @return string
+	 * Returns a quoter, which is responsible for quoting table names,
+	 * column names, and values.
+	 *
+	 * @return Mephex_Db_Sql_Base_Quoter
+	 * @see Mephex_Db_Sql_Base_Credential#getQuoter
 	 */
-	public function getDataSourceName()
+	public function getQuoter()
 	{
-		return $this->_data_source_name;
+		return $this->_quoter;
 	}
-	
-	
-	
+
+
+
 	/**
-	 * Getter for username
-	 * 
-	 * @return string
+	 * Getter for write credential.
+	 *
+	 * @return Mephex_Db_Sql_Pdo_CredentialDetails
 	 */
-	public function getUsername()
+	public function getWriteCredential()
 	{
-		return $this->_username;	
+		return $this->_write_credential;
 	}
-	
-	
-	
+
+
+
 	/**
-	 * Getter for password
-	 * 
-	 * @return string
+	 * Getter for read credential.
+	 *
+	 * @return Mephex_Db_Sql_Pdo_CredentialDetails
 	 */
-	public function getPassword()
+	public function getReadCredential()
 	{
-		return $this->_password;
-	}
-	
-	
-	
-	/**
-	 * Getter for driver options
-	 * 
-	 * @return array
-	 */
-	public function getDriverOptions()
-	{
-		return $this->_driver_options;
+		return $this->_read_credential;
 	}
 }

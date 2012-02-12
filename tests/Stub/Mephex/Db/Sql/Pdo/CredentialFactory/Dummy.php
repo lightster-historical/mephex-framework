@@ -16,8 +16,8 @@ extends Mephex_Db_Sql_Pdo_CredentialFactory_Dbms
 		Mephex_Config_OptionSet $config, $group, $connection_name
 	)
 	{
-		return new Mephex_Db_Sql_Pdo_Credential(
-			'dummy',
+		return new Mephex_Db_Sql_Pdo_CredentialDetails(
+			$config->get($group, "{$connection_name}.dsn"),
 			$group,
 			$connection_name 
 		);

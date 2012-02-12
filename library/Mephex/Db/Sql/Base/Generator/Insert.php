@@ -44,13 +44,13 @@ extends Mephex_Db_Sql_Base_Generator
 	
 	
 	/**
-	 * @param Mephex_Db_Sql_Quoter $quoter - the object responsible for
+	 * @param Mephex_Db_Sql_Base_Quoter $quoter - the object responsible for
 	 * 		quoting table names, column names, and values
 	 * @param string $table - the name of the table being insered into
 	 * @param array $columns - the list of columns that values will be
 	 * 		inserted for 
 	 */
-	public function __construct(Mephex_Db_Sql_Quoter $quoter, $table, array $columns)
+	public function __construct(Mephex_Db_Sql_Base_Quoter $quoter, $table, array $columns)
 	{
 		parent::__construct($quoter);
 		

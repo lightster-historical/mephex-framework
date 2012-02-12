@@ -24,7 +24,7 @@ extends Mephex_Test_TestCase
 		{
 			if(null === $quoter)
 			{
-				$quoter	= new Mephex_Db_Sql_Base_Quoter();
+				$quoter	= new Mephex_Db_Sql_Base_Quoter_Mysql();
 			}
 			$this->_insert	= new Stub_Mephex_Db_Sql_Base_Generator_Insert($quoter, $table, $columns);
 		}
@@ -57,10 +57,10 @@ extends Mephex_Test_TestCase
 	
 	public function testQuoterProvidedToTheConstructorIsUsedByInsert()
 	{
-		$quoter	= new Mephex_Db_Sql_Base_Quoter();
+		$quoter	= new Mephex_Db_Sql_Base_Quoter_Mysql();
 		$insert	= $this->getInsert('test', array('abc', 'def'), $quoter);
 		
-		$this->assertTrue($insert->getQuoter() instanceof Mephex_Db_Sql_Quoter);
+		$this->assertTrue($insert->getQuoter() instanceof Mephex_Db_Sql_Base_Quoter);
 		$this->assertTrue($insert->getQuoter() === $quoter);
 	}
 	

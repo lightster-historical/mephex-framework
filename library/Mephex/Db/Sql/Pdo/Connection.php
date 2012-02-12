@@ -13,14 +13,14 @@ extends Mephex_Db_Sql_Base_Connection
 	/**
 	 * The credential used for connecting to the master/writable server.
 	 * 
-	 * @var Mephex_Db_Sql_Pdo_Credential
+	 * @var Mephex_Db_Sql_Pdo_CredentialDetails
 	 */
 	protected $_write_credential;
 	
 	/**
 	 * The credential used for connecting to the slave/readable server.
 	 * 
-	 * @var Mephex_Db_Sql_Pdo_Credential
+	 * @var Mephex_Db_Sql_Pdo_CredentialDetails
 	 */
 	protected $_read_credential;
 	
@@ -41,19 +41,15 @@ extends Mephex_Db_Sql_Base_Connection
 	
 	
 	/**
-	 * @param Mephex_Db_Sql_Pdo_Credential $write_credential - the credential used
-	 * 		for connecting to the master/writable server
-	 * @param Mephex_Db_Sql_Pdo_Credential $read_credential - the credential used
-	 * 		for connection to the slave/readable server; if not provided, the
-	 * 		write connection is used as the read connection
+	 * @param Mephex_Db_Sql_Base_Credential $credential - the credential
+	 *		to be used for making the connection
 	 */
-	public function __construct(Mephex_Db_Sql_Pdo_Credential $write_credential,
-		Mephex_Db_Sql_Pdo_Credential $read_credential = null)
+	public function __construct(Mephex_Db_Sql_Pdo_Credential $credential)
 	{
-		parent::__construct();
+		parent::__construct($credential);
 		
-		$this->_write_credential	= $write_credential;
-		$this->_read_credential		= $read_credential;
+		$this->_write_credential	= $credential->getWriteCredential();
+		$this->_read_credential		= $credential->getReadCredential();
 	}
 	
 	
@@ -61,10 +57,10 @@ extends Mephex_Db_Sql_Base_Connection
 	/**
 	 * Generates a PDO connection using the given credential
 	 * 
-	 * @param Mephex_Db_Sql_Pdo_Credential $credential
+	 * @param Mephex_Db_Sql_Pdo_CredentialDetails $credential
 	 * @return PDO
 	 */
-	protected function getConnectionUsingCredential(Mephex_Db_Sql_Pdo_Credential $credential)
+	protected function getConnectionUsingCredential(Mephex_Db_Sql_Pdo_CredentialDetails $credential)
 	{
 		try
 		{
@@ -80,7 +76,7 @@ extends Mephex_Db_Sql_Base_Connection
 		}
 		catch(PDOException $ex)
 		{
-			throw new Mephex_Db_Exception("Database connection error (SQLSTATE {$ex->getCode()}): {$ex->getMessage()}");
+			throw new Mephex_Db_Sql_Pdo_Exception_PdoWrapper_Connection($this, $ex);
 		}
 	}
 	
@@ -95,15 +91,15 @@ extends Mephex_Db_Sql_Base_Connection
 	{
 		if(null === $this->_read_connection)
 		{
-			if(null !== $this->_read_credential)
+			if($this->_write_credential === $this->_read_credential)
+			{
+				$this->_read_connection	= $this->getWriteConnection();
+			}
+			else
 			{
 				$this->_read_connection	= $this->getConnectionUsingCredential(
 					$this->_read_credential
 				);
-			}
-			else
-			{
-				$this->_read_connection	= $this->getWriteConnection();
 			}
 		}
 		

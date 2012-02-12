@@ -12,7 +12,7 @@ extends Mephex_Test_TestCase
 	
 	public function setUp()
 	{
-		$this->_quoter		= new Mephex_Db_Sql_Base_Quoter();
+		$this->_quoter		= new Mephex_Db_Sql_Base_Quoter_Mysql();
 		$this->_generator	= new Stub_Mephex_Db_Sql_Base_Generator($this->_quoter);
 	}
 	
@@ -20,7 +20,7 @@ extends Mephex_Test_TestCase
 	
 	public function testQuoterProvidedToTheConstructorIsUsedByGenerator()
 	{
-		$this->assertTrue($this->_generator->getQuoter() instanceof Mephex_Db_Sql_Quoter);
+		$this->assertTrue($this->_generator->getQuoter() instanceof Mephex_Db_Sql_Base_Quoter);
 		$this->assertTrue($this->_generator->getQuoter() === $this->_quoter);
 	}
 	

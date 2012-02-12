@@ -5,11 +5,10 @@
 class Mephex_Db_Sql_Pdo_CredentialTest
 extends Mephex_Test_TestCase
 {
-	protected $_dsn;
-	protected $_username;
-	protected $_password;
-	protected $_driver_options;
-	
+	protected $_quoter;
+	protected $_credential_details_a;
+	protected $_credential_details_b;
+
 	protected $_credential;
 	
 	
@@ -18,52 +17,80 @@ extends Mephex_Test_TestCase
 	{	
 		parent::setUp();
 		
-		$this->_dsn				= 'sqlite:some_db';
-		$this->_username		= 'some_username';
-		$this->_password		= 'some_password';
-		$this->_driver_options	= array
-		(
-			'some_option'	=> 'some_value',
-			'other_option'	=> 'other_value'
+		$this->_quoter					= new Mephex_Db_Sql_Base_Quoter_Sqlite();
+		$this->_credential_details_a	= new Mephex_Db_Sql_Pdo_CredentialDetails(
+			'dsn_a',
+			'username_a',
+			'password_a',
+			array('driver_options_a')
 		);
-		
-		$this->_credential	= new Mephex_Db_Sql_Pdo_Credential(
-			$this->_dsn,
-			$this->_username,
-			$this->_password,
-			$this->_driver_options
+		$this->_credential_details_b	= new Mephex_Db_Sql_Pdo_CredentialDetails(
+			'dsn_b',
+			'username_b',
+			'password_b',
+			array('driver_options_b')
+		);
+
+		$this->_credential				= new Mephex_Db_Sql_Pdo_Credential(
+			$this->_quoter,
+			$this->_credential_details_a,
+			$this->_credential_details_b
 		);
 	}
 	
 	
 	
-	public function testDsnIsSameAsPassedToConstructor()
+	/**
+	 * @covers Mephex_Db_Sql_Pdo_Credential::__construct
+	 */
+	public function testCredentialCanBeConstructed()
 	{
-		$this->assertEquals($this->_dsn, $this->_credential->getDataSourceName());
+		$this->assertTrue(
+			$this->_credential
+			instanceof
+			Mephex_Db_Sql_Base_Credential
+		);
 	}
-	
-	
-	
-	public function testUsernameIsSameAsPassedToConstructor()
+
+
+
+	/**
+	 * @covers Mephex_Db_Sql_Pdo_Credential::getQuoter
+	 */
+	public function testQuoterPassedToConstructorIsSameRetrieved()
 	{
-		$this->assertEquals($this->_username, $this->_credential->getUsername());
+		$this->assertTrue(
+			$this->_quoter
+			===
+			$this->_credential->getQuoter()
+		);
 	}
-	
-	
-	
-	public function testPasswordIsSameAsPassedToConstructor()
+
+
+
+	/**
+	 * @covers Mephex_Db_Sql_Pdo_Credential::getWriteCredential
+	 */
+	public function testWriteCredentialPassedToConstructorIsSameRetrieved()
 	{
-		$this->assertEquals($this->_password, $this->_credential->getPassword());
+		$this->assertTrue(
+			$this->_credential_details_a
+			===
+			$this->_credential->getWriteCredential()
+		);
 	}
-	
-	
-	
-	public function testDriverOptionsAreSameAsPassedToConstructor()
+
+
+
+	/**
+	 * @covers Mephex_Db_Sql_Pdo_Credential::getReadCredential
+	 */
+	public function testReadCredentialPassedToConstructorIsSameRetrieved()
 	{
-		$driver_options	= $this->_credential->getDriverOptions();
-		foreach($driver_options as $option => $value)
-		{
-			$this->assertEquals($this->_driver_options[$option], $value);
-		}
+		$this->assertTrue(
+			$this->_credential_details_b
+			===
+			$this->_credential->getReadCredential()
+		);
 	}
-}  
+}

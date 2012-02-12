@@ -16,8 +16,8 @@ extends Mephex_Test_TestCase
 	{
 		parent::setUp();
 		
-		$this->_src_conn	= $this->getDbConnection('src');
-		$this->_dest_conn	= $this->getDbConnection('dest');
+		$this->_src_conn	= $this->getSqliteConnection('Mephex/Db/Exporter/PhpUnit/dbs/src.sqlite3');
+		$this->_dest_conn	= $this->getSqliteConnection('Mephex/Db/Exporter/PhpUnit/dbs/dest.sqlite3');
 		
 		$this->loadXmlDataSetIntoDb($this->_src_conn, 'Mephex_Db_Exporter_PhpUnit', 'basic');
 		

@@ -16,7 +16,7 @@ extends Mephex_Test_TestCase
 	{	
 		parent::setUp();
 		
-		$this->_credential_factory	= new Stub_Mephex_Db_CredentialFactory();
+		$this->_credential_factory	= new Stub_Mephex_Db_Sql_Base_CredentialFactory();
 		$this->_credential_name		= 'nameOfUnknownCredential';
 
 		$this->_exception	= new Mephex_Db_Exception_UnknownNamedCredential(

@@ -13,7 +13,7 @@ extends Mephex_Db_Exception
 	/**
 	 * The credential factory that the named credential was supposed to be in.
 	 * 
-	 * @var Mephex_Db_CredentialFactory
+	 * @var Mephex_Db_Sql_Base_CredentialFactory
 	 */
 	protected $_credential_factory;
 	
@@ -27,13 +27,13 @@ extends Mephex_Db_Exception
 	
 	
 	/**
-	 * @param Mephex_Db_CredentialFactory $credential_factory -
+	 * @param Mephex_Db_Sql_Base_CredentialFactory $credential_factory -
 	 *		the credential factory that was being used
 	 * @param string $credential_name - the name of the credential that was
 	 *		being requested
 	 */
 	public function __construct(
-		Mephex_Db_CredentialFactory $credential_factory,
+		Mephex_Db_Sql_Base_CredentialFactory $credential_factory,
 		$credential_name
 	)
 	{
@@ -48,7 +48,7 @@ extends Mephex_Db_Exception
 	/**
 	 * Getter for credential factory.
 	 * 
-	 * @return Mephex_Db_CredentialFactory
+	 * @return Mephex_Db_Sql_Base_CredentialFactory
 	 */
 	public function getCredentialFactory()
 	{

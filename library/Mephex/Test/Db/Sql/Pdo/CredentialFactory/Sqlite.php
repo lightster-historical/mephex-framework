@@ -3,37 +3,69 @@
 
 
 /**
- * Generates a testing credential for a Sqlite connection using a config option set. 
+ * Generates a testing Sqlite credential based on a file path connection name.
  * 
  * @author mlight
  */
 class Mephex_Test_Db_Sql_Pdo_CredentialFactory_Sqlite
-extends Mephex_Db_Sql_Pdo_CredentialFactory_Sqlite
+implements Mephex_Db_Sql_Base_CredentialFactory
 {
 	/**
-	 * Generates a credential for a Sqlite connection using a config option set,
-	 * the group name, and connection name.
-	 * 
-	 * @param Mephex_Config_OptionSet $config
-	 * @param string $group
-	 * @param string $connection_name
-	 * @return Mephex_Db_Sql_Pdo_Credential
+	 * The temp file copier to use for copying the SQLite databases.
+	 *
+	 * @var Mephex_Test_TmpFileCopier
 	 */
-	public function loadFromConfig(
-		Mephex_Config_OptionSet $config, $group, $connection_name
-	)
-	{
-		if(!$config->hasOption($group, "{$connection_name}.original_database"))
-		{
-			$src_database	= $config->get($group, "{$connection_name}.database");
-			$copier			= $config->get($group, "{$connection_name}.tmp_copier");
-			
-			$database_copy	= $copier->copy($src_database);
-			
-			$config->set($group, "{$connection_name}.database", $database_copy, true);
-			$config->set($group, "{$connection_name}.original_database", $src_database, true);
-		}
+	private $_tmp_copier;
 
-		return parent::loadFromConfig($config, $group, $connection_name);
+
+
+	/**
+	 * @param Mephex_Test_TmpFileCopier $tmp_copier - the temp file copier
+	 *		to use for copying the SQLite databases
+	 */
+	public function __construct(Mephex_Test_TmpFileCopier $tmp_copier)
+	{
+		$this->_tmp_copier	= $tmp_copier;
+	}
+
+
+
+
+	/**
+	 * Get the credential with the given file path connection name.
+	 *
+	 * @param string $name - the file path connection name
+	 * @return Mephex_Db_Sql_Pdo_Credential
+	 * @see Mephex_Db_Sql_Base_CredentialFactory#getCredential
+	 */
+	public function getCredential($name)
+	{
+		$database_copy	= $this->_tmp_copier->copy($name);
+
+		$details	= $this->getCredentialDetails($database_copy);
+
+		return new Mephex_Db_Sql_Pdo_Credential(
+			new Mephex_Db_Sql_Base_Quoter_Sqlite(),
+			$details,
+			$details
+		);
+	}
+
+
+
+	/**
+	 * Get the credential details with the given file path connection name.
+	 *
+	 * @param string $name - the file path connection name
+	 * @return Mephex_Db_Sql_Pdo_CredentialDetails
+	 */
+	protected function getCredentialDetails($name)
+	{
+		$dsn		= "sqlite:{$name}";
+		$options	= array(
+			PDO::ATTR_TIMEOUT => 1.0
+		);
+
+		return new Mephex_Db_Sql_Pdo_CredentialDetails($dsn, null, null, $options);
 	}
 }

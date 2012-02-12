@@ -5,12 +5,14 @@
 class Mephex_Model_Stream_Writer_Database_SequentialIdTest
 extends Mephex_Test_TestCase
 {
+	protected $_db;
 	protected $_writer;
 	
 	
 	
 	public function tearDown()
 	{
+		$this->_db			= null;
 		$this->_writer		= null;
 	}
 	
@@ -20,10 +22,11 @@ extends Mephex_Test_TestCase
 	{
 		if($this->_writer === null)
 		{
-			$this->getDbConnection('sqlite')->write('DELETE FROM multi_col')->execute();
+			$this->_db	= $this->getSqliteConnection('dbs/basic.sqlite3');
+			$this->_db->write('DELETE FROM multi_col')->execute();
 			
 			$this->_writer	= new Stub_Mephex_Model_Stream_Writer_Database_SequentialId(
-				$this->getDbConnection('sqlite')
+				$this->_db
 			);
 		}
 		
@@ -88,7 +91,7 @@ extends Mephex_Test_TestCase
 		
 		$this->getWriter()->create($data);
 		
-		$conn	= $this->getDbConnection('sqlite');
+		$conn	= $this->_db;
 		$results	= $conn->read('
 			SELECT 
 				title,
@@ -121,7 +124,7 @@ extends Mephex_Test_TestCase
 		);
 		$this->getWriter()->create($data);
 		
-		$conn	= $this->getDbConnection('sqlite');
+		$conn	= $this->_db;
 		$results	= $conn->read('
 			SELECT 
 				id,
@@ -146,7 +149,7 @@ extends Mephex_Test_TestCase
 		$updated_data['other']			= 'Oh!';
 		$this->getWriter()->update($updated_data);
 		
-		$conn	= $this->getDbConnection('sqlite');
+		$conn	= $this->_db;
 		$results	= $conn->read('
 			SELECT 
 				title,
