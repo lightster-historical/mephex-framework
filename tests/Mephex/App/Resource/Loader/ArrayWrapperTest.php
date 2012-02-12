@@ -26,7 +26,7 @@ extends Mephex_Test_TestCase
 
 	/**
 	 * @covers Mephex_App_Resource_Loader_ArrayWrapper::__construct
-	 * @covers Mephex_App_Resource_Loader::getClassName
+	 * @covers Mephex_App_Resource_Loader::getResourceClassName
 	 * @covers Mephex_App_Resource_Loader::loadResource
 	 */
 	public function testArrayWrapperImplementsResourceLoader()
@@ -46,7 +46,7 @@ extends Mephex_Test_TestCase
 
 
 	/**
-	 * @covers Mephex_App_Resource_Loader_ArrayWrapper::getClassName
+	 * @covers Mephex_App_Resource_Loader_ArrayWrapper::getResourceClassName
 	 * @dataProvider providerForClassNameCanBeRetrieved
 	 * @depends testClassIsInstantiable
 	 */
@@ -56,7 +56,7 @@ extends Mephex_Test_TestCase
 			$class_name,
 			array()
 		);
-		$this->assertEquals($class_name, $loader->getClassName());
+		$this->assertEquals($class_name, $loader->getResourceClassName());
 	}
 
 

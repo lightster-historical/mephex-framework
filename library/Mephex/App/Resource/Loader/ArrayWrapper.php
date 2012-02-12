@@ -47,9 +47,9 @@ implements Mephex_App_Resource_Loader
 	 * will implement/extend.
 	 *
 	 * @return string
-	 * @see Mephex_App_Resource_Loader#getClassName
+	 * @see Mephex_App_Resource_Loader#getResourceClassName
 	 */
-	public function getClassName()
+	public function getResourceClassName()
 	{
 		return $this->_class_name;
 	}
