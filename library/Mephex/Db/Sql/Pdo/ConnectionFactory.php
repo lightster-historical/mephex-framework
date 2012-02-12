@@ -9,7 +9,9 @@
  * @author mlight
  */
 class Mephex_Db_Sql_Pdo_ConnectionFactory
-implements Mephex_Db_Sql_Base_ConnectionFactory
+implements
+	Mephex_Db_Sql_Base_ConnectionFactory,
+	Mephex_App_Resource_Loader
 {
 	/**
 	 * The credential factory that should be used for generating credentials
@@ -47,5 +49,33 @@ implements Mephex_Db_Sql_Base_ConnectionFactory
 		return new Mephex_Db_Sql_Pdo_Connection(
 			$this->_credential_factory->getCredential($name)
 		);
+	}
+
+
+
+	/**
+	 * Returns the name of the class that all resources from this loader
+	 * will implement/extend.
+	 *
+	 * @return string
+	 * @see Mephex_App_Resource_Loader#getResourceClassName
+	 */
+	public function getResourceClassName()
+	{
+		return 'Mephex_Db_Sql_Pdo_Connection';
+	}
+
+
+
+	/**
+	 * Loads the resource with the given resource name.
+	 *
+	 * @param string $resource_name - the name of the resource to load
+	 * @return object
+	 * @see Mephex_App_Resource_Loader#loadResource
+	 */
+	public function loadResource($resource_name)
+	{
+		return $this->getConnection($resource_name);
 	}
 }
