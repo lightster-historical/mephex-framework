@@ -139,14 +139,20 @@ extends PHPUnit_Framework_TestCase
 	 * 
 	 * @return Mephex_Db_Sql_ConnectionFactory
 	 */
-	protected function getDbConnectionFactory()
+	protected function getDbConnectionFactory($group)
 	{
-		if(null === $this->_connection_factory)
+		if(!isset($this->_connection_factory[$group]))
 		{
-			$this->_connection_factory	= new Mephex_Test_Db_ConnectionFactory($this->getTmpCopier());
+			$this->_connection_factory[$group] =
+				new Mephex_Db_Sql_Pdo_ConnectionFactory(
+					new Mephex_Test_Db_Sql_Pdo_CredentialFactory_Configurable(
+						$this->getConfig(),
+						$group
+					)
+				);
 		}
 		
-		return $this->_connection_factory;
+		return $this->_connection_factory[$group];
 	}
 	
 	
@@ -164,13 +170,7 @@ extends PHPUnit_Framework_TestCase
 		if(!isset($this->_connections[$group][$conn_name]))
 		{
 			$this->_connections[$group][$conn_name] =
-				$this->getDbConnectionFactory()->connectUsingConfig
-				(
-					$this->getConfig(),
-					$group,
-					$conn_name
-				);
-			//throw new Exception('other whoops!');
+				$this->getDbConnectionFactory($group)->getConnection($conn_name);
 		}
 		
 		return $this->_connections[$group][$conn_name];
