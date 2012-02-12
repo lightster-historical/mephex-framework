@@ -15,7 +15,7 @@ interface Mephex_App_Resource_Loader
 	 *
 	 * @return string
 	 */
-	public function getClassName();
+	public function getResourceClassName();
 
 	/**
 	 * Loads the resource with the given resource name.

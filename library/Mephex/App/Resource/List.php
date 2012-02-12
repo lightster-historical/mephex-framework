@@ -74,7 +74,7 @@ class Mephex_App_Resource_List
 	 */
 	public function addLoader($type_name, Mephex_App_Resource_Loader $loader)
 	{
-		$this->addType($type_name, $loader->getClassName());
+		$this->addType($type_name, $loader->getResourceClassName());
 
 		$this->_loaders[$type_name]	= $loader;
 	}

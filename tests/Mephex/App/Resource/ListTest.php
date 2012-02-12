@@ -174,7 +174,7 @@ extends Mephex_Test_TestCase
 			->method('addType')
 			->with(
 				$this->equalTo($type_name),
-				$this->equalTo($loader->getClassName())
+				$this->equalTo($loader->getResourceClassName())
 			);
 		
 		$list->addLoader($type_name, $loader);
