@@ -140,6 +140,52 @@ extends Mephex_Test_TestCase
 
 
 	/**
+	 * @covers Mephex_App_Resource_List::checkType
+	 * @depends testClassIsInstantiable
+	 * @depends testReflectionClassIsAddedForType
+	 * @expectedException Mephex_App_Resource_Exception_UnknownType
+	 */
+	public function testTypeMustBeAddedBeforeTypeCanBeChecked()
+	{
+		$this->_list->checkType('config', 'Mephex_App_Arguments');
+	}
+
+
+
+	/**
+	 * @covers Mephex_App_Resource_List::checkType
+	 * @depends testClassIsInstantiable
+	 */
+	public function testResourceTypeCanBeChecked()
+	{
+		$this->_list->addType('config', 'Mephex_Config_OptionSet');
+
+		$this->assertEquals(
+			'Mephex_Config_OptionSet',
+			$this->_list->checkType('config', 'Mephex_Config_OptionSet')
+		);
+	}
+
+
+
+	/**
+	 * @covers Mephex_App_Resource_List::addResource
+	 * @depends testClassIsInstantiable
+	 * @expectedException Mephex_Reflection_Exception_UnexpectedClass
+	 */
+	public function testExceptionIsThrownIfResourceTypeCheckFails()
+	{
+		$this->_list->addType('config', 'Mephex_Config_OptionSet');
+
+		$this->assertEquals(
+			'Mephex_Config_OptionSet',
+			$this->_list->checkType('config', 'Mephex_App_Arguments')
+		);
+	}
+
+
+
+	/**
 	 * @covers Mephex_App_Resource_List::addLoader
 	 * @dataProvider providerOfLoaders
 	 * @depends testClassIsInstantiable

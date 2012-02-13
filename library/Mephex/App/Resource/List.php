@@ -113,6 +113,28 @@ class Mephex_App_Resource_List
 
 
 	/**
+	 * Checks to see if the given class extends the class that the resource type
+	 * is associated with.
+	 *
+	 * @param string $type_name - the type name to check
+	 * @param string $class_name - the class name to check the resource type's
+	 *		class against
+	 * @return string
+	 */
+	public function checkType($type_name, $class_name)
+	{
+		if(!array_key_exists($type_name, $this->_type_class_reflections))
+		{
+			throw new Mephex_App_Resource_Exception_UnknownType($this, $type_name);
+		}
+
+		return $this->_type_class_reflections[$type_name]
+			->checkClassInheritance($class_name);
+	}
+
+
+
+	/**
 	 * Adds a resource to the list.
 	 *
 	 * @param string $type_name - the type name to associate the resource with
