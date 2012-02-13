@@ -54,17 +54,22 @@ extends ReflectionClass
 
 
 	/**
-	 * Checks to see if a given class extends/implements another 
+	 * Checks to see if a given class extends/implements another ($this)
 	 * class/interface, returning the original class upon success and throwing
 	 * an exception otherwise.
 	 *
-	 * @param string $class - the class to check
+	 * @param string $class - the (given) class to check
 	 * @return string - the passed class on success
 	 * @throws Mephex_Controller_Front_Exception_NonexistentClass
 	 * @throws Mephex_Controller_Front_Exception_UnexpectedClass
 	 */
 	public function checkClassInheritance($class)
 	{
+		if($this->getName() === $class)
+		{
+			return $class;
+		}
+
 		$to_check	= new self($class);
 		$is_child		= ($this->isInterface()
 			? $to_check->implementsInterface($this->getName())

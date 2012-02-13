@@ -90,6 +90,20 @@ extends Mephex_Test_TestCase
 	/**
 	 * @covers Mephex_Reflection_Class::checkClassInheritance
 	 */
+	public function testOriginalClassCanPassClassInheritanceCheck()
+	{
+		$class	= new Mephex_Reflection_Class('Mephex_Controller_Front_Base');
+		$this->assertEquals(
+			'Mephex_Controller_Front_Base',
+			$class->checkClassInheritance('Mephex_Controller_Front_Base')
+		);
+	}
+
+
+
+	/**
+	 * @covers Mephex_Reflection_Class::checkClassInheritance
+	 */
 	public function testClassCanPassClassInheritanceCheck()
 	{
 		$class	= new Mephex_Reflection_Class('Mephex_Controller_Front_Base');
