@@ -172,8 +172,11 @@ class Mephex_App_Resource_List
 
 		if(!array_key_exists($resource_name, $this->_resources[$type_name]))
 		{
-			$this->_resources[$type_name][$resource_name]
-				= $this->loadResource($type_name, $resource_name);
+			$this->addResource(
+				$type_name,
+				$resource_name,
+				$this->loadResource($type_name, $resource_name)
+			);
 		}
 
 		return $this->_resources[$type_name][$resource_name];

@@ -388,4 +388,30 @@ extends Mephex_Test_TestCase
 			$this->_list->getResource('config', '2nd')
 		);
 	}
+
+
+
+	/**
+	 * @covers Mephex_App_Resource_List::getResource
+	 * @depends testClassIsInstantiable
+	 * @depends testLoaderCanBeAdded
+	 * @expectedException Mephex_Reflection_Exception_ExpectedObject
+	 */
+	public function testLoadedResourceIsTypeChecked()
+	{
+		$primary	= new Mephex_Config_OptionSet();
+		$secondary	= new Mephex_Config_OptionSet();
+		$this->_list->addLoader(
+			'config',
+			new Mephex_App_Resource_Loader_ArrayWrapper(
+				'Mephex_App_Arguments',
+				array(
+					'core'	=> $primary,
+					'2nd'	=> $secondary
+				)
+			)
+		);
+
+		$this->_list->getResource('config', 'core');
+	}
 }
