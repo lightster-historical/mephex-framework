@@ -170,7 +170,7 @@ class Mephex_App_Resource_List
 	{
 		if(!array_key_exists($type_name, $this->_loaders))
 		{
-			throw new Mephex_App_Resource_Exception_UnknownLoader($this, $type_name);
+			throw new Mephex_App_Resource_Exception_UnknownLoader($this, $type_name, $resource_name);
 		}
 
 		return $this->_loaders[$type_name]->loadResource($resource_name);
