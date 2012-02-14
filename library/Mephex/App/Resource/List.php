@@ -123,13 +123,13 @@ class Mephex_App_Resource_List
 	 */
 	public function checkType($type_name, $class_name)
 	{
-		if(!array_key_exists($type_name, $this->_type_class_reflections))
+		if(!array_key_exists($type_name, $this->_type_classes))
 		{
 			throw new Mephex_App_Resource_Exception_UnknownType($this, $type_name);
 		}
 
-		return $this->_type_class_reflections[$type_name]
-			->checkClassInheritance($class_name);
+		$class	= new Mephex_Reflection_Class($class_name);
+		return $class->checkClassInheritance($this->_type_classes[$type_name]);
 	}
 
 

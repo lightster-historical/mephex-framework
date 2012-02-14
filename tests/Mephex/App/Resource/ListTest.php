@@ -158,11 +158,11 @@ extends Mephex_Test_TestCase
 	 */
 	public function testTypeNameTypeCanBeChecked()
 	{
-		$this->_list->addType('config', 'Mephex_Config_OptionSet');
+		$this->_list->addType('ctrl', 'Mephex_Controller_Action_Base');
 
 		$this->assertEquals(
-			'Mephex_Config_OptionSet',
-			$this->_list->checkType('config', 'Mephex_Config_OptionSet')
+			'Mephex_Controller_Action_Base',
+			$this->_list->checkType('ctrl', 'Mephex_Controller_Action')
 		);
 	}
 

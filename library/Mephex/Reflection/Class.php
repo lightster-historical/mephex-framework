@@ -58,19 +58,19 @@ extends ReflectionClass
 	 * class/interface, returning the original class upon success and throwing
 	 * an exception otherwise.
 	 *
-	 * @param string $class - the (given) class to check
+	 * @param string $sub_class - the (given) class to check
 	 * @return string - the passed class on success
 	 * @throws Mephex_Controller_Front_Exception_NonexistentClass
 	 * @throws Mephex_Controller_Front_Exception_UnexpectedClass
 	 */
-	public function checkClassInheritance($class)
+	public function checkClassInheritance($sub_class)
 	{
-		if($this->getName() === $class)
+		if($this->getName() === $sub_class)
 		{
-			return $class;
+			return $sub_class;
 		}
 
-		$to_check	= new self($class);
+		$to_check	= new self($sub_class);
 		$is_child		= ($this->isInterface()
 			? $to_check->implementsInterface($this->getName())
 			: $to_check->isSubclassOf($this->getName())
@@ -78,10 +78,10 @@ extends ReflectionClass
 		if(!$is_child)
 		{
 			throw new Mephex_Reflection_Exception_UnexpectedClass(
-				$this->getName(), $class
+				$this->getName(), $sub_class
 			);
 		}
 
-		return $class;
+		return $sub_class;
 	}
 }
