@@ -11,8 +11,4 @@ extends Mephex_Controller_Action_Http
 		{return parent::getPostRequest();}
 	public function getGetRequest()
 		{return parent::getGetRequest();}
-	public function checkArguments(Mephex_App_Arguments $args)
-		{return parent::checkArguments($args);}
-	public function getExpectedArgumentsClass()
-		{return parent::getExpectedArgumentsClass();}
 }

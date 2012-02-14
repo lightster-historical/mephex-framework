@@ -12,21 +12,20 @@ abstract class Mephex_Controller_Action_Base
 implements Mephex_Controller_Action
 {
 	/**
-	 * The front controller running the action
+	 * The resource list containing necessary resources.
 	 *
-	 * @var Mephex_Controller_Front
+	 * @var Mephex_App_Resource_List
 	 */
-	private $_front_ctrl;
+	private $_resource_list;
 
 
 
 	/**
-	 * @param Mephex_App_Arguments $arguments - the arguments passed into the
-	 *		program
+	 * @param Mephex_App_Resource_List $resource_list
 	 */
-	public function __construct(Mephex_Controller_Front_Base $front_ctrl)
+	public function __construct(Mephex_App_Resource_List $resource_list)
 	{
-		$this->_front_ctrl	= $front_ctrl;
+		$this->_resource_list	= $resource_list;
 	}
 	
 	
@@ -39,8 +38,6 @@ implements Mephex_Controller_Action
 	 */
 	public function runAction($action_name)
 	{
-		$this->checkArguments($this->getFrontController()->getArguments());
-
 		$this->processPreAction();
 		
 		$this->processAction($action_name);
@@ -112,41 +109,12 @@ implements Mephex_Controller_Action
 
 
 	/**
-	 * Getter for front controller.
+	 * Getter for resource list.
 	 *
-	 * @return Mephex_Controller_Front_Base
+	 * @return Mephex_App_ResourceList
 	 */
-	protected function getFrontController()
+	protected function getResourceList()
 	{
-		return $this->_front_ctrl;
-	}
-
-
-
-	/**
-	 * Checks the arguments object to make sure it extends the expected class.
-	 *
-	 * @param Mephex_App_Arguments $args - the arguments object to check
-	 *		the class type of
-	 * @return void
-	 */
-	protected function checkArguments(Mephex_App_Arguments $args)
-	{
-		$expected	= new Mephex_Reflection_Class(
-			$this->getExpectedArgumentsClass()
-		);
-		$this->_router	= $expected->checkObjectType($args);
-	}
-
-
-
-	/**
-	 * Getter for the expected arguments class name.
-	 *
-	 * @return string
-	 */
-	protected function getExpectedArgumentsClass()
-	{
-		return 'Mephex_App_Arguments';
+		return $this->_resource_list;
 	}
 }

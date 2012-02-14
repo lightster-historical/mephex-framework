@@ -8,7 +8,6 @@ extends Mephex_Test_TestCase
 	protected $_http_info;
 	protected $_post_request;
 	protected $_get_request;
-	protected $_other_args;
 	protected $_arguments;
 
 	protected $_front_ctrl;
@@ -31,24 +30,27 @@ extends Mephex_Test_TestCase
 		$this->_get_request	= new Mephex_App_Arguments(array(
 			'unitTesting'	=> 'GET'
 		));
-		$this->_other_args		= array(
-			'unitTesting'	=> 'other'
+
+		$this->_resource_list	= new Mephex_App_Resource_List();
+		$this->_resource_list->addType('Arguments', 'Mephex_App_Arguments');
+		$this->_resource_list->addResource(
+			'Arguments',
+			'HttpConnectionInfo',
+			$this->_http_info
 		);
-		
-		$this->_arguments	= new Mephex_App_Arguments_Http(
-			$this->_http_info,
-			$this->_post_request,
-			$this->_get_request,
-			$this->_other_args
+		$this->_resource_list->addResource(
+			'Arguments',
+			'PostRequest',
+			$this->_post_request
+		);
+		$this->_resource_list->addResource(
+			'Arguments',
+			'GetRequest',
+			$this->_get_request
 		);
 
-		$this->_front_ctrl	= new Stub_Mephex_Controller_Front_Base(
-			$this->_arguments,
-			'Stub_Mephex_Controller_Action_Base',
-			'index'
-		);
 		$this->_controller	= new Stub_Mephex_Controller_Action_Http(
-			$this->_front_ctrl
+			$this->_resource_list
 		);
 	}
 	
@@ -65,61 +67,187 @@ extends Mephex_Test_TestCase
 
 
 	/**
-	 * @covers Mephex_Controller_Action_Http::getExpectedArgumentsClass
+	 * @covers Mephex_Controller_Action_Http::processPreAction
 	 */
-	public function testExpectedArgumentsClassIsHttpArgumentsClass()
+	public function testArgumentsTypeResourceTypeIsCheckedByPreAction()
 	{
-		$this->assertEquals(
-			'Mephex_App_Arguments_Http',
-			$this->_controller->getExpectedArgumentsClass()
+		$resource_list	= new Mephex_App_Resource_List();
+		$resource_list->addType('Arguments', 'Mephex_Config_OptionSet');
+		$controller		= new Stub_Mephex_Controller_Action_Http(
+			$resource_list
 		);
+
+		try
+		{
+			$controller->processPreAction();
+		}
+		catch(Mephex_Reflection_Exception_UnexpectedClass $ex)
+		{
+			$this->assertEquals(
+				'Mephex_App_Arguments',
+				$ex->getExpectedClass()
+			);
+		}
 	}
 	
 	
 	
 	/**
-	 * @covers Mephex_Controller_Action_Http::checkArguments
+	 * @covers Mephex_Controller_Action_Http::processPreAction
 	 * @covers Mephex_Controller_Action_Http::getHttpConnectionInfo
 	 */
-	public function testHttpConnectionInfoIsMadeAvailableAfterCheckingArguments()
+	public function testHttpConnectionInfoIsMadeAvailableAfterPreAction()
 	{
 		$this->assertNull($this->_controller->getHttpConnectionInfo());
-		$this->_controller->checkArguments($this->_arguments);
+		$this->_controller->processPreAction();
 
 		$args	= $this->_controller->getHttpConnectionInfo();
 		$this->assertTrue($args instanceof Mephex_App_Arguments);
 		$this->assertEquals('SERVER', $args->get('unitTesting'));
 	}
-	
-	
-	
-	/**
-	 * @covers Mephex_Controller_Action_Http::checkArguments
-	 * @covers Mephex_Controller_Action_Http::getPostRequest
-	 */
-	public function testPostRequestIsMadeAvailableAfterCheckingArguments()
-	{
-		$this->assertNull($this->_controller->getPostRequest());
-		$this->_controller->checkArguments($this->_arguments);
 
-		$args	= $this->_controller->getPostRequest();
-		$this->assertTrue($args instanceof Mephex_App_Arguments);
-		$this->assertEquals('POST', $args->get('unitTesting'));
+
+
+	/**
+	 * @covers Mephex_Controller_Action_Http::processPreAction
+	 */
+	public function testHttpConnectionInfoResourceTypeIsCheckedByPreAction()
+	{
+		$resource_list	= new Mephex_App_Resource_List();
+		$resource_list->addType('Arguments', 'Mephex_App_Arguments');
+		$controller		= new Stub_Mephex_Controller_Action_Http(
+			$resource_list
+		);
+		$resource_list->addResource(
+			'Arguments',
+			'HttpConnectionInfo',
+			new Mephex_App_Arguments()
+		);
+		$resource_list->addResource(
+			'Arguments',
+			'PostRequest',
+			$this->_post_request
+		);
+		$resource_list->addResource(
+			'Arguments',
+			'GetRequest',
+			$this->_get_request
+		);
+
+		try
+		{
+			$controller->processPreAction();
+		}
+		catch(Mephex_Reflection_Exception_ExpectedObject $ex)
+		{
+			$this->assertEquals(
+				'Mephex_App_Arguments_HttpConnection',
+				$ex->getExpectedClass()
+			);
+		}
 	}
 	
 	
 	
 	/**
-	 * @covers Mephex_Controller_Action_Http::checkArguments
+	 * @covers Mephex_Controller_Action_Http::processPreAction
+	 * @covers Mephex_Controller_Action_Http::getPostRequest
+	 */
+	public function testPostRequestIsMadeAvailableAfterPreAction()
+	{
+		$this->assertNull($this->_controller->getPostRequest());
+		$this->_controller->processPreAction();
+
+		$args	= $this->_controller->getPostRequest();
+		$this->assertTrue($args instanceof Mephex_App_Arguments);
+		$this->assertEquals('POST', $args->get('unitTesting'));
+	}
+
+
+
+	/**
+	 * @covers Mephex_Controller_Action_Http::processPreAction
+	 */
+	public function testPostRequestResourceTypeIsCheckedByPreAction()
+	{
+		$resource_list	= new Mephex_App_Resource_List();
+		$resource_list->addType('Arguments', 'Mephex_App_Arguments');
+		$controller		= new Stub_Mephex_Controller_Action_Http(
+			$resource_list
+		);
+		$resource_list->addResource(
+			'Arguments',
+			'HttpConnectionInfo',
+			$this->_http_info
+		);
+		$resource_list->addResource(
+			'Arguments',
+			'GetRequest',
+			$this->_get_request
+		);
+
+		try
+		{
+			$controller->processPreAction();
+		}
+		catch(Mephex_App_Resource_Exception_UnknownLoader $ex)
+		{
+			$this->assertEquals(
+				'PostRequest',
+				$ex->getResourceName()
+			);
+		}
+	}
+	
+	
+	
+	/**
+	 * @covers Mephex_Controller_Action_Http::processPreAction
 	 * @covers Mephex_Controller_Action_Http::getGetRequest
 	 */
-	public function testGetRequestIsMadeAvailableAfterCheckingArguments()
+	public function testGetRequestIsMadeAvailableAfterPreAction()
 	{
 		$this->assertNull($this->_controller->getGetRequest());
-		$this->_controller->checkArguments($this->_arguments);
+		$this->_controller->processPreAction();
 
 		$args	= $this->_controller->getGetRequest();
 		$this->assertTrue($args instanceof Mephex_App_Arguments);
 		$this->assertEquals('GET', $args->get('unitTesting'));
+	}
+
+
+
+	/**
+	 * @covers Mephex_Controller_Action_Http::processPreAction
+	 */
+	public function testGetRequestResourceTypeIsCheckedByPreAction()
+	{
+		$resource_list	= new Mephex_App_Resource_List();
+		$resource_list->addType('Arguments', 'Mephex_App_Arguments');
+		$controller		= new Stub_Mephex_Controller_Action_Http(
+			$resource_list
+		);
+		$resource_list->addResource(
+			'Arguments',
+			'HttpConnectionInfo',
+			$this->_http_info
+		);
+		$resource_list->addResource(
+			'Arguments',
+			'PostRequest',
+			$this->_post_request
+		);
+
+		try
+		{
+			$controller->processPreAction();
+		}
+		catch(Mephex_App_Resource_Exception_UnknownLoader $ex)
+		{
+			$this->assertEquals(
+				'GetRequest',
+				$ex->getResourceName()
+			);
+		}
 	}
 }

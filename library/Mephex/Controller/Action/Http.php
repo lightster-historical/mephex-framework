@@ -33,34 +33,25 @@ extends Mephex_Controller_Action_Base
 
 
 
-	/**
-	 * Checks the arguments object to make sure it extends the expected class.
-	 *
-	 * @param Mephex_App_Arguments $args - the arguments object to check
-	 *		the class type of
-	 * @return void
-	 * @see Mephex_Controller_Action_Http#checkArguments
-	 */
-	protected function checkArguments(Mephex_App_Arguments $arguments)
+	public function processPreAction()
 	{
-		parent::checkArguments($arguments);
+		parent::processPreAction();
 
-		$this->_http_connection	= $arguments->getHttpConnectionInfo();
-		$this->_request_post	= $arguments->getPostRequest();
-		$this->_request_get		= $arguments->getGetRequest();
-	}
-
-
-
-	/**
-	 * Getter for the expected arguments class name.
-	 *
-	 * @return string
-	 * @see Mephex_Controller_Action_Http#getExpectedArgumentsClass
-	 */
-	protected function getExpectedArgumentsClass()
-	{
-		return 'Mephex_App_Arguments_Http';
+		$resource_list			= $this->getResourceList();
+		$resource_list->checkType('Arguments', 'Mephex_App_Arguments');
+		$this->_http_connection	= $resource_list->checkResourceType(
+			'Arguments',
+			'HttpConnectionInfo',
+			'Mephex_App_Arguments_HttpConnection'
+		);
+		$this->_request_post	= $resource_list->getResource(
+			'Arguments',
+			'PostRequest'
+		);
+		$this->_request_get		= $resource_list->getResource(
+			'Arguments',
+			'GetRequest'
+		);
 	}
 	
 	

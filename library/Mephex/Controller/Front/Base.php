@@ -129,7 +129,7 @@ implements Mephex_Controller_Front
 	 */
 	protected function generateActionController($class_name)
 	{
-		return new $class_name($this);
+		return new $class_name(new Mephex_App_Resource_List());
 	}
 	
 	
