@@ -203,4 +203,22 @@ class Mephex_App_Resource_List
 
 		return $this->_resources[$type_name][$resource_name];
 	}
+
+
+
+	/**
+	 * Checks to see if the resource implements/extends the given class
+	 *
+	 * @param string $type_name - the type name the resource is associated with
+	 * @param string $resource_name - the resource name to check and retrieve
+	 * @param string $class_name - the class name to check the resource type's
+	 *		class against
+	 * @return object
+	 */
+	public function checkResourceType($type_name, $resource_name, $class_name)
+	{
+		$resource		= $this->getResource($type_name, $resource_name);
+		$resource_class	= new Mephex_Reflection_Class($class_name);
+		return $resource_class->checkObjectType($resource);
+	}
 }

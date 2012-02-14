@@ -156,7 +156,7 @@ extends Mephex_Test_TestCase
 	 * @covers Mephex_App_Resource_List::checkType
 	 * @depends testClassIsInstantiable
 	 */
-	public function testResourceTypeCanBeChecked()
+	public function testTypeNameTypeCanBeChecked()
 	{
 		$this->_list->addType('config', 'Mephex_Config_OptionSet');
 
@@ -459,5 +459,63 @@ extends Mephex_Test_TestCase
 		);
 
 		$this->_list->getResource('config', 'core');
+	}
+
+
+
+	/**
+	 * @covers Mephex_App_Resource_List::checkResourceType
+	 * @depends testClassIsInstantiable
+	 * @depends testLoaderCanBeAdded
+	 * @expectedException Mephex_Reflection_Exception_ExpectedObject
+	 */
+	public function testResourceTypeCanBeChecked()
+	{
+		$primary	= new Mephex_Config_OptionSet();
+		$secondary	= new Mephex_Config_OptionSet();
+		$this->_list->addLoader(
+			'config',
+			new Mephex_App_Resource_Loader_ArrayWrapper(
+				'Mephex_Config_OptionSet',
+				array(
+					'core'	=> $primary,
+					'2nd'	=> $secondary
+				)
+			)
+		);
+
+		$this->_list->checkResourceType(
+			'config', 'core', 'Mephex_App_Arguments'
+		);
+	}
+
+
+
+	/**
+	 * @covers Mephex_App_Resource_List::checkResourceType
+	 * @depends testClassIsInstantiable
+	 * @depends testLoaderCanBeAdded
+	 */
+	public function testResourceIsReturnedIfTypeChecksOut()
+	{
+		$primary	= new Mephex_Config_OptionSet();
+		$secondary	= new Mephex_Config_OptionSet();
+		$this->_list->addLoader(
+			'config',
+			new Mephex_App_Resource_Loader_ArrayWrapper(
+				'Mephex_Config_OptionSet',
+				array(
+					'core'	=> $primary,
+					'2nd'	=> $secondary
+				)
+			)
+		);
+
+		$this->assertSame(
+			$primary,
+			$this->_list->checkResourceType(
+				'config', 'core', 'Mephex_Config_OptionSet'
+			)
+		);
 	}
 }
