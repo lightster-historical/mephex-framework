@@ -6,13 +6,13 @@ class Mephex_Controller_Front_BaseTest
 extends Mephex_Test_TestCase
 {
 	protected function getFrontController(
-		Mephex_App_Arguments $arguments,
+		Mephex_App_Resource_List $resource_list,
 		$action_ctrl_name,
 		$action_name
 	)
 	{
 		return new Stub_Mephex_Controller_Front_Base(
-			$arguments, $action_ctrl_name, $action_name
+			$resource_list, $action_ctrl_name, $action_name
 		);
 	}
 
@@ -26,7 +26,7 @@ extends Mephex_Test_TestCase
 	public function testBaseFrontControllerCanBeInstantiated()
 	{
 		$this->assertTrue(
-			$this->getFrontController(new Mephex_App_Arguments(), '', '')
+			$this->getFrontController(new Mephex_App_Resource_List(), '', '')
 			instanceof Mephex_Controller_Front_Base
 		);
 	}
@@ -35,20 +35,20 @@ extends Mephex_Test_TestCase
 	
 	/**
 	 * @covers Mephex_Controller_Front_Base::__construct
-	 * @covers Mephex_Controller_Front_Base::getArguments
+	 * @covers Mephex_Controller_Front_Base::getResourceList
 	 */
-	public function testArgumentsPassedToConstructorAreSameRetrieved()
+	public function testResourceListPassedToConstructorIsSameRetrieved()
 	{
-		$arguments			= new Mephex_App_Arguments();
+		$resource_list		= new Mephex_App_Resource_List();
 		$action_ctrl_name	= 'Stub_Mephex_Controller_Action_Base';
 		$action_name		= 'index';
 		$front_ctrl			= $this->getFrontController(
-			$arguments,
+			$resource_list,
 			$action_ctrl_name,
 			$action_name
 		);
 
-		$this->assertTrue($arguments === $front_ctrl->getArguments());
+		$this->assertTrue($resource_list === $front_ctrl->getResourceList());
 	}
 	
 	
@@ -61,7 +61,7 @@ extends Mephex_Test_TestCase
 		$action_ctrl_name	= 'Stub_Mephex_Controller_Action_Base';
 		$action_name		= 'index';
 		$front_ctrl			= $this->getFrontController(
-			new Mephex_App_Arguments(),
+			new Mephex_App_Resource_List(),
 			$action_ctrl_name,
 			$action_name
 		);
@@ -82,7 +82,7 @@ extends Mephex_Test_TestCase
 		$action_ctrl_name	= 'Stub_Mephex_Controller_Action_Base';
 		$action_name		= 'index';
 		$front_ctrl			= $this->getFrontController(
-			new Mephex_App_Arguments(),
+			new Mephex_App_Resource_List(),
 			$action_ctrl_name,
 			$action_name
 		);
@@ -103,7 +103,7 @@ extends Mephex_Test_TestCase
 		$action_ctrl_name	= 'Stub_Mephex_Controller_Action_Base';
 		$action_name		= 'index';
 		$front_ctrl			= $this->getFrontController(
-			new Mephex_App_Arguments(),
+			new Mephex_App_Resource_List(),
 			$action_ctrl_name,
 			$action_name
 		);
@@ -124,7 +124,7 @@ extends Mephex_Test_TestCase
 		$action_ctrl_name	= 'Stub_Mephex_Controller_Action_Base';
 		$action_name		= 'list';
 		$front_ctrl			= $this->getFrontController(
-			new Mephex_App_Arguments(),
+			new Mephex_App_Resource_List(),
 			$action_ctrl_name,
 			$action_name
 		);
@@ -146,7 +146,7 @@ extends Mephex_Test_TestCase
 		$action_ctrl_name	= 'Stub_Mephex_Controller_Action_Base';
 		$action_name		= 'builder';
 		$front_ctrl			= $this->getFrontController(
-			new Mephex_App_Arguments(),
+			new Mephex_App_Resource_List(),
 			$action_ctrl_name,
 			$action_name
 		);
@@ -168,7 +168,7 @@ extends Mephex_Test_TestCase
 		$action_ctrl_name	= 'Stub_Mephex_Controller_Action_Base';
 		$action_name		= 'builder';
 		$front_ctrl			= $this->getFrontController(
-			new Mephex_App_Arguments(),
+			new Mephex_App_Resource_List(),
 			$action_ctrl_name,
 			$action_name
 		);

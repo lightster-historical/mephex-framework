@@ -27,33 +27,32 @@ implements Mephex_Controller_Front
 
 
 	/**
-	 * Arguments inputted to the program.
+	 * The resource list containing necessary resources.
 	 *
-	 * @var Mephex_App_Arguments
+	 * @var Mephex_App_Resource_List
 	 */
-	private $_arguments;
+	private $_resource_list;
 
 
 
 	/**
-	 * @param Mephex_App_Arguments $arguments - the arguments inputted
-	 *		to the program
+	 * @param Mephex_App_Resource_List $resource_list
 	 */
-	public function __construct(Mephex_App_Arguments $arguments)
+	public function __construct(Mephex_App_Resource_List $resource_list)
 	{
-		$this->_arguments	= $arguments;
+		$this->_resource_list	= $resource_list;
 	}
 
 
 
 	/**
-	 * Getter for arguments.
+	 * Getter for resource list.
 	 *
-	 * @return Mephex_App_Arguments
+	 * @return Mephex_App_Resource_List
 	 */
-	public function getArguments()
+	public function getResourceList()
 	{
-		return $this->_arguments;
+		return $this->_resource_list;
 	}
 	
 	
@@ -129,7 +128,7 @@ implements Mephex_Controller_Front
 	 */
 	protected function generateActionController($class_name)
 	{
-		return new $class_name(new Mephex_App_Resource_List());
+		return new $class_name($this->_resource_list);
 	}
 	
 	

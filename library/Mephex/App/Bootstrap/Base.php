@@ -137,7 +137,7 @@ extends Mephex_App_Bootstrap
 	public function run(Mephex_App_Arguments $arguments)
 	{
 		$front_ctrl	= $this->getFrontController($arguments);
-		$front_ctrl->run($arguments);
+		$front_ctrl->run();
 		return $front_ctrl;
 	}
 
