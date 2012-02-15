@@ -153,7 +153,7 @@ extends Mephex_Test_TestCase
 		);
 		$bootstrap		= new Stub_Mephex_App_Bootstrap_Base($args);
 		$front_ctrl		= $bootstrap->getFrontController(
-			new Mephex_App_Arguments()
+			new Mephex_App_Resource_List()
 		);
 
 		$this->assertTrue($front_ctrl instanceof Mephex_Controller_Front_Base);
@@ -171,7 +171,7 @@ extends Mephex_Test_TestCase
 			'action_name'		=> 'index'
 		);
 		$bootstrap		= new Stub_Mephex_App_Bootstrap_Base($args);
-		$front_ctrl		= $bootstrap->run(new Mephex_App_Arguments());
+		$front_ctrl		= $bootstrap->run(new Mephex_App_Resource_List());
 		$action_ctrl	= $front_ctrl->getActionController();
 
 		$this->assertEquals('index', $action_ctrl->getActionName());
@@ -189,7 +189,7 @@ extends Mephex_Test_TestCase
 			'action_name'		=> 'index',
 			'cmd_line_arg'		=> '-v -a'
 		);
-		$arguments	= new Mephex_App_Arguments($args);
+		$resource_list	= new Mephex_App_Resource_List();
 		$bootstrap	= $this->getMock(
 			'Stub_Mephex_App_Bootstrap_Base',
 			array('getFrontController'),
@@ -198,7 +198,7 @@ extends Mephex_Test_TestCase
 		$bootstrap->expects($this->once())
 			->method('getFrontController')
 			->with(
-				$this->equalTo($arguments)
+				$this->equalTo($resource_list)
 			)->will($this->returnValue(
 				new Stub_Mephex_Controller_Front_Base(
 					new Mephex_App_Resource_List(),
@@ -207,7 +207,7 @@ extends Mephex_Test_TestCase
 				)
 			));
 
-		$front_ctrl	= $bootstrap->run($arguments);
+		$front_ctrl	= $bootstrap->run($resource_list);
 	}
 
 
@@ -227,7 +227,7 @@ extends Mephex_Test_TestCase
 			'builder'
 		);
 		$front_ctrl		= $bootstrap->runWithRouterOverride(
-			new Mephex_App_Arguments(),
+			new Mephex_App_Resource_List(),
 			$router
 		);
 		$action_ctrl	= $front_ctrl->getActionController();
@@ -246,7 +246,7 @@ extends Mephex_Test_TestCase
 			'action_ctrl_name'	=> 'Stub_Mephex_Controller_Action_Base',
 			'action_name'		=> 'index'
 		);
-		$arguments	= new Mephex_App_Arguments($args);
+		$resource_list	= new Mephex_App_Resource_List($args);
 
 		$router			= new Stub_Mephex_Controller_Router(
 			'Stub_Mephex_Controller_Action_Base',
@@ -261,7 +261,7 @@ extends Mephex_Test_TestCase
 		$bootstrap->expects($this->once())
 			->method('getFrontController')
 			->with(
-				$this->equalTo($arguments)
+				$this->equalTo($resource_list)
 			)->will($this->returnValue(
 				new Stub_Mephex_Controller_Front_Base(
 					new Mephex_App_Resource_List(),
@@ -269,6 +269,6 @@ extends Mephex_Test_TestCase
 					$args['action_name']
 				)
 			));
-		$front_ctrl	= $bootstrap->runWithRouterOverride($arguments, $router);
+		$front_ctrl	= $bootstrap->runWithRouterOverride($resource_list, $router);
 	}
 }

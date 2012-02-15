@@ -100,10 +100,11 @@ extends Mephex_App_Bootstrap
 	/**
 	 * Generates the front controller to be used by the application.
 	 *
+	 * @param Mephex_App_Resource_List $resource_list
 	 * @return Mephex_Controller_Front_Base
 	 */
 	protected abstract function generateFrontController(
-		Mephex_App_Arguments $arguments
+		Mephex_App_Resource_List $resource_list
 	);
 
 
@@ -111,17 +112,16 @@ extends Mephex_App_Bootstrap
 	/**
 	 * Getter for front controller.
 	 *
-	 * @param Mephex_App_Arguments $arguments - the arguments to pass to the 
-	 *		front controller
+	 * @param Mephex_App_Resource_List $resource_list
 	 * @return Mephex_Controller_Front_Base
 	 */
-	protected function getFrontController(Mephex_App_Arguments $arguments)
+	protected function getFrontController(Mephex_App_Resource_List $resource_list)
 	{
 		$expected	= new Mephex_Reflection_Class(
 			'Mephex_Controller_Front_Base'
 		);
 		return $expected->checkObjectType(
-			$this->generateFrontController($arguments)
+			$this->generateFrontController($resource_list)
 		);
 	}
 
@@ -130,13 +130,12 @@ extends Mephex_App_Bootstrap
 	/**
 	 * Runs the application.
 	 *
-	 * @param Mephex_App_Arguments $arguments - the arguments to pass to the 
-	 *		front controller
+	 * @param Mephex_App_Resource_List $resource_list
 	 * @return Mephex_Controller_Front_Base
 	 */
-	public function run(Mephex_App_Arguments $arguments)
+	public function run(Mephex_App_Resource_List $resource_list)
 	{
-		$front_ctrl	= $this->getFrontController($arguments);
+		$front_ctrl	= $this->getFrontController($resource_list);
 		$front_ctrl->run();
 		return $front_ctrl;
 	}
@@ -152,11 +151,11 @@ extends Mephex_App_Bootstrap
 	 * @return Mephex_Controller_Front_Base
 	 */
 	public function runWithRouterOverride(
-		Mephex_App_Arguments $arguments,
+		Mephex_App_Resource_List $resource_list,
 		Mephex_Controller_Router $router
 	)
 	{
-		$front_ctrl	= $this->getFrontController($arguments);
+		$front_ctrl	= $this->getFrontController($resource_list);
 		$front_ctrl->runWithRouterOverride($router);
 		return $front_ctrl;
 	}

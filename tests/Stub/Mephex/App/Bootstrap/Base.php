@@ -55,10 +55,10 @@ extends Mephex_App_Bootstrap_Base
 
 
 
-	protected function generateFrontController(Mephex_App_Arguments $arguments)
+	protected function generateFrontController(Mephex_App_Resource_List $resource_list)
 	{
 		return new Stub_Mephex_Controller_Front_Base(
-			new Mephex_App_Resource_List(),
+			$resource_list,
 			$this->_action_ctrl_name,
 			$this->_action_name
 		);
@@ -66,6 +66,6 @@ extends Mephex_App_Bootstrap_Base
 
 
 
-	public function getFrontController(Mephex_App_Arguments $arguments)
-		{return parent::getFrontController($arguments);}
+	public function getFrontController(Mephex_App_Resource_List $resource_list)
+		{return parent::getFrontController($resource_list);}
 }
