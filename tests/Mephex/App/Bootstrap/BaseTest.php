@@ -195,16 +195,26 @@ extends Mephex_Test_TestCase
 			array('getFrontController'),
 			array($args)
 		);
+
+		$resource_list	= new Mephex_App_Resource_List();
+		$front_ctrl	= new Stub_Mephex_Controller_Front_Base(
+			$resource_list,
+			$args['action_ctrl_name'],
+			$args['action_name']
+		);
+		$resource_list->addType('Router', 'Mephex_Controller_Router');
+		$resource_list->addResource(
+			'Router',
+			'Default',
+			new Stub_Mephex_Controller_Router_Front($front_ctrl)
+		);
+
 		$bootstrap->expects($this->once())
 			->method('getFrontController')
 			->with(
 				$this->equalTo($resource_list)
 			)->will($this->returnValue(
-				new Stub_Mephex_Controller_Front_Base(
-					new Mephex_App_Resource_List(),
-					$args['action_ctrl_name'],
-					$args['action_name']
-				)
+				$front_ctrl
 			));
 
 		$front_ctrl	= $bootstrap->run($resource_list);

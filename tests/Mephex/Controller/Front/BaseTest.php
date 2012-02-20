@@ -11,9 +11,20 @@ extends Mephex_Test_TestCase
 		$action_name
 	)
 	{
-		return new Stub_Mephex_Controller_Front_Base(
-			$resource_list, $action_ctrl_name, $action_name
+		$front_ctrl	= new Stub_Mephex_Controller_Front_Base(
+			$resource_list,
+			$action_ctrl_name,
+			$action_name
 		);
+
+		$resource_list->addType('Router', 'Mephex_Controller_Router');
+		$resource_list->addResource(
+			'Router',
+			'Default',
+			new Stub_Mephex_Controller_Router_Front($front_ctrl)
+		);
+
+		return $front_ctrl;
 	}
 
 

@@ -57,11 +57,20 @@ extends Mephex_App_Bootstrap_Base
 
 	protected function generateFrontController(Mephex_App_Resource_List $resource_list)
 	{
-		return new Stub_Mephex_Controller_Front_Base(
+		$front_ctrl	= new Stub_Mephex_Controller_Front_Base(
 			$resource_list,
 			$this->_action_ctrl_name,
 			$this->_action_name
 		);
+
+		$resource_list->addType('Router', 'Mephex_Controller_Router');
+		$resource_list->addResource(
+			'Router',
+			'Default',
+			new Stub_Mephex_Controller_Router_Front($front_ctrl)
+		);
+
+		return $front_ctrl;
 	}
 
 

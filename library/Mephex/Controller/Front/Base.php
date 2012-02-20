@@ -84,16 +84,6 @@ implements Mephex_Controller_Front
 
 		return $this->run();
 	}
-	
-	
-
-	/**
-	 * The router to use for determining the action controller and action
-	 * name to run.
-	 *
-	 * @return Mephex_Controller_Router
-	 */	
-	protected abstract function generateDefaultRouter();
 
 
 
@@ -106,11 +96,10 @@ implements Mephex_Controller_Front
 	{
 		if(null === $this->_router)
 		{
-			$expected	= new Mephex_Reflection_Class(
+			$this->_router	= $this->_resource_list->checkResourceType(
+				'Router',
+				'Default',
 				'Mephex_Controller_Router'
-			);
-			$this->_router	= $expected->checkObjectType(
-				$this->generateDefaultRouter()
 			);
 		}
 

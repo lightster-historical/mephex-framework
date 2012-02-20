@@ -31,13 +31,6 @@ extends Mephex_Controller_Front_Base
 	{
 		return $this->_action_name;
 	}
-	
-	
-	
-	public function generateDefaultRouter()
-	{
-		return new Stub_Mephex_Controller_Router_Front($this);
-	}
 
 
 
