@@ -15,12 +15,7 @@ extends Mephex_Test_TestCase
 	{
 		parent::setUp();
 
-		$this->_bootstrap	= $this->getMock(
-			'Stub_Mephex_App_Bootstrap_Base',
-			array(
-				'generateFrontController'
-			)
-		);
+		$this->_bootstrap	= new Stub_Mephex_App_Bootstrap_Base();
 	}
 
 
@@ -54,7 +49,6 @@ extends Mephex_Test_TestCase
 		$this->_bootstrap	= $this->getMock(
 			'Mephex_App_Bootstrap_Base',
 			array(
-				'generateFrontController',
 				'setUpAutoLoader'
 			)
 		);
@@ -79,7 +73,6 @@ extends Mephex_Test_TestCase
 		$this->_bootstrap	= $this->getMock(
 			'Mephex_App_Bootstrap_Base',
 			array(
-				'generateFrontController',
 				'setUpAutoLoader'
 			)
 		);
@@ -147,7 +140,6 @@ extends Mephex_Test_TestCase
 		$this->_bootstrap	= $this->getMock(
 			'Stub_Mephex_App_Bootstrap_Base',
 			array(
-				'generateFrontController',
 				'addDefaultClassLoaders'
 			),
 			array(
@@ -218,10 +210,14 @@ extends Mephex_Test_TestCase
 	/**
 	 * @covers Mephex_App_Bootstrap_Base::getFrontController
 	 */
-	public function testGetFrontControllerPassesResourceListToGenerateFrontController()
+	public function testGetFrontControllerRetrievesFrontControllerFromResourceList()
 	{
-		$resource_list		= new Mephex_App_Resource_List();
-
+		$resource_list		= $this->getMock(
+			'Mephex_App_Resource_List',
+			array(
+				'checkResourceType'
+			)
+		);
 		$front_ctrl			= $this->getMock(
 			'Mephex_Controller_Front_Base',
 			null,
@@ -230,60 +226,17 @@ extends Mephex_Test_TestCase
 			)
 		);
 
-		$this->_bootstrap	= $this->getMock(
-			'Stub_Mephex_App_Bootstrap_Base',
-			array(
-				'generateFrontController'
-			),
-			array(
-				null
-			)
-		);
-		$this->_bootstrap
+		$resource_list
 			->expects($this->once())
-			->method('generateFrontController')
-			->with($this->equalTo($resource_list))
+			->method('checkResourceType')
+			->with(
+				$this->equalTo('FrontController'),
+				$this->equalTo('Default'),
+				$this->equalTo('Mephex_Controller_Front_Base')
+			)
 			->will($this->returnValue($front_ctrl));
 
-		$this->assertSame(
-			$front_ctrl,
-			$this->_bootstrap->getFrontController($resource_list)
-		);
-	}
-
-
-
-	/**
-	 * @covers Mephex_App_Bootstrap_Base::getFrontController
-	 * @expectedException Mephex_Reflection_Exception_ExpectedObject
-	 */
-	public function testGetFrontControllerChecksObjectType()
-	{
-		$resource_list		= new Mephex_App_Resource_List();
-
-		$front_ctrl			= $this->getMock(
-			'Mephex_Controller_Front_Base',
-			null,
-			array(
-				$resource_list
-			)
-		);
-
-		$this->_bootstrap	= $this->getMock(
-			'Stub_Mephex_App_Bootstrap_Base',
-			array(
-				'generateFrontController'
-			),
-			array(
-				null
-			)
-		);
-		$this->_bootstrap
-			->expects($this->once())
-			->method('generateFrontController')
-			->with($this->equalTo($resource_list))
-			->will($this->returnValue($resource_list));
-
+		$this->_bootstrap	= new Stub_Mephex_App_Bootstrap_Base();
 		$this->_bootstrap->getFrontController($resource_list);
 	}
 
@@ -309,7 +262,6 @@ extends Mephex_Test_TestCase
 		$this->_bootstrap	= $this->getMock(
 			'Mephex_App_Bootstrap_Base',
 			array(
-				'generateFrontController',
 				'getFrontController'
 			),
 			array(
@@ -350,7 +302,6 @@ extends Mephex_Test_TestCase
 		$this->_bootstrap	= $this->getMock(
 			'Mephex_App_Bootstrap_Base',
 			array(
-				'generateFrontController',
 				'getFrontController'
 			),
 			array(

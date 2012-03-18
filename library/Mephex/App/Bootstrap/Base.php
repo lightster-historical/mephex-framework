@@ -94,18 +94,6 @@ extends Mephex_App_Bootstrap
 
 
 	/**
-	 * Generates the front controller to be used by the application.
-	 *
-	 * @param Mephex_App_Resource_List $resource_list
-	 * @return Mephex_Controller_Front_Base
-	 */
-	protected abstract function generateFrontController(
-		Mephex_App_Resource_List $resource_list
-	);
-
-
-
-	/**
 	 * Getter for front controller.
 	 *
 	 * @param Mephex_App_Resource_List $resource_list
@@ -113,11 +101,10 @@ extends Mephex_App_Bootstrap
 	 */
 	protected function getFrontController(Mephex_App_Resource_List $resource_list)
 	{
-		$expected	= new Mephex_Reflection_Class(
+		return $resource_list->checkResourceType(
+			'FrontController',
+			'Default',
 			'Mephex_Controller_Front_Base'
-		);
-		return $expected->checkObjectType(
-			$this->generateFrontController($resource_list)
 		);
 	}
 

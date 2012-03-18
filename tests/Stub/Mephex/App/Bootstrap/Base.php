@@ -2,7 +2,7 @@
 
 
 
-abstract class Stub_Mephex_App_Bootstrap_Base
+class Stub_Mephex_App_Bootstrap_Base
 extends Mephex_App_Bootstrap_Base
 {
 	public function setUpAutoLoader(Mephex_App_AutoLoader $auto_loader)
