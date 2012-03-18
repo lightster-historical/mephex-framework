@@ -2,7 +2,9 @@
 
 
 
+// @codeCoverageIgnoreStart
 require_once 'Mephex/App/Bootstrap.php';
+// @codeCoverageIgnoreEnd
 
 
 

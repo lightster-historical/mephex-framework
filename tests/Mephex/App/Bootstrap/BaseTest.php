@@ -21,6 +21,18 @@ extends Mephex_Test_TestCase
 
 
 	/**
+	 * @covers Mephex_App_Bootstrap_Base
+	 */
+	public function testExpectedParentClassExists()
+	{
+		$this->assertTrue(
+			class_exists('Mephex_App_Bootstrap', false)
+		);
+	}
+
+
+
+	/**
 	 * @covers Mephex_App_Bootstrap_Base::__construct
 	 */
 	public function testBaseBootstrapIsInstanceOfBootsrap()
