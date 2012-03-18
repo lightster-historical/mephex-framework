@@ -5,6 +5,8 @@
 class Mephex_App_Bootstrap_BaseTest
 extends Mephex_Test_TestCase
 {
+	protected $_bootstrap;
+
 	protected $_prev_auto_loader;
 	
 	
@@ -13,23 +15,12 @@ extends Mephex_Test_TestCase
 	{
 		parent::setUp();
 
-		// load Stub_Mephex_App_AutoLoader before we lose the autoloader  
-		spl_autoload_call('Stub_Mephex_App_AutoLoader');
-		spl_autoload_call('Stub_Mephex_App_Bootstrap_Base');
-		
-		$this->_prev_auto_loader	= Mephex_App_AutoLoader::getInstance();
-		$this->_prev_auto_loader->unregisterSpl();
-		Stub_Mephex_App_AutoLoader::clearInstance();
-	}
-	
-	
-	
-	protected function tearDown()
-	{
-		parent::tearDown();
-
-		Stub_Mephex_App_AutoLoader::restoreInstance($this->_prev_auto_loader);
-		$this->_prev_auto_loader->registerSpl();
+		$this->_bootstrap	= $this->getMock(
+			'Stub_Mephex_App_Bootstrap_Base',
+			array(
+				'generateFrontController'
+			)
+		);
 	}
 
 
@@ -39,105 +30,187 @@ extends Mephex_Test_TestCase
 	 */
 	public function testBaseBootstrapIsInstanceOfBootsrap()
 	{
-		$this->assertTrue(
-			new Stub_Mephex_App_Bootstrap_Base(array(
-				'action_ctrl_name'	=> 'Stub_Mephex_Controller_Action_Base',
-				'action_name'		=> 'index'
-			))
-			instanceof Mephex_App_Bootstrap
+		$this->assertInstanceOf(
+			'Mephex_App_Bootstrap',
+			$this->_bootstrap
 		);
 	}
 
 
 
 	/**
-	 * @covers Mephex_App_Bootstrap_Base::init
+	 * @covers Mephex_App_Bootstrap_Base::initAutoLoader
 	 */
-	public function testInitIsCalledWhenBootstrapIsConstructed()
+	public function testInitAutoLoaderPassesPassedAutoLoaderToSetUpAutoLoader()
 	{
-		$args	= array(
-			'action_ctrl_name'	=> 'Stub_Mephex_Controller_Action_Base',
-			'action_name'		=> 'index'
-		);
-		$bootstrap	= new Stub_Mephex_App_Bootstrap_Base($args);
+		$default_auto_loader	= Mephex_App_AutoLoader::getInstance();
+		$auto_loader			= new Mephex_App_AutoLoader();
 
-		$this->assertTrue($bootstrap->isInited());
-	}
-
-
-
-	/**
-	 * @covers Mephex_App_Bootstrap_Base::setupAutoLoader
-	 * @covers Mephex_App_Bootstrap_Base::getAutoLoader
-	 */
-	public function testAutoLoaderIsLoaded()
-	{
-		$args	= array(
-			'action_ctrl_name'	=> 'Stub_Mephex_Controller_Action_Base',
-			'action_name'		=> 'index'
-		);
-		$bootstrap		= new Stub_Mephex_App_Bootstrap_Base($args);
-		$auto_loader	= $bootstrap->getAutoLoader();
-
-		$this->assertTrue(
+		$this->assertNotSame(
+			$default_auto_loader,
 			$auto_loader
-			instanceof Mephex_App_AutoLoader
+		);
+
+		$this->_bootstrap	= $this->getMock(
+			'Mephex_App_Bootstrap_Base',
+			array(
+				'generateFrontController',
+				'setUpAutoLoader'
+			)
+		);
+		$this->_bootstrap
+			->expects($this->once())
+			->method('setUpAutoLoader')
+			->with($this->equalTo($auto_loader))
+			->will($this->returnValue($auto_loader));
+
+		$this->_bootstrap->initAutoLoader($auto_loader);
+	}
+
+
+
+	/**
+	 * @covers Mephex_App_Bootstrap_Base::initAutoLoader
+	 */
+	public function testInitAutoLoaderPassesDefaultAutoLoaderToSetUpAutoLoader()
+	{
+		$default_auto_loader	= Mephex_App_AutoLoader::getInstance();
+
+		$this->_bootstrap	= $this->getMock(
+			'Mephex_App_Bootstrap_Base',
+			array(
+				'generateFrontController',
+				'setUpAutoLoader'
+			)
+		);
+		$this->_bootstrap
+			->expects($this->once())
+			->method('setUpAutoLoader')
+			->will($this->returnValue($default_auto_loader));
+
+		$this->_bootstrap->initAutoLoader();
+	}
+
+
+
+	/**
+	 * @covers Mephex_App_Bootstrap_Base::setUpAutoLoader
+	 */
+	public function testSetUpAutoLoaderSetsAutoLoader()
+	{
+		$auto_loader		= new Mephex_App_AutoLoader();
+
+		$this->assertAttributeSame(
+			null,
+			'_auto_loader',
+			$this->_bootstrap
+		);
+
+		$this->_bootstrap->setUpAutoLoader($auto_loader);
+
+		$this->assertAttributeSame(
+			$auto_loader,
+			'_auto_loader',
+			$this->_bootstrap
 		);
 	}
 
 
 
 	/**
-	 * @covers Mephex_App_Bootstrap_Base::setupAutoLoader
+	 * @covers Mephex_App_Bootstrap_Base::setUpAutoLoader
+	 */
+	public function testSetUpAutoLoaderRegistersSpl()
+	{
+		$auto_loader		= $this->getMock(
+			'Mephex_App_AutoLoader',
+			array(
+				'registerSpl'
+			)
+		);
+		$auto_loader
+			->expects($this->once())
+			->method('registerSpl');
+
+		$this->_bootstrap->setUpAutoLoader($auto_loader);
+	}
+
+
+
+	/**
+	 * @covers Mephex_App_Bootstrap_Base::setUpAutoLoader
+	 */
+	public function testSetUpAutoLoaderAddsDefaultClassLoaders()
+	{
+		$auto_loader		= new Mephex_App_AutoLoader();
+
+		$this->_bootstrap	= $this->getMock(
+			'Stub_Mephex_App_Bootstrap_Base',
+			array(
+				'generateFrontController',
+				'addDefaultClassLoaders'
+			),
+			array(
+				null
+			)
+		);
+		$this->_bootstrap
+			->expects($this->once())
+			->method('addDefaultClassLoaders')
+			->with($this->equalTo($auto_loader));
+
+		$this->_bootstrap->setUpAutoLoader($auto_loader);
+	}
+
+
+
+	/**
+	 * @covers Mephex_App_Bootstrap_Base::setUpAutoLoader
+	 */
+	public function testSetUpAutoLoaderReturnsAutoLoader()
+	{
+		$auto_loader		= new Mephex_App_AutoLoader();
+
+		$this->assertSame(
+			$auto_loader,
+			$this->_bootstrap->setUpAutoLoader($auto_loader)
+		);
+	}
+
+
+
+	/**
 	 * @covers Mephex_App_Bootstrap_Base::getAutoLoader
+	 * @depends testSetUpAutoLoaderSetsAutoLoader
+	 */
+	public function testGetAutoLoaderReturnsSetAutoLoader()
+	{
+		$auto_loader		= new Mephex_App_AutoLoader();
+
+		$this->assertNull($this->_bootstrap->getAutoLoader());
+		$this->_bootstrap->setUpAutoLoader($auto_loader);
+		$this->assertSame($auto_loader, $this->_bootstrap->getAutoLoader());
+	}
+
+
+
+	/**
 	 * @covers Mephex_App_Bootstrap_Base::addDefaultClassLoaders
 	 */
-	public function testDefaultClassLoadersAreRegistered()
+	public function testAddDefaultClassLoadersCanBeAdded()
 	{
-		$this->assertFalse(
-			class_exists('Stub_Mephex_App_Bootstrap_Base_PrefixA1')
+		$auto_loader		= $this->getMock(
+			'Mephex_App_AutoLoader',
+			array(
+				'addClassLoader'
+			)
 		);
+		$auto_loader
+			->expects($this->once())
+			->method('addClassLoader')
+			->with($this->equalTo(new Mephex_App_ClassLoader_PathOriented('Mephex_')));
 
-		$args	= array(
-			'action_ctrl_name'	=> 'Stub_Mephex_Controller_Action_Base',
-			'action_name'		=> 'index'
-		);
-		$bootstrap		= new Stub_Mephex_App_Bootstrap_Base($args);
-
-		$this->assertTrue(
-			class_exists('Stub_Mephex_App_Bootstrap_Base_PrefixA1')
-		);
-	}
-
-
-
-	/**
-	 * @depends testDefaultClassLoadersAreRegistered
-	 * @covers Mephex_App_Bootstrap_Base::__destruct
-	 */
-	public function testDefaultClassLoadersAreUnregistered()
-	{
-		$args	= array(
-			'action_ctrl_name'	=> 'Stub_Mephex_Controller_Action_Base',
-			'action_name'		=> 'index'
-		);
-
-		$bootstrap		= new Stub_Mephex_App_Bootstrap_Base($args);
-		$this->assertTrue(
-			class_exists('Stub_Mephex_App_Bootstrap_Base_PrefixA2')
-		);
-		unset($bootstrap);
-		$this->assertFalse(
-			class_exists('Stub_Mephex_App_Bootstrap_Base_PrefixA3')
-		);
-
-		$bootstrap		= new Stub_Mephex_App_Bootstrap_Base($args);
-		$this->assertTrue(
-			class_exists('Stub_Mephex_App_Bootstrap_Base_PrefixA2')
-		);
-		$this->assertTrue(
-			class_exists('Stub_Mephex_App_Bootstrap_Base_PrefixA3')
-		);
+		$this->_bootstrap->addDefaultClassLoaders($auto_loader);
 	}
 
 
@@ -145,18 +218,73 @@ extends Mephex_Test_TestCase
 	/**
 	 * @covers Mephex_App_Bootstrap_Base::getFrontController
 	 */
-	public function testFrontControllerCanBeGenerated()
+	public function testGetFrontControllerPassesResourceListToGenerateFrontController()
 	{
-		$args	= array(
-			'action_ctrl_name'	=> 'Stub_Mephex_Controller_Action_Base',
-			'action_name'		=> 'index'
-		);
-		$bootstrap		= new Stub_Mephex_App_Bootstrap_Base($args);
-		$front_ctrl		= $bootstrap->getFrontController(
-			new Mephex_App_Resource_List()
+		$resource_list		= new Mephex_App_Resource_List();
+
+		$front_ctrl			= $this->getMock(
+			'Mephex_Controller_Front_Base',
+			null,
+			array(
+				$resource_list
+			)
 		);
 
-		$this->assertTrue($front_ctrl instanceof Mephex_Controller_Front_Base);
+		$this->_bootstrap	= $this->getMock(
+			'Stub_Mephex_App_Bootstrap_Base',
+			array(
+				'generateFrontController'
+			),
+			array(
+				null
+			)
+		);
+		$this->_bootstrap
+			->expects($this->once())
+			->method('generateFrontController')
+			->with($this->equalTo($resource_list))
+			->will($this->returnValue($front_ctrl));
+
+		$this->assertSame(
+			$front_ctrl,
+			$this->_bootstrap->getFrontController($resource_list)
+		);
+	}
+
+
+
+	/**
+	 * @covers Mephex_App_Bootstrap_Base::getFrontController
+	 * @expectedException Mephex_Reflection_Exception_ExpectedObject
+	 */
+	public function testGetFrontControllerChecksObjectType()
+	{
+		$resource_list		= new Mephex_App_Resource_List();
+
+		$front_ctrl			= $this->getMock(
+			'Mephex_Controller_Front_Base',
+			null,
+			array(
+				$resource_list
+			)
+		);
+
+		$this->_bootstrap	= $this->getMock(
+			'Stub_Mephex_App_Bootstrap_Base',
+			array(
+				'generateFrontController'
+			),
+			array(
+				null
+			)
+		);
+		$this->_bootstrap
+			->expects($this->once())
+			->method('generateFrontController')
+			->with($this->equalTo($resource_list))
+			->will($this->returnValue($resource_list));
+
+		$this->_bootstrap->getFrontController($resource_list);
 	}
 
 
@@ -164,17 +292,37 @@ extends Mephex_Test_TestCase
 	/**
 	 * @covers Mephex_App_Bootstrap_Base::run
 	 */
-	public function testFrontControllerCanBeRun()
+	public function testRunRetrievesFrontController()
 	{
-		$args	= array(
-			'action_ctrl_name'	=> 'Stub_Mephex_Controller_Action_Base',
-			'action_name'		=> 'index'
-		);
-		$bootstrap		= new Stub_Mephex_App_Bootstrap_Base($args);
-		$front_ctrl		= $bootstrap->run(new Mephex_App_Resource_List());
-		$action_ctrl	= $front_ctrl->getActionController();
+		$resource_list		= new Mephex_App_Resource_List();
 
-		$this->assertEquals('index', $action_ctrl->getActionName());
+		$front_ctrl			= $this->getMock(
+			'Mephex_Controller_Front_Base',
+			array(
+				'run'
+			),
+			array(
+				$resource_list
+			)
+		);
+
+		$this->_bootstrap	= $this->getMock(
+			'Mephex_App_Bootstrap_Base',
+			array(
+				'generateFrontController',
+				'getFrontController'
+			),
+			array(
+				null
+			)
+		);
+		$this->_bootstrap
+			->expects($this->once())
+			->method('getFrontController')
+			->with($this->equalTo($resource_list))
+			->will($this->returnValue($front_ctrl));
+
+		$this->_bootstrap->run($resource_list);
 	}
 
 
@@ -182,103 +330,39 @@ extends Mephex_Test_TestCase
 	/**
 	 * @covers Mephex_App_Bootstrap_Base::run
 	 */
-	public function testArgumentsPassedToRunAreSameArgumentsReceivedByFrontController()
+	public function testRunRunsFrontController()
 	{
-		$args	= array(
-			'action_ctrl_name'	=> 'Stub_Mephex_Controller_Action_Base',
-			'action_name'		=> 'index',
-			'cmd_line_arg'		=> '-v -a'
-		);
-		$resource_list	= new Mephex_App_Resource_List();
-		$bootstrap	= $this->getMock(
-			'Stub_Mephex_App_Bootstrap_Base',
-			array('getFrontController'),
-			array($args)
-		);
+		$resource_list		= new Mephex_App_Resource_List();
 
-		$resource_list	= new Mephex_App_Resource_List();
-		$front_ctrl	= new Stub_Mephex_Controller_Front_Base(
-			$resource_list,
-			$args['action_ctrl_name'],
-			$args['action_name']
+		$front_ctrl			= $this->getMock(
+			'Mephex_Controller_Front_Base',
+			array(
+				'run',
+			),
+			array(
+				$resource_list
+			)
 		);
-		$resource_list->addType('Router', 'Mephex_Controller_Router');
-		$resource_list->addResource(
-			'Router',
-			'Default',
-			new Stub_Mephex_Controller_Router_Front($front_ctrl)
-		);
+		$front_ctrl
+			->expects($this->once())
+			->method('run');
 
-		$bootstrap->expects($this->once())
+		$this->_bootstrap	= $this->getMock(
+			'Mephex_App_Bootstrap_Base',
+			array(
+				'generateFrontController',
+				'getFrontController'
+			),
+			array(
+				null
+			)
+		);
+		$this->_bootstrap
+			->expects($this->once())
 			->method('getFrontController')
-			->with(
-				$this->equalTo($resource_list)
-			)->will($this->returnValue(
-				$front_ctrl
-			));
+			->with($this->equalTo($resource_list))
+			->will($this->returnValue($front_ctrl));
 
-		$front_ctrl	= $bootstrap->run($resource_list);
-	}
-
-
-
-	/**
-	 * @covers Mephex_App_Bootstrap_Base::runWithRouterOverride
-	 */
-	public function testFrontControllerCanBeRunWithRouterOverride()
-	{
-		$args	= array(
-			'action_ctrl_name'	=> 'Stub_Mephex_Controller_Action_Base',
-			'action_name'		=> 'index'
-		);
-		$bootstrap		= new Stub_Mephex_App_Bootstrap_Base($args);
-		$router			= new Stub_Mephex_Controller_Router(
-			'Stub_Mephex_Controller_Action_Base',
-			'builder'
-		);
-		$front_ctrl		= $bootstrap->runWithRouterOverride(
-			new Mephex_App_Resource_List(),
-			$router
-		);
-		$action_ctrl	= $front_ctrl->getActionController();
-
-		$this->assertEquals('builder', $action_ctrl->getActionName());
-	}
-
-
-
-	/**
-	 * @covers Mephex_App_Bootstrap_Base::runWithRouterOverride
-	 */
-	public function testArgumentsPassedToRunWithOverrideAreSameArgumentsReceivedByFrontController()
-	{
-		$args	= array(
-			'action_ctrl_name'	=> 'Stub_Mephex_Controller_Action_Base',
-			'action_name'		=> 'index'
-		);
-		$resource_list	= new Mephex_App_Resource_List($args);
-
-		$router			= new Stub_Mephex_Controller_Router(
-			'Stub_Mephex_Controller_Action_Base',
-			'builder'
-		);
-
-		$bootstrap	= $this->getMock(
-			'Stub_Mephex_App_Bootstrap_Base',
-			array('getFrontController'),
-			array($args)
-		);
-		$bootstrap->expects($this->once())
-			->method('getFrontController')
-			->with(
-				$this->equalTo($resource_list)
-			)->will($this->returnValue(
-				new Stub_Mephex_Controller_Front_Base(
-					new Mephex_App_Resource_List(),
-					$args['action_ctrl_name'],
-					$args['action_name']
-				)
-			));
-		$front_ctrl	= $bootstrap->runWithRouterOverride($resource_list, $router);
+		$this->_bootstrap->run($resource_list);
 	}
 }

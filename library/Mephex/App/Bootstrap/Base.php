@@ -23,31 +23,26 @@ extends Mephex_App_Bootstrap
 
 
 
-	/**
-	 * @param array $arguments - the arguments passed into the program
-	 */
 	public function __construct()
 	{
-		$this->init();
-	}
-
-
-
-	public function __destruct()
-	{
-		$this->_auto_loader->unregisterSpl();
 	}
 
 
 
 	/**
-	 * Initializes the application.
+	 * Initializes the auto loader.
 	 *
-	 * @return void
+	 * @param Mephex_App_AutoLoader $auto_loader - the auto loader to use
+	 * @return Mephex_App_AutoLoader
 	 */
-	protected function init()
+	public function initAutoLoader(Mephex_App_AutoLoader $auto_loader = null)
 	{
-		$this->setupAutoLoader();
+		if(!$auto_loader) {
+			require_once 'Mephex/App/AutoLoader.php';
+			$auto_loader	= Mephex_App_AutoLoader::getInstance();
+		}
+
+		return $this->setUpAutoLoader($auto_loader);
 	}
 
 
@@ -55,16 +50,18 @@ extends Mephex_App_Bootstrap
 	/**
 	 * Sets up the auto loader.
 	 *
-	 * @return void
+	 * @param Mephex_App_AutoLoader $auto_loader - the auto loader to use
+	 * @return Mephex_App_AutoLoader
 	 */
-	protected function setupAutoLoader()
+	protected function setUpAutoLoader(Mephex_App_AutoLoader $auto_loader)
 	{
-		require_once 'Mephex/App/AutoLoader.php';
 		require_once 'Mephex/App/ClassLoader/PathOriented.php';
 
-		$this->_auto_loader	= Mephex_App_AutoLoader::getInstance();
+		$this->_auto_loader	= $auto_loader;
 		$this->_auto_loader->registerSpl();
 		$this->addDefaultClassLoaders($this->_auto_loader);
+
+		return $this->_auto_loader;
 	}
 
 
@@ -78,9 +75,8 @@ extends Mephex_App_Bootstrap
 	 */
 	protected function addDefaultClassLoaders(Mephex_App_AutoLoader $auto_loader)
 	{
-		$auto_loader->addClassLoader(
-			new Mephex_App_ClassLoader_PathOriented('Mephex_')
-		);
+		$auto_loader
+			->addClassLoader(new Mephex_App_ClassLoader_PathOriented('Mephex_'));
 	}
 
 
@@ -137,26 +133,6 @@ extends Mephex_App_Bootstrap
 	{
 		$front_ctrl	= $this->getFrontController($resource_list);
 		$front_ctrl->run();
-		return $front_ctrl;
-	}
-
-
-
-	/**
-	 * Runs the application, overriding the default router.
-	 *
-	 * @param Mephex_App_Arguments $arguments - the arguments to pass to the 
-	 *		front controller
-	 * @param Mephex_Controller_Router $router - the router to use
-	 * @return Mephex_Controller_Front_Base
-	 */
-	public function runWithRouterOverride(
-		Mephex_App_Resource_List $resource_list,
-		Mephex_Controller_Router $router
-	)
-	{
-		$front_ctrl	= $this->getFrontController($resource_list);
-		$front_ctrl->runWithRouterOverride($router);
 		return $front_ctrl;
 	}
 }
