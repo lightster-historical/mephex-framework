@@ -7,17 +7,9 @@
  * 
  * @author mlight
  */
-abstract class Mephex_Controller_Front_Base
+class Mephex_Controller_Front_Base
 implements Mephex_Controller_Front
 {
-	/**
-	 * The lazy-loaded action controller.
-	 *
-	 * @var Mephex_Controller_Action_Base
-	 */
-	private $_action_controller	= null;
-
-
 	/**
 	 * The resource list containing necessary resources.
 	 *
@@ -56,10 +48,10 @@ implements Mephex_Controller_Front
 	 */
 	public function run()
 	{
-		return $this->runAction(
-			$this->getActionController(),
-			$this->getRouter()->getActionName()
-		);
+		$router				= $this->getRouter();
+		$action_controller	= $this->getActionController($router);
+
+		return $action_controller->runAction($router->getActionName());
 	}
 
 
@@ -95,43 +87,19 @@ implements Mephex_Controller_Front
 	
 	
 	/**
-	 * Lazy-loading getter for the action controller.
+	 * Getter for the action controller.
 	 *
 	 * @return Mephex_Controller_Action_Base
 	 */
-	protected function getActionController()
+	protected function getActionController(Mephex_Controller_Router $router)
 	{
-		if(null === $this->_action_controller)
-		{
-			$expected	= new Mephex_Reflection_Class(
-				'Mephex_Controller_Action_Base'
-			);
-			$class_name	= $expected->checkClassInheritance(
-				$this->getRouter()->getClassName()
-			);
-			$this->_action_controller	= $expected->checkObjectType(
-				$this->generateActionController($class_name)
-			);
-		}
+		$expected	= new Mephex_Reflection_Class(
+			'Mephex_Controller_Action_Base'
+		);
+		$class_name	= $expected->checkClassInheritance(
+			$router->getClassName()
+		);
 
-		return $this->_action_controller;
-	}
-	
-	
-	
-	/**
-	 * Runs the specified action in the action controller.
-	 *
-	 * @param Mephex_Controller_Action $action_controller - the action
-	 *		controller to use
-	 * @param string $action_name - the action name to run
-	 * @return void
-	 */
-	protected function runAction(
-		Mephex_Controller_Action $action_controller,
-		$action_name
-	)
-	{
-		return $action_controller->runAction($action_name);
+		return $this->generateActionController($class_name);
 	}
 }
