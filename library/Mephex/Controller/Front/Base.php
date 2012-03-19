@@ -11,14 +11,6 @@ abstract class Mephex_Controller_Front_Base
 implements Mephex_Controller_Front
 {
 	/**
-	 * The lazy-loaded router.
-	 *
-	 * @var Mephex_Controller_Router
-	 */
-	private $_router	= null;
-
-
-	/**
 	 * The lazy-loaded action controller.
 	 *
 	 * @var Mephex_Controller_Action_Base
@@ -73,37 +65,17 @@ implements Mephex_Controller_Front
 
 
 	/**
-	 * Runs the application with a router other than the default router.
-	 *
-	 * @param Mephex_controller_Router $router - the router to use
-	 * @return void
-	 */
-	public function runWithRouterOverride(Mephex_Controller_Router $router)
-	{
-		$this->_router	= $router;
-
-		return $this->run();
-	}
-
-
-
-	/**
 	 * Lazy-loading getter for the router.
 	 *
 	 * @return Mephex_Controller_Router
 	 */
 	protected function getRouter()
 	{
-		if(null === $this->_router)
-		{
-			$this->_router	= $this->_resource_list->checkResourceType(
-				'Router',
-				'Default',
-				'Mephex_Controller_Router'
-			);
-		}
-
-		return $this->_router;
+		return $this->_resource_list->checkResourceType(
+			'Router',
+			'Default',
+			'Mephex_Controller_Router'
+		);
 	}
 	
 	

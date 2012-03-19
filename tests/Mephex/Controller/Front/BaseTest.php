@@ -168,33 +168,4 @@ extends Mephex_Test_TestCase
 		$front_ctrl->run();
 		$this->assertEquals($action_name, $action_ctrl->getActionName());
 	}
-	
-	
-	
-	/**
-	 * @covers Mephex_Controller_Front_Base::runWithRouterOverride
-	 */
-	public function testFrontControllerRouterCanBeOverridden()
-	{
-		$action_ctrl_name	= 'Stub_Mephex_Controller_Action_Base';
-		$action_name		= 'builder';
-		$front_ctrl			= $this->getFrontController(
-			new Mephex_App_Resource_List(),
-			$action_ctrl_name,
-			$action_name
-		);
-
-		$override_action	= 'index';
-		$router				= new Stub_Mephex_Controller_Router(
-			$action_ctrl_name,
-			$override_action
-		);
-
-		$action_ctrl		= $front_ctrl->getActionController();
-
-		$this->assertNotEquals($override_action, $action_name);
-		$this->assertNull($action_ctrl->getActionName());
-		$front_ctrl->runWithRouterOverride($router);
-		$this->assertEquals($override_action, $action_ctrl->getActionName());
-	}
 }
