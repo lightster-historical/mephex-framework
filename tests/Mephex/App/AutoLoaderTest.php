@@ -16,10 +16,10 @@ extends Mephex_Test_TestCase
 		parent::setUp();
 		
 		$this->_auto_loader	= new Mephex_App_AutoLoader();
-		$this->_auto_loader->addClassLoader(new Mephex_App_ClassLoader_PathOriented('Stub_Mephex_App_AutoLoader_PrefixA'));
-		$this->_auto_loader->addClassLoader(new Mephex_App_ClassLoader_PathOriented('Stub_Mephex_App_AutoLoader_PrefixB'));
+		$this->_auto_loader->addClassLoader(new Mephex_App_Class_Loader_PathOriented('Stub_Mephex_App_AutoLoader_PrefixA'));
+		$this->_auto_loader->addClassLoader(new Mephex_App_Class_Loader_PathOriented('Stub_Mephex_App_AutoLoader_PrefixB'));
 		// the 'non-loader' will throw an exception if the class has already been loaded
-		$this->_auto_loader->addClassLoader(new Stub_Mephex_App_ClassLoader_NonLoader());
+		$this->_auto_loader->addClassLoader(new Stub_Mephex_App_Class_Loader_NonLoader());
 		
 		// load Stub_Mephex_App_AutoLoader before we lose the autoloader  
 		spl_autoload_call('Stub_Mephex_App_AutoLoader');
@@ -106,8 +106,8 @@ extends Mephex_Test_TestCase
 	public function testAutoLoaderCanRegisterItselfWithSpl()
 	{
 		$this->_auto_loader	= new Mephex_App_AutoLoader();
-		$this->_auto_loader->addClassLoader(new Mephex_App_ClassLoader_PathOriented('Stub_Mephex_App_AutoLoader_PrefixA'));
-		$this->_auto_loader->addClassLoader(new Mephex_App_ClassLoader_PathOriented('Stub_Mephex_App_AutoLoader_PrefixB'));
+		$this->_auto_loader->addClassLoader(new Mephex_App_Class_Loader_PathOriented('Stub_Mephex_App_AutoLoader_PrefixA'));
+		$this->_auto_loader->addClassLoader(new Mephex_App_Class_Loader_PathOriented('Stub_Mephex_App_AutoLoader_PrefixB'));
 		
 		$this->assertFalse(class_exists('Stub_Mephex_App_AutoLoader_PrefixA2', false));
 		$this->assertFalse(class_exists('Stub_Mephex_App_AutoLoader_PrefixA2', true));
@@ -125,8 +125,8 @@ extends Mephex_Test_TestCase
 	{
 		$this->_auto_loader	= new Mephex_App_AutoLoader();
 		$this->_auto_loader->registerSpl();
-		$this->_auto_loader->addClassLoader(new Mephex_App_ClassLoader_PathOriented('Stub_Mephex_App_AutoLoader_PrefixA'));
-		$this->_auto_loader->addClassLoader(new Mephex_App_ClassLoader_PathOriented('Stub_Mephex_App_AutoLoader_PrefixB'));
+		$this->_auto_loader->addClassLoader(new Mephex_App_Class_Loader_PathOriented('Stub_Mephex_App_AutoLoader_PrefixA'));
+		$this->_auto_loader->addClassLoader(new Mephex_App_Class_Loader_PathOriented('Stub_Mephex_App_AutoLoader_PrefixB'));
 		
 		$this->assertFalse(class_exists('Stub_Mephex_App_AutoLoader_PrefixA4', false));
 		$this->assertTrue(class_exists('Stub_Mephex_App_AutoLoader_PrefixA4', true));

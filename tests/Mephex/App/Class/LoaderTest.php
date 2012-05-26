@@ -2,7 +2,7 @@
 
 
 
-class Mephex_App_ClassLoaderTest
+class Mephex_App_Class_LoaderTest
 extends Mephex_Test_TestCase
 {
 	protected $_class_loader;
@@ -13,21 +13,21 @@ extends Mephex_Test_TestCase
 	{
 		parent::setUp();
 
-		$this->_class_loader	= new Stub_Mephex_App_ClassLoader();
+		$this->_class_loader	= new Stub_Mephex_App_Class_Loader();
 	}
 
 
 
 
 	/**
-	 * @covers Mephex_App_ClassLoader::__construct
+	 * @covers Mephex_App_Class_Loader::__construct
 	 */
 	public function testClassLoaderCanBeInstantiated()
 	{
 		$this->assertTrue(
 			$this->_class_loader
 			instanceof 
-			Mephex_App_ClassLoader
+			Mephex_App_Class_Loader
 		);
 	}
 
@@ -47,7 +47,7 @@ extends Mephex_Test_TestCase
 	public function testOtherIncludePathCanBeUsed()
 	{
 		$include_path	= new Mephex_FileSystem_IncludePath();
-		$class_loader	= new Stub_Mephex_App_ClassLoader($include_path);
+		$class_loader	= new Stub_Mephex_App_Class_Loader($include_path);
 
 		$this->assertTrue(
 			$include_path === $class_loader->getIncludePath()

@@ -212,7 +212,7 @@ extends Mephex_Test_TestCase
 		$auto_loader
 			->expects($this->once())
 			->method('addClassLoader')
-			->with($this->equalTo(new Mephex_App_ClassLoader_PathOriented('Mephex_')));
+			->with($this->equalTo(new Mephex_App_Class_Loader_PathOriented('Mephex_')));
 
 		$this->_bootstrap->addDefaultClassLoaders($auto_loader);
 	}
