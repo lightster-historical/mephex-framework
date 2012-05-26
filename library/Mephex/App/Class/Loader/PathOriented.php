@@ -2,7 +2,7 @@
 
 
 
-require_once 'Mephex/App/ClassLoader.php';
+require_once 'Mephex/App/Class/Loader.php';
 
 
 
@@ -13,8 +13,8 @@ require_once 'Mephex/App/ClassLoader.php';
  * 
  * @author mlight
  */
-class Mephex_App_ClassLoader_PathOriented
-extends Mephex_App_ClassLoader
+class Mephex_App_Class_Loader_PathOriented
+extends Mephex_App_Class_Loader
 {
 	/**
 	 * The prefix that the class name must begin with in order

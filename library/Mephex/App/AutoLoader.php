@@ -61,10 +61,10 @@ class Mephex_App_AutoLoader
 	/**
 	 * Adds a class loader to the auto loader.
 	 * 
-	 * @param Mephex_App_ClassLoader $class_loader
+	 * @param Mephex_App_Class_Loader $class_loader
 	 * @return void
 	 */
-	public function addClassLoader(Mephex_App_ClassLoader $class_loader)
+	public function addClassLoader(Mephex_App_Class_Loader $class_loader)
 	{
 		$this->_class_loaders[]	= $class_loader;
 	}

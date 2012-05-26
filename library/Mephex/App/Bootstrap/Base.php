@@ -57,7 +57,7 @@ extends Mephex_App_Bootstrap
 	 */
 	protected function setUpAutoLoader(Mephex_App_AutoLoader $auto_loader)
 	{
-		require_once 'Mephex/App/ClassLoader/PathOriented.php';
+		require_once 'Mephex/App/Class/Loader/PathOriented.php';
 
 		$this->_auto_loader	= $auto_loader;
 		$this->_auto_loader->registerSpl();
@@ -78,7 +78,7 @@ extends Mephex_App_Bootstrap
 	protected function addDefaultClassLoaders(Mephex_App_AutoLoader $auto_loader)
 	{
 		$auto_loader
-			->addClassLoader(new Mephex_App_ClassLoader_PathOriented('Mephex_'));
+			->addClassLoader(new Mephex_App_Class_Loader_PathOriented('Mephex_'));
 	}
 
 

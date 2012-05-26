@@ -12,7 +12,7 @@ require_once 'Mephex/FileSystem/IncludePath/Php.php';
  * 
  * @author mlight
  */
-abstract class Mephex_App_ClassLoader
+abstract class Mephex_App_Class_Loader
 {
 	/**
 	 * The include path to use for finding classes
