@@ -7,12 +7,12 @@
  * 
  * @author mlight
  */
-class Mephex_App_AutoLoader
+class Mephex_App_Class_AutoLoader
 {
 	/**
 	 * Singleton instance of the object. (Normally only one instance is needed.)
 	 * 
-	 * @var Mephex_App_AutoLoader
+	 * @var Mephex_App_Class_AutoLoader
 	 */
 	protected static $_instance	= null;
 	
@@ -44,7 +44,7 @@ class Mephex_App_AutoLoader
 	 * Creates a singleton instance of this class (if necessary) 
 	 * and returns the instance.
 	 * 
-	 * @return Mephex_App_AutoLoader
+	 * @return Mephex_App_Class_AutoLoader
 	 */
 	public static function getInstance()
 	{

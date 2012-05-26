@@ -6,12 +6,12 @@
 
 function bootstrap()
 {
-	require_once 'Mephex/App/AutoLoader.php';
+	require_once 'Mephex/App/Class/AutoLoader.php';
 	require_once 'Mephex/App/Class/Loader/PathOriented.php';
 	
 	define('ENV_USER', $_ENV['USER']);
 
-	$auto_loader	= Mephex_App_AutoLoader::getInstance();
+	$auto_loader	= Mephex_App_Class_AutoLoader::getInstance();
 	$auto_loader->addClassLoader(new Mephex_App_Class_Loader_PathOriented('Mephex_'));
 	$auto_loader->registerSpl();
 	

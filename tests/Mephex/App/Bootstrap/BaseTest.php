@@ -50,8 +50,8 @@ extends Mephex_Test_TestCase
 	 */
 	public function testInitAutoLoaderPassesPassedAutoLoaderToSetUpAutoLoader()
 	{
-		$default_auto_loader	= Mephex_App_AutoLoader::getInstance();
-		$auto_loader			= new Mephex_App_AutoLoader();
+		$default_auto_loader	= Mephex_App_Class_AutoLoader::getInstance();
+		$auto_loader			= new Mephex_App_Class_AutoLoader();
 
 		$this->assertNotSame(
 			$default_auto_loader,
@@ -80,7 +80,7 @@ extends Mephex_Test_TestCase
 	 */
 	public function testInitAutoLoaderPassesDefaultAutoLoaderToSetUpAutoLoader()
 	{
-		$default_auto_loader	= Mephex_App_AutoLoader::getInstance();
+		$default_auto_loader	= Mephex_App_Class_AutoLoader::getInstance();
 
 		$this->_bootstrap	= $this->getMock(
 			'Mephex_App_Bootstrap_Base',
@@ -103,7 +103,7 @@ extends Mephex_Test_TestCase
 	 */
 	public function testSetUpAutoLoaderSetsAutoLoader()
 	{
-		$auto_loader		= new Mephex_App_AutoLoader();
+		$auto_loader		= new Mephex_App_Class_AutoLoader();
 
 		$this->assertAttributeSame(
 			null,
@@ -128,7 +128,7 @@ extends Mephex_Test_TestCase
 	public function testSetUpAutoLoaderRegistersSpl()
 	{
 		$auto_loader		= $this->getMock(
-			'Mephex_App_AutoLoader',
+			'Mephex_App_Class_AutoLoader',
 			array(
 				'registerSpl'
 			)
@@ -147,7 +147,7 @@ extends Mephex_Test_TestCase
 	 */
 	public function testSetUpAutoLoaderAddsDefaultClassLoaders()
 	{
-		$auto_loader		= new Mephex_App_AutoLoader();
+		$auto_loader		= new Mephex_App_Class_AutoLoader();
 
 		$this->_bootstrap	= $this->getMock(
 			'Stub_Mephex_App_Bootstrap_Base',
@@ -173,7 +173,7 @@ extends Mephex_Test_TestCase
 	 */
 	public function testSetUpAutoLoaderReturnsAutoLoader()
 	{
-		$auto_loader		= new Mephex_App_AutoLoader();
+		$auto_loader		= new Mephex_App_Class_AutoLoader();
 
 		$this->assertSame(
 			$auto_loader,
@@ -189,7 +189,7 @@ extends Mephex_Test_TestCase
 	 */
 	public function testGetAutoLoaderReturnsSetAutoLoader()
 	{
-		$auto_loader		= new Mephex_App_AutoLoader();
+		$auto_loader		= new Mephex_App_Class_AutoLoader();
 
 		$this->assertNull($this->_bootstrap->getAutoLoader());
 		$this->_bootstrap->setUpAutoLoader($auto_loader);
@@ -204,7 +204,7 @@ extends Mephex_Test_TestCase
 	public function testAddDefaultClassLoadersCanBeAdded()
 	{
 		$auto_loader		= $this->getMock(
-			'Mephex_App_AutoLoader',
+			'Mephex_App_Class_AutoLoader',
 			array(
 				'addClassLoader'
 			)

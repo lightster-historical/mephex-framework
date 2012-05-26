@@ -2,8 +2,8 @@
 
 
 
-class Stub_Mephex_App_AutoLoader
-extends Mephex_App_AutoLoader
+class Stub_Mephex_App_Class_AutoLoader
+extends Mephex_App_Class_AutoLoader
 {
 	public static function clearInstance()
 	{

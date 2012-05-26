@@ -19,7 +19,7 @@ extends Mephex_App_Bootstrap
 	/**
 	 * The application's auto loader.
 	 *
-	 * @var Mephex_App_AutoLoader
+	 * @var Mephex_App_Class_AutoLoader
 	 */
 	private $_auto_loader;
 
@@ -34,14 +34,14 @@ extends Mephex_App_Bootstrap
 	/**
 	 * Initializes the auto loader.
 	 *
-	 * @param Mephex_App_AutoLoader $auto_loader - the auto loader to use
-	 * @return Mephex_App_AutoLoader
+	 * @param Mephex_App_Class_AutoLoader $auto_loader - the auto loader to use
+	 * @return Mephex_App_Class_AutoLoader
 	 */
-	public function initAutoLoader(Mephex_App_AutoLoader $auto_loader = null)
+	public function initAutoLoader(Mephex_App_Class_AutoLoader $auto_loader = null)
 	{
 		if(!$auto_loader) {
-			require_once 'Mephex/App/AutoLoader.php';
-			$auto_loader	= Mephex_App_AutoLoader::getInstance();
+			require_once 'Mephex/App/Class/AutoLoader.php';
+			$auto_loader	= Mephex_App_Class_AutoLoader::getInstance();
 		}
 
 		return $this->setUpAutoLoader($auto_loader);
@@ -52,10 +52,10 @@ extends Mephex_App_Bootstrap
 	/**
 	 * Sets up the auto loader.
 	 *
-	 * @param Mephex_App_AutoLoader $auto_loader - the auto loader to use
-	 * @return Mephex_App_AutoLoader
+	 * @param Mephex_App_Class_AutoLoader $auto_loader - the auto loader to use
+	 * @return Mephex_App_Class_AutoLoader
 	 */
-	protected function setUpAutoLoader(Mephex_App_AutoLoader $auto_loader)
+	protected function setUpAutoLoader(Mephex_App_Class_AutoLoader $auto_loader)
 	{
 		require_once 'Mephex/App/Class/Loader/PathOriented.php';
 
@@ -71,11 +71,11 @@ extends Mephex_App_Bootstrap
 	/**
 	 * Adds the default class loaders to the application auto loader.
 	 *
-	 * @param Mephex_App_AutoLoader $auto_loader - the auto loader to add
+	 * @param Mephex_App_Class_AutoLoader $auto_loader - the auto loader to add
 	 *		the class loaders to
 	 * @return void
 	 */
-	protected function addDefaultClassLoaders(Mephex_App_AutoLoader $auto_loader)
+	protected function addDefaultClassLoaders(Mephex_App_Class_AutoLoader $auto_loader)
 	{
 		$auto_loader
 			->addClassLoader(new Mephex_App_Class_Loader_PathOriented('Mephex_'));
@@ -86,7 +86,7 @@ extends Mephex_App_Bootstrap
 	/**
 	 * Getter for auto loader.
 	 *
-	 * @return Mephex_App_AutoLoader
+	 * @return Mephex_App_Class_AutoLoader
 	 */
 	public function getAutoLoader()
 	{
